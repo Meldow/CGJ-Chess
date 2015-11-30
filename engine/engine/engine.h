@@ -16,7 +16,9 @@
 /*
 * OpenGL General
 */
-
+#include "Vectors.h"
+#include "Matrices.h"
+#include "ShaderProgram.h"
 
 
 /*

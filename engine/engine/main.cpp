@@ -10,79 +10,39 @@ unsigned int FrameCount = 0;
 #define COLORS 1
 
 GLuint VaoId, VboId[2];
-GLuint VertexShaderId, FragmentShaderId, ProgramId;
 GLint UboId, UniformId;
 const GLuint UBO_BP = 0;
 
+ShaderProgram* shader;
+
 /////////////////////////////////////////////////////////////////////// SHADERs
 
-const GLchar* VertexShader =
-{
-	"#version 330 core\n"
+void createShaderProgramEngine() {
+	shader = new ShaderProgram();
+	shader->addShader(GL_VERTEX_SHADER, "C:/Users/Alex/Documents/Visual Studio 2015/Projects/CGJ-Chess/engine/resources/shaders/base/simple.vert");
+	shader->addShader(GL_FRAGMENT_SHADER, "C:/Users/Alex/Documents/Visual Studio 2015/Projects/CGJ-Chess/engine/resources/shaders/base/simple.frag");
+	shader->addAttribute("in_Position", VERTICES);
+	shader->addAttribute("in_Color", COLORS);
+	shader->link();
+	shader->addUniform("ModelMatrix");
+	shader->addUniformBlock("SharedMatrices", UBO_BP);
+	shader->create();
 
-	"in vec4 in_Position;\n"
-	"in vec4 in_Color;\n"
-	"out vec4 ex_Color;\n"
+	//todo
+	glUniformBlockBinding(shader->_programId, shader->getUniformBlock("ShaderMatrices"), UBO_BP);
 
-	"uniform mat4 ModelMatrix;\n"
+	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create shaders(new).");
 
-	"uniform SharedMatrices\n"
-	"{\n"
-	"   mat4 ViewMatrix;\n"
-	"   mat4 ProjectionMatrix;\n"
-	"};\n"
-
-	"void main(void)\n"
-	"{\n"
-	"   gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * in_Position;\n"
-	"   ex_Color = in_Color;\n"
-	"}\n"
 };
-
-const GLchar* FragmentShader =
-{
-	"#version 330 core\n"
-
-	"in vec4 ex_Color;\n"
-	"out vec4 out_Color;\n"
-
-	"void main(void)\n"
-	"{\n"
-	"   out_Color = ex_Color;\n"
-	"}\n"
-};
-
-void createShaderProgram() {
-	VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(VertexShaderId, 1, &VertexShader, 0);
-	glCompileShader(VertexShaderId);
-
-	FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(FragmentShaderId, 1, &FragmentShader, 0);
-	glCompileShader(FragmentShaderId);
-
-	ProgramId = glCreateProgram();
-	glAttachShader(ProgramId, VertexShaderId);
-	glAttachShader(ProgramId, FragmentShaderId);
-
-	glBindAttribLocation(ProgramId, VERTICES, "in_Position");
-	glBindAttribLocation(ProgramId, COLORS, "in_Color");
-	glLinkProgram(ProgramId);
-	UniformId = glGetUniformLocation(ProgramId, "ModelMatrix");
-	UboId = glGetUniformBlockIndex(ProgramId, "SharedMatrices");
-	glUniformBlockBinding(ProgramId, UboId, UBO_BP);
-
-	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create shaders.");
-}
 
 void destroyShaderProgram() {
-	glUseProgram(0);
-	glDetachShader(ProgramId, VertexShaderId);
-	glDetachShader(ProgramId, FragmentShaderId);
+	//glUseProgram(0);
+	//glDetachShader(ProgramId, VertexShaderId);
+	//glDetachShader(ProgramId, FragmentShaderId);
 
-	glDeleteShader(FragmentShaderId);
-	glDeleteShader(VertexShaderId);
-	glDeleteProgram(ProgramId);
+	//glDeleteShader(FragmentShaderId);
+	//glDeleteShader(VertexShaderId);
+	//glDeleteProgram(ProgramId);
 
 	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not destroy shaders.");
 }
@@ -194,7 +154,12 @@ const Matrix ModelMatrix = {
 	-0.5f, -0.5f, -0.5f,  1.0f
 }; // Column Major
 
-   // Eye(5,5,5) Center(0,0,0) Up(0,1,0)
+Matrix4* ModelMatrixEngine = new Matrix4(1.0f, 0.0f, 0.0f, 0.0f,
+	0.0f, 1.0f, 0.0f, 0.0f,
+	0.0f, 0.0f, 1.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f, 1.0f);
+
+// Eye(5,5,5) Center(0,0,0) Up(0,1,0)
 const Matrix ViewMatrix1 = {
 	0.70f, -0.41f,  0.58f,  0.00f,
 	0.00f,  0.82f,  0.58f,  0.00f,
@@ -227,17 +192,20 @@ const Matrix ProjectionMatrix2 = {
 }; // Column Major
 
 void drawScene() {
+	//uniform buffer - camera
 	glBindBuffer(GL_UNIFORM_BUFFER, VboId[1]);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Matrix), ViewMatrix2);
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix), sizeof(Matrix), ProjectionMatrix1);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-	glBindVertexArray(VaoId);
-	glUseProgram(ProgramId);
+	//shader
+	shader->draw(ModelMatrix);
 
-	glUniformMatrix4fv(UniformId, 1, GL_FALSE, ModelMatrix);
+	//mesh
+	glBindVertexArray(VaoId);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
+	//reset scene
 	glUseProgram(0);
 	glBindVertexArray(0);
 
@@ -333,8 +301,11 @@ void init(int argc, char* argv[]) {
 	setupGLUT(argc, argv);
 	setupGLEW();
 	setupOpenGL();
-	createShaderProgram();
 	createBufferObjects();
+
+	//new
+	createShaderProgramEngine();
+
 	setupCallbacks();
 }
 

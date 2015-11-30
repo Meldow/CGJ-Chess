@@ -1,4 +1,6 @@
 #include "ManagerOpenGLErrors.h"
+#include <iostream>
+#include "Dependencies/glew/glew.h"
 
 SINGLETON_IMPLEMENTATION_NO_CONSTRUCTOR(ManagerOpenGLErrors)
 
