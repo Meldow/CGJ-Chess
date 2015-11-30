@@ -1,6 +1,9 @@
 #include "Camera.h"
+#include "ManagerOpenGLErrors.h"
 
-Camera::Camera() {}
+Camera::Camera() {
+
+}
 
 Camera::~Camera() {}
 
@@ -77,7 +80,8 @@ Matrix4 Camera::Perspective(float fov, float width, float height, float mNear, f
 
 void Camera::draw() {
 	glBindBuffer(GL_UNIFORM_BUFFER, VboID);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Matrix4), ViewMatrix.get());
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4), sizeof(Matrix4), PerspectiveProjectionMatrix.get());
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(ViewMatrix.m), ViewMatrix.m);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(ViewMatrix.m), sizeof(PerspectiveProjectionMatrix.m), PerspectiveProjectionMatrix.m);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not draw camera.");
 }

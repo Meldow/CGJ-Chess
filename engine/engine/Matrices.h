@@ -14,6 +14,7 @@
 
 #include "Vectors.h"
 #include <iomanip>
+#include "Dependencies/glew/glew.h"
 
 ///////////////////////////////////////////////////////////////////////////
 // 2x2 matrix
@@ -192,15 +193,14 @@ public:
 	friend Vector4 operator*(const Vector4& vec, const Matrix4& m); // pre-multiplication
 	friend std::ostream& operator<<(std::ostream& os, const Matrix4& m);
 
+	float m[16];
 protected:
 
 private:
 	float       getCofactor(float m0, float m1, float m2,
 		float m3, float m4, float m5,
 		float m6, float m7, float m8);
-
 	float tm[16];                                       // transpose m
-	float m[16];
 
 	float getAt(int line, int column) {
 		return m[line * 4 + column];
@@ -662,8 +662,6 @@ inline void Matrix4::setColumn(int index, const Vector3& v) {
 inline const float* Matrix4::get() const {
 	return m;
 }
-
-
 
 inline const float* Matrix4::getTranspose() {
 	tm[0] = m[0];   tm[1] = m[4];   tm[2] = m[8];   tm[3] = m[12];

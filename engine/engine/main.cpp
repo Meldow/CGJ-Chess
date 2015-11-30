@@ -14,6 +14,7 @@ GLint UboId, UniformId;
 const GLuint UBO_BP = 0;
 
 ShaderProgram* shader;
+Camera* camera;
 
 /////////////////////////////////////////////////////////////////////// SHADERs
 
@@ -138,15 +139,22 @@ void destroyBufferObjects() {
 	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not destroy VAOs and VBOs.");
 }
 
+void createCamera() {
+	camera = new Camera();
+	camera->ViewMatrix = Matrix4(
+		-0.70f, -0.41f, -0.58f, 0.00f,
+		0.00f, 0.82f, -0.58f, 0.00f,
+		0.70f, -0.41f, -0.58f, 0.00f,
+		0.00f, 0.00f, -8.70f, 1.00f);
+	camera->PerspectiveProjectionMatrix = Matrix4(
+		0.50f, 0.00f, 0.00f, 0.00f,
+		0.00f, 0.50f, 0.00f, 0.00f,
+		0.00f, 0.00f, -0.22f, 0.00f,
+		0.00f, 0.00f, -1.22f, 1.00f);
+	camera->VboID = VboId[1];	//todo: carefull with this!!!
+}
+
 /////////////////////////////////////////////////////////////////////// SCENE
-
-const Matrix I = {
-	1.0f,  0.0f,  0.0f,  0.0f,
-	0.0f,  1.0f,  0.0f,  0.0f,
-	0.0f,  0.0f,  1.0f,  0.0f,
-	0.0f,  0.0f,  0.0f,  1.0f
-};
-
 const Matrix ModelMatrix = {
 	1.0f,  0.0f,  0.0f,  0.0f,
 	0.0f,  1.0f,  0.0f,  0.0f,
@@ -154,49 +162,10 @@ const Matrix ModelMatrix = {
 	-0.5f, -0.5f, -0.5f,  1.0f
 }; // Column Major
 
-Matrix4* ModelMatrixEngine = new Matrix4(1.0f, 0.0f, 0.0f, 0.0f,
-	0.0f, 1.0f, 0.0f, 0.0f,
-	0.0f, 0.0f, 1.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f, 1.0f);
-
-// Eye(5,5,5) Center(0,0,0) Up(0,1,0)
-const Matrix ViewMatrix1 = {
-	0.70f, -0.41f,  0.58f,  0.00f,
-	0.00f,  0.82f,  0.58f,  0.00f,
-	-0.70f, -0.41f,  0.58f,  0.00f,
-	0.00f,  0.00f, -8.70f,  1.00f
-}; // Column Major
-
-   // Eye(-5,-5,-5) Center(0,0,0) Up(0,1,0)
-const Matrix ViewMatrix2 = {
-	-0.70f, -0.41f, -0.58f,  0.00f,
-	0.00f,  0.82f, -0.58f,  0.00f,
-	0.70f, -0.41f, -0.58f,  0.00f,
-	0.00f,  0.00f, -8.70f,  1.00f
-}; // Column Major
-
-   // Orthographic LeftRight(-2,2) TopBottom(-2,2) NearFar(1,10)
-const Matrix ProjectionMatrix1 = {
-	0.50f,  0.00f,  0.00f,  0.00f,
-	0.00f,  0.50f,  0.00f,  0.00f,
-	0.00f,  0.00f, -0.22f,  0.00f,
-	0.00f,  0.00f, -1.22f,  1.00f
-}; // Column Major
-
-   // Perspective Fovy(30) Aspect(640/480) NearZ(1) FarZ(10)
-const Matrix ProjectionMatrix2 = {
-	2.79f,  0.00f,  0.00f,  0.00f,
-	0.00f,  3.73f,  0.00f,  0.00f,
-	0.00f,  0.00f, -1.22f, -1.00f,
-	0.00f,  0.00f, -2.22f,  0.00f
-}; // Column Major
 
 void drawScene() {
 	//uniform buffer - camera
-	glBindBuffer(GL_UNIFORM_BUFFER, VboId[1]);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Matrix), ViewMatrix2);
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix), sizeof(Matrix), ProjectionMatrix1);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	camera->draw();
 
 	//shader
 	shader->draw(ModelMatrix);
@@ -305,7 +274,7 @@ void init(int argc, char* argv[]) {
 
 	//new
 	createShaderProgramEngine();
-
+	createCamera();
 	setupCallbacks();
 }
 
