@@ -105,7 +105,7 @@ GLuint ShaderProgram::getUniformBlock(char* name) {
 void ShaderProgram::draw(Matrix4 ModelMatrix) {
 	useProgram();
 	//hammer
-	glUniformMatrix4fv(getUniform("ModelMatrix"), 1, GL_FALSE, ModelMatrix.m);
+	glUniformMatrix4fv(getUniform("ModelMatrix"), 1, GL_FALSE, ModelMatrix.get());
 
 	//will need to get all other uniforms
 

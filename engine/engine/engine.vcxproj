@@ -153,11 +153,14 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagerOpenGLErrors.cpp" />
+    <ClCompile Include="Matrices.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="IDrawable.h" />
     <ClInclude Include="ManagerOpenGLErrors.h" />

@@ -192,7 +192,6 @@ public:
 	friend Vector4 operator*(const Vector4& vec, const Matrix4& m); // pre-multiplication
 	friend std::ostream& operator<<(std::ostream& os, const Matrix4& m);
 
-	float m[16];
 protected:
 
 private:
@@ -201,6 +200,7 @@ private:
 		float m6, float m7, float m8);
 
 	float tm[16];                                       // transpose m
+	float m[16];
 
 	float getAt(int line, int column) {
 		return m[line * 4 + column];
