@@ -22,3 +22,4 @@
 /*
 * Managers
 */
+#include "ManagerOpenGLErrors.h"

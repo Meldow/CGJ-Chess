@@ -14,27 +14,6 @@ GLuint VertexShaderId, FragmentShaderId, ProgramId;
 GLint UboId, UniformId;
 const GLuint UBO_BP = 0;
 
-/////////////////////////////////////////////////////////////////////// ERRORS
-
-bool isOpenGLError() {
-	bool isError = false;
-	GLenum errCode;
-	const GLubyte *errString;
-	while ((errCode = glGetError()) != GL_NO_ERROR) {
-		isError = true;
-		errString = gluErrorString(errCode);
-		std::cerr << "OpenGL ERROR [" << errString << "]." << std::endl;
-	}
-	return isError;
-}
-
-void checkOpenGLError(std::string error) {
-	if (isOpenGLError()) {
-		std::cerr << error << std::endl;
-		exit(EXIT_FAILURE);
-	}
-}
-
 /////////////////////////////////////////////////////////////////////// SHADERs
 
 const GLchar* VertexShader =
@@ -93,7 +72,7 @@ void createShaderProgram() {
 	UboId = glGetUniformBlockIndex(ProgramId, "SharedMatrices");
 	glUniformBlockBinding(ProgramId, UboId, UBO_BP);
 
-	checkOpenGLError("ERROR: Could not create shaders.");
+	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create shaders.");
 }
 
 void destroyShaderProgram() {
@@ -105,7 +84,7 @@ void destroyShaderProgram() {
 	glDeleteShader(VertexShaderId);
 	glDeleteProgram(ProgramId);
 
-	checkOpenGLError("ERROR: Could not destroy shaders.");
+	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not destroy shaders.");
 }
 
 /////////////////////////////////////////////////////////////////////// VAOs & VBOs
@@ -183,7 +162,7 @@ void createBufferObjects() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
+	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create VAOs and VBOs.");
 }
 
 void destroyBufferObjects() {
@@ -196,7 +175,7 @@ void destroyBufferObjects() {
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 	glBindVertexArray(0);
 
-	checkOpenGLError("ERROR: Could not destroy VAOs and VBOs.");
+	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not destroy VAOs and VBOs.");
 }
 
 /////////////////////////////////////////////////////////////////////// SCENE
@@ -262,7 +241,7 @@ void drawScene() {
 	glUseProgram(0);
 	glBindVertexArray(0);
 
-	checkOpenGLError("ERROR: Could not draw scene.");
+	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not draw scene.");
 }
 
 /////////////////////////////////////////////////////////////////////// CALLBACKS
