@@ -16,6 +16,18 @@ const GLuint UBO_BP = 0;
 ShaderProgram* shader;
 Camera* camera;
 
+//TODO refactor
+// Mouse Tracking Variables
+int startX, startY, startZ = 0, tracking = 0;
+// Camera Spherical Coordinates
+float alpha = 0.0f, beta = 0.0f, phi = 0.0f;
+float xxx = -0.5f, yyy = -0.5f, zzz = -0.5f;
+float r = 10.0f;
+float alphaAux = 0.0f, betaAux = 0.0f, phiAux = 0.0f;
+bool gimbal_lock = true;
+Matrix4 rotationMatrix;
+Quaternion qBase;
+
 /////////////////////////////////////////////////////////////////////// SHADERs
 
 void createShaderProgramEngine() {
@@ -141,34 +153,25 @@ void destroyBufferObjects() {
 
 void createCamera() {
 	camera = new Camera();
-	camera->ViewMatrix = Matrix4(
-		-0.70f, -0.41f, -0.58f, 0.00f,
-		0.00f, 0.82f, -0.58f, 0.00f,
-		0.70f, -0.41f, -0.58f, 0.00f,
-		0.00f, 0.00f, -8.70f, 1.00f);
-	camera->PerspectiveProjectionMatrix = Matrix4(
-		0.50f, 0.00f, 0.00f, 0.00f,
-		0.00f, 0.50f, 0.00f, 0.00f,
-		0.00f, 0.00f, -0.22f, 0.00f,
-		0.00f, 0.00f, -1.22f, 1.00f);
 	camera->VboID = VboId[1];	//todo: carefull with this!!!
 }
 
 /////////////////////////////////////////////////////////////////////// SCENE
-const Matrix ModelMatrix = {
+const Matrix4 ModelMatrix = {
 	1.0f,  0.0f,  0.0f,  0.0f,
 	0.0f,  1.0f,  0.0f,  0.0f,
 	0.0f,  0.0f,  1.0f,  0.0f,
-	-0.5f, -0.5f, -0.5f,  1.0f
+	0.0f,  0.0f,  0.0f,  1.0f
 }; // Column Major
 
 
 void drawScene() {
 	//uniform buffer - camera
+	camera->ViewMatrix = Matrix4().translate(0.0f, 0.0f, -r) * rotationMatrix;
 	camera->draw();
 
 	//shader
-	shader->draw(ModelMatrix);
+	shader->draw(ModelMatrix * Matrix4().translate(-0.5f, -0.5f, -0.5f));
 
 	//mesh
 	glBindVertexArray(VaoId);
@@ -215,6 +218,80 @@ void timer(int value) {
 	glutTimerFunc(1000, timer, 0);
 }
 
+/////////////////////////////////////////////////////////////////////// KEYBOARD
+
+void processKeys(unsigned char key, int xx, int yy) {
+	switch (key) {
+	case 'p': case 'P':
+		camera->isOrtho = !camera->isOrtho;
+		std::cout << "KEYBOARD(P)::isOrtho::" << camera->isOrtho;
+		break;
+	}
+}
+
+/////////////////////////////////////////////////////////////////////// MOUSE
+
+void processMouseButtons(int button, int state, int xx, int yy) {
+	// start tracking the mouse
+	if (state == GLUT_DOWN) {
+		if (button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON) {
+			startX = xx;
+			startY = yy;
+			tracking = 1;
+		}
+	}
+
+	//stop tracking the mouse
+	else if (state == GLUT_UP) {
+		if (tracking == 1) {
+			alpha = alpha + (xx - startX);
+			beta = beta + (yy - startY);
+		}
+		tracking = 0;
+	}
+}
+
+// Track mouse motion while buttons are pressed
+void processMouseMotion(int xx, int yy) {
+	int deltaX = xx - startX;
+	int deltaY = yy - startY;
+
+	if (tracking == 1) {
+		alphaAux = (alpha + deltaX);
+		betaAux = (beta + deltaY);
+	}
+
+	if (gimbal_lock) {
+		Matrix4 deltaXRotation;
+		deltaXRotation = Matrix4().rotateY(alphaAux);
+		Matrix4 deltaYRotation;
+		deltaYRotation = Matrix4().rotateX(betaAux);
+		rotationMatrix = deltaXRotation * deltaYRotation;
+	} else {
+		Quaternion qDeltaX = Quaternion(alphaAux, Vector3(0.0f, 1.0f, 0.0f));
+		Quaternion qDeltaY = Quaternion(betaAux, Vector3(1.0f, 0.0f, 0.0f));
+		Quaternion qResult = qDeltaX * qDeltaY * qBase;
+		rotationMatrix = qResult.quaternionToMatrix();
+	}
+}
+
+//Mouse Wheel to rotate Camera on the Z-Axis
+void mouseWheel(int wheel, int direction, int x, int y) {
+
+	startZ += direction;
+	phiAux = startZ;
+	if (direction > 0)
+		phiAux = startZ * 0.1f;
+	else
+		phiAux = -startZ * 0.1f;
+
+	if (!gimbal_lock) {
+		Quaternion qDeltaZ = Quaternion(phiAux, Vector3(0.0f, 0.0f, 1.0f));
+		Quaternion qResult = qDeltaZ;
+		rotationMatrix = rotationMatrix * qResult.quaternionToMatrix();
+	}
+}
+
 /////////////////////////////////////////////////////////////////////// SETUP
 
 void setupCallbacks() {
@@ -236,6 +313,11 @@ void setupOpenGL() {
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
+
+	glutKeyboardFunc(processKeys);
+	glutMouseFunc(processMouseButtons);
+	glutMotionFunc(processMouseMotion);
+	glutMouseWheelFunc(mouseWheel);
 }
 
 void setupGLEW() {

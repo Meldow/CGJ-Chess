@@ -18,6 +18,7 @@
 */
 #include "Vectors.h"
 #include "Matrices.h"
+#include "Quaternion.h"
 #include "ShaderProgram.h"
 #include "Camera.h"
 

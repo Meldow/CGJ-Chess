@@ -157,6 +157,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagerOpenGLErrors.cpp" />
     <ClCompile Include="Matrices.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +166,7 @@
     <ClInclude Include="IDrawable.h" />
     <ClInclude Include="ManagerOpenGLErrors.h" />
     <ClInclude Include="Matrices.h" />
+    <ClInclude Include="Quaternion.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Vectors.h" />
