@@ -156,8 +156,11 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagerOpenGLErrors.cpp" />
+    <ClCompile Include="ManagerSceneGraph.cpp" />
     <ClCompile Include="Matrices.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="SceneGraph.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,8 +168,12 @@
     <ClInclude Include="engine.h" />
     <ClInclude Include="IDrawable.h" />
     <ClInclude Include="ManagerOpenGLErrors.h" />
+    <ClInclude Include="ManagerSceneGraph.h" />
     <ClInclude Include="Matrices.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="SceneGraph.h" />
+    <ClInclude Include="SceneNode.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Vectors.h" />

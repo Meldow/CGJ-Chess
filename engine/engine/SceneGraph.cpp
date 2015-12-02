@@ -1,0 +1,5 @@
+#pragma once
+#include "SceneGraph.h"
+
+SceneGraph::SceneGraph() {}
+SceneGraph::~SceneGraph() {}

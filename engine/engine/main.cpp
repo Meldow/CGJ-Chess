@@ -9,12 +9,11 @@ unsigned int FrameCount = 0;
 #define VERTICES 0
 #define COLORS 1
 
-GLuint VaoId, VboId[2];
-GLint UboId, UniformId;
-const GLuint UBO_BP = 0;
+GLuint VaoId, VboVertices, VboCamera = -1;
+GLint UboId, UniformId = -1;
 
 ShaderProgram* shader;
-Camera* camera;
+Mesh* mesh;
 
 //TODO refactor
 // Mouse Tracking Variables
@@ -24,25 +23,25 @@ float alpha = 0.0f, beta = 0.0f, phi = 0.0f;
 float xxx = -0.5f, yyy = -0.5f, zzz = -0.5f;
 float r = 10.0f;
 float alphaAux = 0.0f, betaAux = 0.0f, phiAux = 0.0f;
-bool gimbal_lock = true;
-Matrix4 rotationMatrix;
+bool gimbal_lock = false;
 Quaternion qBase;
 
 /////////////////////////////////////////////////////////////////////// SHADERs
 
-void createShaderProgramEngine() {
+void createShaderProgram() {
 	shader = new ShaderProgram();
 	shader->addShader(GL_VERTEX_SHADER, "C:/Users/Alex/Documents/Visual Studio 2015/Projects/CGJ-Chess/engine/resources/shaders/base/simple.vert");
 	shader->addShader(GL_FRAGMENT_SHADER, "C:/Users/Alex/Documents/Visual Studio 2015/Projects/CGJ-Chess/engine/resources/shaders/base/simple.frag");
 	shader->addAttribute("in_Position", VERTICES);
 	shader->addAttribute("in_Color", COLORS);
+
 	shader->link();
 	shader->addUniform("ModelMatrix");
 	shader->addUniformBlock("SharedMatrices", UBO_BP);
 	shader->create();
 
 	//todo
-	glUniformBlockBinding(shader->_programId, shader->getUniformBlock("ShaderMatrices"), UBO_BP);
+	//glUniformBlockBinding(shader->_programId, shader->getUniformBlock("ShaderMatrices"), UBO_BP);
 
 	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create shaders(new).");
 
@@ -56,106 +55,36 @@ void destroyShaderProgram() {
 	//glDeleteShader(FragmentShaderId);
 	//glDeleteShader(VertexShaderId);
 	//glDeleteProgram(ProgramId);
-
+	std::cout << "\nTrying to destroy ShaderProgram";
 	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not destroy shaders.");
 }
 
 /////////////////////////////////////////////////////////////////////// VAOs & VBOs
 
-typedef struct {
-	GLfloat XYZW[4];
-	GLfloat RGBA[4];
-} Vertex;
-
-typedef GLfloat Matrix[16];
-
-const Vertex Vertices[] =
+void createMesh()
 {
-	{ { 0.0f, 0.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.0f, 1.0f } }, // 0 - FRONT
-	{ { 1.0f, 0.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.0f, 1.0f } }, // 1
-	{ { 1.0f, 1.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.0f, 1.0f } }, // 2
-	{ { 1.0f, 1.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.0f, 1.0f } }, // 2  
-	{ { 0.0f, 1.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.0f, 1.0f } }, // 3
-	{ { 0.0f, 0.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.0f, 1.0f } }, // 0
+	mesh = new Mesh();
 
-	{ { 1.0f, 0.0f, 1.0f, 1.0f },{ 0.0f, 0.9f, 0.0f, 1.0f } }, // 1 - RIGHT
-	{ { 1.0f, 0.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.0f, 1.0f } }, // 5
-	{ { 1.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.0f, 1.0f } }, // 6
-	{ { 1.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.0f, 1.0f } }, // 6  
-	{ { 1.0f, 1.0f, 1.0f, 1.0f },{ 0.0f, 0.9f, 0.0f, 1.0f } }, // 2
-	{ { 1.0f, 0.0f, 1.0f, 1.0f },{ 0.0f, 0.9f, 0.0f, 1.0f } }, // 1
-
-	{ { 1.0f, 1.0f, 1.0f, 1.0f },{ 0.0f, 0.0f, 0.9f, 1.0f } }, // 2 - TOP
-	{ { 1.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.0f, 0.9f, 1.0f } }, // 6
-	{ { 0.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.0f, 0.9f, 1.0f } }, // 7
-	{ { 0.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.0f, 0.9f, 1.0f } }, // 7  
-	{ { 0.0f, 1.0f, 1.0f, 1.0f },{ 0.0f, 0.0f, 0.9f, 1.0f } }, // 3
-	{ { 1.0f, 1.0f, 1.0f, 1.0f },{ 0.0f, 0.0f, 0.9f, 1.0f } }, // 2
-
-	{ { 1.0f, 0.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.9f, 1.0f } }, // 5 - BACK
-	{ { 0.0f, 0.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.9f, 1.0f } }, // 4
-	{ { 0.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.9f, 1.0f } }, // 7
-	{ { 0.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.9f, 1.0f } }, // 7  
-	{ { 1.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.9f, 1.0f } }, // 6
-	{ { 1.0f, 0.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.9f, 1.0f } }, // 5
-
-	{ { 0.0f, 0.0f, 0.0f, 1.0f },{ 0.9f, 0.0f, 0.9f, 1.0f } }, // 4 - LEFT
-	{ { 0.0f, 0.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.9f, 1.0f } }, // 0
-	{ { 0.0f, 1.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.9f, 1.0f } }, // 3
-	{ { 0.0f, 1.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.9f, 1.0f } }, // 3  
-	{ { 0.0f, 1.0f, 0.0f, 1.0f },{ 0.9f, 0.0f, 0.9f, 1.0f } }, // 7
-	{ { 0.0f, 0.0f, 0.0f, 1.0f },{ 0.9f, 0.0f, 0.9f, 1.0f } }, // 4
-
-	{ { 0.0f, 0.0f, 1.0f, 1.0f },{ 0.9f, 0.9f, 0.0f, 1.0f } }, // 0 - BOTTOM
-	{ { 0.0f, 0.0f, 0.0f, 1.0f },{ 0.9f, 0.9f, 0.0f, 1.0f } }, // 4
-	{ { 1.0f, 0.0f, 0.0f, 1.0f },{ 0.9f, 0.9f, 0.0f, 1.0f } }, // 5
-	{ { 1.0f, 0.0f, 0.0f, 1.0f },{ 0.9f, 0.9f, 0.0f, 1.0f } }, // 5  
-	{ { 1.0f, 0.0f, 1.0f, 1.0f },{ 0.9f, 0.9f, 0.0f, 1.0f } }, // 1
-	{ { 0.0f, 0.0f, 1.0f, 1.0f },{ 0.9f, 0.9f, 0.0f, 1.0f } }  // 0
-};
-
-void createBufferObjects() {
-	glGenVertexArrays(1, &VaoId);
-	glBindVertexArray(VaoId);
-	{
-		glGenBuffers(2, VboId);
-
-		glBindBuffer(GL_ARRAY_BUFFER, VboId[0]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(VERTICES);
-		glVertexAttribPointer(VERTICES, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-		glEnableVertexAttribArray(COLORS);
-		glVertexAttribPointer(COLORS, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)sizeof(Vertices[0].XYZW));
-
-		glBindBuffer(GL_UNIFORM_BUFFER, VboId[1]);
-		glBufferData(GL_UNIFORM_BUFFER, sizeof(Matrix) * 2, 0, GL_STREAM_DRAW);
-		glBindBufferBase(GL_UNIFORM_BUFFER, UBO_BP, VboId[1]);
-	}
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create VAOs and VBOs.");
 }
 
 void destroyBufferObjects() {
-	glBindVertexArray(VaoId);
-	glDisableVertexAttribArray(VERTICES);
-	glDisableVertexAttribArray(COLORS);
-	glDeleteBuffers(2, VboId);
-	glDeleteVertexArrays(1, &VaoId);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-	glBindVertexArray(0);
-
+	//glBindVertexArray(VaoId);
+	//glDisableVertexAttribArray(VERTICES);
+	//glDisableVertexAttribArray(COLORS);
+	////glDeleteBuffers(2, VboId);
+	//glDeleteVertexArrays(1, &VaoId);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	//glBindVertexArray(0);
+	std::cout << "\nTrying to destroy BufferObjects";
 	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not destroy VAOs and VBOs.");
 }
 
-void createCamera() {
-	camera = new Camera();
-	camera->VboID = VboId[1];	//todo: carefull with this!!!
+void createSceneGraph()
+{
+	ManagerSceneGraph::instance()->addSceneGraph("main", new SceneGraph());
+	ManagerSceneGraph::instance()->getSceneGraph("main")->camera = new Camera();
 }
-
 /////////////////////////////////////////////////////////////////////// SCENE
 const Matrix4 ModelMatrix = {
 	1.0f,  0.0f,  0.0f,  0.0f,
@@ -166,16 +95,14 @@ const Matrix4 ModelMatrix = {
 
 
 void drawScene() {
-	//uniform buffer - camera
-	camera->ViewMatrix = Matrix4().translate(0.0f, 0.0f, -r) * rotationMatrix;
-	camera->draw();
+	Camera* camera = ManagerSceneGraph::instance()->getSceneGraph("main")->camera;
+
+	//uniform buffer - camera send to camera draw
 
 	//shader
 	shader->draw(ModelMatrix * Matrix4().translate(-0.5f, -0.5f, -0.5f));
 
-	//mesh
-	glBindVertexArray(VaoId);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
+	mesh->draw();
 
 	//reset scene
 	glUseProgram(0);
@@ -200,6 +127,10 @@ void display() {
 
 void idle() {
 	glutPostRedisplay();
+	
+	Camera* camera = ManagerSceneGraph::instance()->getSceneGraph("main")->camera;
+	camera->update();
+
 }
 
 void reshape(int w, int h) {
@@ -223,6 +154,7 @@ void timer(int value) {
 void processKeys(unsigned char key, int xx, int yy) {
 	switch (key) {
 	case 'p': case 'P':
+		Camera* camera = ManagerSceneGraph::instance()->getSceneGraph("main")->camera; 
 		camera->isOrtho = !camera->isOrtho;
 		std::cout << "KEYBOARD(P)::isOrtho::" << camera->isOrtho;
 		break;
@@ -266,12 +198,13 @@ void processMouseMotion(int xx, int yy) {
 		deltaXRotation = Matrix4().rotateY(alphaAux);
 		Matrix4 deltaYRotation;
 		deltaYRotation = Matrix4().rotateX(betaAux);
-		rotationMatrix = deltaXRotation * deltaYRotation;
+		ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix = deltaXRotation * deltaYRotation;
 	} else {
 		Quaternion qDeltaX = Quaternion(alphaAux, Vector3(0.0f, 1.0f, 0.0f));
 		Quaternion qDeltaY = Quaternion(betaAux, Vector3(1.0f, 0.0f, 0.0f));
 		Quaternion qResult = qDeltaX * qDeltaY * qBase;
-		rotationMatrix = qResult.quaternionToMatrix();
+		
+		ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix = qResult.quaternionToMatrix();
 	}
 }
 
@@ -288,7 +221,8 @@ void mouseWheel(int wheel, int direction, int x, int y) {
 	if (!gimbal_lock) {
 		Quaternion qDeltaZ = Quaternion(phiAux, Vector3(0.0f, 0.0f, 1.0f));
 		Quaternion qResult = qDeltaZ;
-		rotationMatrix = rotationMatrix * qResult.quaternionToMatrix();
+		
+		ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix *= qResult.quaternionToMatrix();
 	}
 }
 
@@ -352,11 +286,10 @@ void init(int argc, char* argv[]) {
 	setupGLUT(argc, argv);
 	setupGLEW();
 	setupOpenGL();
-	createBufferObjects();
-
-	//new
-	createShaderProgramEngine();
-	createCamera();
+	
+	createMesh();
+	createShaderProgram();
+	createSceneGraph();
 	setupCallbacks();
 }
 

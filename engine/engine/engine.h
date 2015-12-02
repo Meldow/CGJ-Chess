@@ -21,9 +21,11 @@
 #include "Quaternion.h"
 #include "ShaderProgram.h"
 #include "Camera.h"
-
+#include "Mesh.h"
+#include "SceneGraph.h"
 
 /*
 * Managers
 */
 #include "ManagerOpenGLErrors.h"
+#include "ManagerSceneGraph.h"

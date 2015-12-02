@@ -31,7 +31,6 @@ Matrix4 Camera::Perspective(float fov, float aspect, float mNear, float mFar) {
 	res.m[11] = -1.0f;
 	res.m[14] = (2.0f * mFar * mNear) / (mNear - mFar);
 	res.m[15] = 0.0f;
-	std::cout << "\nres::\n" << res;
 	return res;
 }
 
@@ -39,19 +38,6 @@ Matrix4 Camera::Perspective(float fov, float width, float height, float mNear, f
 	return Perspective(fov, width / height, mNear, mFar);
 }
 
-void Camera::draw() {
-	if (isDebug) {
-		std::cout << "\nViewMatrix\n" << ViewMatrix;
-		if (isOrtho) std::cout << "\nOrthoProjectionMatrix\n" << OrthoProjectionMatrix;
-		else std::cout << "\nPerspectiveProjectionMatrix\n" << PerspectiveProjectionMatrix;
-	}
-
-	glBindBuffer(GL_UNIFORM_BUFFER, VboID);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(ViewMatrix.m), ViewMatrix.m);
-	if(isOrtho)
-		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(ViewMatrix.m), sizeof(OrthoProjectionMatrix.m), OrthoProjectionMatrix.m);
-	else
-		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(ViewMatrix.m), sizeof(PerspectiveProjectionMatrix.m), PerspectiveProjectionMatrix.m);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not draw camera.");
+void Camera::update() {
+	ViewMatrix = Matrix4().translate(0.0f, 0.0f, -Distance) * RotationMatrix;
 }

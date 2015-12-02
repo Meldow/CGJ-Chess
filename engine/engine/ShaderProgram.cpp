@@ -44,6 +44,7 @@ void ShaderProgram::addShader(GLenum type, std::string shader) {
 
 void ShaderProgram::addAttribute(const char* name, int index) {
 	glBindAttribLocation(_programId, index, name);
+	_attributesId.insert(std::pair<const char*, GLint>(name, -1));
 }
 
 void ShaderProgram::link() {
@@ -69,6 +70,13 @@ void ShaderProgram::addUniformBlock(const char* name, GLuint UBO_BP) {
 }
 
 void ShaderProgram::create() {
+	for (_attributesIdIterator = _attributesId.begin(); _attributesIdIterator != _attributesId.end(); ++_attributesIdIterator) {
+		_attributesId[_attributesIdIterator->first] = glGetAttribLocation(_programId, _attributesIdIterator->first);
+
+		if (_attributesIdIterator->second == -1) {
+			std::cout << "\nWarning :: Cannot find attribute :: " << _attributesIdIterator->first;
+		}
+	}
 	for (_uniformsIdIterator = _uniformsId.begin(); _uniformsIdIterator != _uniformsId.end(); ++_uniformsIdIterator) {
 		_uniformsId[_uniformsIdIterator->first] = glGetUniformLocation(_programId, _uniformsIdIterator->first);
 
@@ -87,11 +95,15 @@ void ShaderProgram::create() {
 
 	//Camera* camera = SceneManager::instance()->_activeCamera;
 	//if (camera)
-	//	glUniformBlockBinding(_pId, camera->UboId, camera->UBO_BP);
+	//glUniformBlockBinding(_pId, camera->UboId, camera->UBO_BP);
 }
 
 void ShaderProgram::useProgram() {
 	glUseProgram(_programId);
+}
+
+GLuint ShaderProgram::getAttribute(char* name) {
+	return _attributesId[name];
 }
 
 GLuint ShaderProgram::getUniform(char* name) {

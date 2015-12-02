@@ -8,8 +8,10 @@ public:
 	Matrix4 ViewMatrix;
 	Matrix4 OrthoProjectionMatrix;
 	Matrix4 PerspectiveProjectionMatrix;
-	float Distance = -5.0f;
+	Matrix4 RotationMatrix;
+	float Distance = 10.0f;
 	bool isOrtho = false;
+	
 	GLint VboID;
 
 	bool isDebug = false;
@@ -21,5 +23,5 @@ public:
 	Matrix4 Perspective(float fov, float aspect, float mNear, float mFar);
 	Matrix4 Perspective(float fov, float width, float height, float mNear, float mFar);
 
-	void draw();
+	void update();
 };
