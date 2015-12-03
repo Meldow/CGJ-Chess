@@ -82,8 +82,12 @@ void destroyBufferObjects() {
 
 void createSceneGraph()
 {
-	ManagerSceneGraph::instance()->addSceneGraph("main", new SceneGraph());
+	SceneGraph* sceneGraph = new SceneGraph();
+	ManagerSceneGraph::instance()->addSceneGraph("main", sceneGraph);
 	ManagerSceneGraph::instance()->getSceneGraph("main")->camera = new Camera();
+
+	SceneNode* mainNode = new SceneNode();
+	sceneGraph->addSceneNode("mainNode", mainNode);
 }
 /////////////////////////////////////////////////////////////////////// SCENE
 const Matrix4 ModelMatrix = {
@@ -101,8 +105,9 @@ void drawScene() {
 
 	//shader
 	shader->draw(ModelMatrix * Matrix4().translate(-0.5f, -0.5f, -0.5f));
-
 	mesh->draw();
+
+	ManagerSceneGraph::instance()->getSceneGraph("main")->draw();
 
 	//reset scene
 	glUseProgram(0);

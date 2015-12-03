@@ -23,6 +23,7 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "SceneGraph.h"
+#include "SceneNode.h"
 
 /*
 * Managers

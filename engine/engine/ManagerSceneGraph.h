@@ -9,13 +9,13 @@ class ManagerSceneGraph {
 	SINGLETON_HEADER(ManagerSceneGraph)
 public:
 	char* name;
-	std::map<const char*, SceneGraph*> sceneGraphs;		//contains ids of all uniforms
+	std::map<char*, SceneGraph*> sceneGraphs;		//contains ids of all uniforms
 
-	void addSceneGraph(const char* name, SceneGraph* scene_graph);
+	void addSceneGraph(char* name, SceneGraph* scene_graph);
 	SceneGraph* getSceneGraph(char* name);
 
 private:
-	std::map<const char*, GLint>::iterator _sceneGraphsIterator;
+	std::map<char*, GLint>::iterator _sceneGraphsIterator;
 
 };
 
