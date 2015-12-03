@@ -1,13 +1,10 @@
 #include "engine.h"
 
-#define CAPTION "Hello New World"
+#define CAPTION "CGJ - Chess"
 
 int WinX = 640, WinY = 480;
 int WindowHandle = 0;
 unsigned int FrameCount = 0;
-
-#define VERTICES 0
-#define COLORS 1
 
 GLuint VaoId, VboVertices, VboCamera = -1;
 GLint UboId, UniformId = -1;
@@ -32,8 +29,8 @@ void createShaderProgram() {
 	shader = new ShaderProgram();
 	shader->addShader(GL_VERTEX_SHADER, "C:/Users/Alex/Documents/Visual Studio 2015/Projects/CGJ-Chess/engine/resources/shaders/base/simple.vert");
 	shader->addShader(GL_FRAGMENT_SHADER, "C:/Users/Alex/Documents/Visual Studio 2015/Projects/CGJ-Chess/engine/resources/shaders/base/simple.frag");
-	shader->addAttribute("in_Position", VERTICES);
-	shader->addAttribute("in_Color", COLORS);
+	shader->addAttribute("in_Position", Mesh::VERTICES);
+	shader->addAttribute("in_Color", Mesh::COLORS);
 
 	shader->link();
 	shader->addUniform("ModelMatrix");
@@ -48,71 +45,34 @@ void createShaderProgram() {
 };
 
 void destroyShaderProgram() {
-	//glUseProgram(0);
-	//glDetachShader(ProgramId, VertexShaderId);
-	//glDetachShader(ProgramId, FragmentShaderId);
-
-	//glDeleteShader(FragmentShaderId);
-	//glDeleteShader(VertexShaderId);
-	//glDeleteProgram(ProgramId);
 	std::cout << "\nTrying to destroy ShaderProgram";
 	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not destroy shaders.");
 }
 
 /////////////////////////////////////////////////////////////////////// VAOs & VBOs
 
-void createMesh()
-{
+void createMesh() {
 	mesh = new Mesh();
-
 }
 
 void destroyBufferObjects() {
-	//glBindVertexArray(VaoId);
-	//glDisableVertexAttribArray(VERTICES);
-	//glDisableVertexAttribArray(COLORS);
-	////glDeleteBuffers(2, VboId);
-	//glDeleteVertexArrays(1, &VaoId);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glBindBuffer(GL_UNIFORM_BUFFER, 0);
-	//glBindVertexArray(0);
 	std::cout << "\nTrying to destroy BufferObjects";
-	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not destroy VAOs and VBOs.");
 }
 
-void createSceneGraph()
-{
+void createSceneGraph() {
 	SceneGraph* sceneGraph = new SceneGraph();
 	ManagerSceneGraph::instance()->addSceneGraph("main", sceneGraph);
 	ManagerSceneGraph::instance()->getSceneGraph("main")->camera = new Camera();
 
 	SceneNode* mainNode = new SceneNode();
 	sceneGraph->addSceneNode("mainNode", mainNode);
+	mainNode->mesh = mesh;
+	mainNode->shaderProgram = shader;
 }
 /////////////////////////////////////////////////////////////////////// SCENE
-const Matrix4 ModelMatrix = {
-	1.0f,  0.0f,  0.0f,  0.0f,
-	0.0f,  1.0f,  0.0f,  0.0f,
-	0.0f,  0.0f,  1.0f,  0.0f,
-	0.0f,  0.0f,  0.0f,  1.0f
-}; // Column Major
-
 
 void drawScene() {
-	Camera* camera = ManagerSceneGraph::instance()->getSceneGraph("main")->camera;
-
-	//uniform buffer - camera send to camera draw
-
-	//shader
-	shader->draw(ModelMatrix * Matrix4().translate(-0.5f, -0.5f, -0.5f));
-	mesh->draw();
-
 	ManagerSceneGraph::instance()->getSceneGraph("main")->draw();
-
-	//reset scene
-	glUseProgram(0);
-	glBindVertexArray(0);
-
 	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not draw scene.");
 }
 
@@ -130,9 +90,9 @@ void display() {
 	glutSwapBuffers();
 }
 
-void idle() {
+void update() {
 	glutPostRedisplay();
-	
+
 	Camera* camera = ManagerSceneGraph::instance()->getSceneGraph("main")->camera;
 	camera->update();
 
@@ -159,7 +119,7 @@ void timer(int value) {
 void processKeys(unsigned char key, int xx, int yy) {
 	switch (key) {
 	case 'p': case 'P':
-		Camera* camera = ManagerSceneGraph::instance()->getSceneGraph("main")->camera; 
+		Camera* camera = ManagerSceneGraph::instance()->getSceneGraph("main")->camera;
 		camera->isOrtho = !camera->isOrtho;
 		std::cout << "KEYBOARD(P)::isOrtho::" << camera->isOrtho;
 		break;
@@ -208,26 +168,18 @@ void processMouseMotion(int xx, int yy) {
 		Quaternion qDeltaX = Quaternion(alphaAux, Vector3(0.0f, 1.0f, 0.0f));
 		Quaternion qDeltaY = Quaternion(betaAux, Vector3(1.0f, 0.0f, 0.0f));
 		Quaternion qResult = qDeltaX * qDeltaY * qBase;
-		
 		ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix = qResult.quaternionToMatrix();
 	}
 }
 
 //Mouse Wheel to rotate Camera on the Z-Axis
 void mouseWheel(int wheel, int direction, int x, int y) {
-
-	startZ += direction;
-	phiAux = startZ;
-	if (direction > 0)
-		phiAux = startZ * 0.1f;
-	else
-		phiAux = -startZ * 0.1f;
-
-	if (!gimbal_lock) {
-		Quaternion qDeltaZ = Quaternion(phiAux, Vector3(0.0f, 0.0f, 1.0f));
-		Quaternion qResult = qDeltaZ;
-		
-		ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix *= qResult.quaternionToMatrix();
+	//std::cout << "\nwheel::" << wheel << " | direction::" << direction << " | x::" << x << " | y::" << y;
+	if (direction == -1) {
+		ManagerSceneGraph::instance()->getSceneGraph("main")->camera->Distance += 1;
+	}
+	if (direction == 1) {
+		ManagerSceneGraph::instance()->getSceneGraph("main")->camera->Distance -= 1;
 	}
 }
 
@@ -236,7 +188,7 @@ void mouseWheel(int wheel, int direction, int x, int y) {
 void setupCallbacks() {
 	glutCloseFunc(cleanup);
 	glutDisplayFunc(display);
-	glutIdleFunc(idle);
+	glutIdleFunc(update);
 	glutReshapeFunc(reshape);
 	glutTimerFunc(0, timer, 0);
 }
@@ -288,10 +240,11 @@ void setupGLUT(int argc, char* argv[]) {
 }
 
 void init(int argc, char* argv[]) {
+	new WelcomeScreen();
 	setupGLUT(argc, argv);
 	setupGLEW();
 	setupOpenGL();
-	
+
 	createMesh();
 	createShaderProgram();
 	createSceneGraph();

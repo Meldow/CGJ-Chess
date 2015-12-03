@@ -16,6 +16,7 @@
 /*
 * OpenGL General
 */
+#include "WelcomeScreen.h"
 #include "Vectors.h"
 #include "Matrices.h"
 #include "Quaternion.h"

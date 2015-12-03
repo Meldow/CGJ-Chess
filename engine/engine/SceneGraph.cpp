@@ -17,7 +17,7 @@ SceneNode* SceneGraph::getSceneNode(char* name) {
 
 void SceneGraph::draw() {
 	if (isDebug) std::cout << "\nDrawaing SceneGraph::name::" << name;
-	
+
 	for (_sceneNodesIterator = sceneNodes.begin(); _sceneNodesIterator != sceneNodes.end(); ++_sceneNodesIterator) {
 		_sceneNodesIterator->second->draw();
 	}

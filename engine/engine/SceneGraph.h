@@ -8,7 +8,7 @@ public:
 	Camera* camera;
 	char* name;
 
-	bool isDebug = true;
+	bool isDebug = false;
 
 	SceneGraph();
 	~SceneGraph();

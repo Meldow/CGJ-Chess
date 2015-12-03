@@ -178,6 +178,7 @@
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Vectors.h" />
+    <ClInclude Include="WelcomeScreen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,7 @@
 #pragma once
 #include "SceneNode.h"
+#include "ShaderProgram.h"
+#include "Mesh.h"
 
 SceneNode::SceneNode() {}
 
@@ -18,7 +20,12 @@ SceneNode* SceneNode::getSceneNode(char* name) {
 
 void SceneNode::draw() {
 	if (isDebug) std::cout << "\nDrawaing SceneNode::name::" << name;
-	
+
+	if (shaderProgram) {
+		shaderProgram->draw(modelMatrix * Matrix4().translate(-0.5f, -0.5f, -0.5f));
+		mesh->draw();
+	}
+
 	for (_sceneNodesIterator = sceneNodes.begin(); _sceneNodesIterator != sceneNodes.end(); ++_sceneNodesIterator) {
 		_sceneNodesIterator->second->draw();
 	}

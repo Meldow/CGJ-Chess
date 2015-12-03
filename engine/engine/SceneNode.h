@@ -15,7 +15,7 @@ public:
 	Mesh* mesh;
 	char* name;
 
-	bool isDebug = true;
+	bool isDebug = false;
 
 	SceneNode();
 	~SceneNode();
