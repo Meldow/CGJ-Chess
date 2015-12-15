@@ -40,6 +40,9 @@ void createShaderProgram() {
 	//todo
 	//glUniformBlockBinding(shader->_programId, shader->getUniformBlock("ShaderMatrices"), UBO_BP);
 
+	ManagerShader::instance()->add("shader1", shader);
+	ManagerShader::instance()->flushManagerMesh();
+
 	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create shaders(new).");
 
 };
@@ -53,6 +56,18 @@ void destroyShaderProgram() {
 
 void createMesh() {
 	mesh = new Mesh();
+	ManagerMesh::instance()->add("mesh1", mesh);
+	ManagerMesh::instance()->add("mesh2", mesh);
+	ManagerMesh::instance()->add("mesh3", mesh);
+	ManagerMesh::instance()->add("mesh4", mesh);
+	ManagerMesh::instance()->add("mesh5", mesh);
+	ManagerMesh::instance()->flushManagerMesh();
+	
+	Material* mat = new Material();
+	Material* mat2 = new Material();
+	ManagerMaterial::instance()->add("material1", mat);
+	ManagerMaterial::instance()->add("material2", mat2);
+	ManagerMaterial::instance()->flushManagerMesh();
 }
 
 void destroyBufferObjects() {

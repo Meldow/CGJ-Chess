@@ -18,6 +18,14 @@ SceneNode* SceneNode::getSceneNode(char* name) {
 	return sceneNodes[name];
 }
 
+/*
+void update() {
+	//update boxcollider position (with transform)
+
+}
+
+*/
+
 void SceneNode::draw() {
 	if (isDebug) std::cout << "\nDrawaing SceneNode::name::" << name;
 

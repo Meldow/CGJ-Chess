@@ -4,7 +4,6 @@
 #include <map>
 
 class SceneGraph;
-
 class ManagerSceneGraph {
 	SINGLETON_HEADER(ManagerSceneGraph)
 public:

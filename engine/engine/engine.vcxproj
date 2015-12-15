@@ -155,8 +155,11 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ManagerMaterial.cpp" />
+    <ClCompile Include="ManagerMesh.cpp" />
     <ClCompile Include="ManagerOpenGLErrors.cpp" />
     <ClCompile Include="ManagerSceneGraph.cpp" />
+    <ClCompile Include="ManagerShader.cpp" />
     <ClCompile Include="Matrices.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Quaternion.cpp" />
@@ -168,8 +171,12 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="IDrawable.h" />
+    <ClInclude Include="ManagerMaterial.h" />
+    <ClInclude Include="ManagerMesh.h" />
     <ClInclude Include="ManagerOpenGLErrors.h" />
     <ClInclude Include="ManagerSceneGraph.h" />
+    <ClInclude Include="ManagerShader.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Matrices.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Quaternion.h" />

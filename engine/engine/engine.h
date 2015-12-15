@@ -25,9 +25,13 @@
 #include "Mesh.h"
 #include "SceneGraph.h"
 #include "SceneNode.h"
+#include "Material.h"
 
 /*
 * Managers
 */
 #include "ManagerOpenGLErrors.h"
 #include "ManagerSceneGraph.h"
+#include "ManagerMesh.h"
+#include "ManagerMaterial.h"
+#include "ManagerShader.h"
