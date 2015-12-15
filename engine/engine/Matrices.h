@@ -14,6 +14,8 @@
 
 #include "Vectors.h"
 #include <iomanip>
+#include <iostream>
+#include <string>
 #include "Dependencies/glew/glew.h"
 #define M_PI       3.14159265358979323846f
 
@@ -193,6 +195,8 @@ public:
 	friend Vector3 operator*(const Vector3& vec, const Matrix4& m); // pre-multiplication
 	friend Vector4 operator*(const Vector4& vec, const Matrix4& m); // pre-multiplication
 	friend std::ostream& operator<<(std::ostream& os, const Matrix4& m);
+
+	std::string toString();
 
 	float m[16];
 protected:

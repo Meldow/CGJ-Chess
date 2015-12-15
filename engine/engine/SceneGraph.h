@@ -8,14 +8,14 @@ public:
 	Camera* camera;
 	char* name;
 
-	bool isDebug = true;
+	bool isDebug = false;
 
 	SceneGraph();
 	~SceneGraph();
 
 	void addSceneNode(char* name, SceneNode* scene_node);
 	SceneNode* getSceneNode(char* name);
-	
+
 	void update();
 	void draw();
 private:

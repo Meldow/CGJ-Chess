@@ -1,112 +1,156 @@
-#pragma once
 #include "Mesh.h"
-#include "Matrices.h"
-#include "ManagerOpenGLErrors.h"
-#include "ManagerSceneGraph.h"
-#include "SceneGraph.h"
 
-typedef struct {
-	GLfloat XYZW[4];
-	GLfloat RGBA[4];
-} Vertex;
+GLuint VaoId;
+GLuint VboVertices, VboTexcoords, VboNormals;
 
-typedef GLfloat Matrix[16];
-
-const Vertex Vertices[] =
-{
-	{ { 0.0f, 0.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.0f, 1.0f } }, // 0 - FRONT
-	{ { 1.0f, 0.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.0f, 1.0f } }, // 1
-	{ { 1.0f, 1.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.0f, 1.0f } }, // 2
-	{ { 1.0f, 1.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.0f, 1.0f } }, // 2  
-	{ { 0.0f, 1.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.0f, 1.0f } }, // 3
-	{ { 0.0f, 0.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.0f, 1.0f } }, // 0
-
-	{ { 1.0f, 0.0f, 1.0f, 1.0f },{ 0.0f, 0.9f, 0.0f, 1.0f } }, // 1 - RIGHT
-	{ { 1.0f, 0.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.0f, 1.0f } }, // 5
-	{ { 1.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.0f, 1.0f } }, // 6
-	{ { 1.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.0f, 1.0f } }, // 6  
-	{ { 1.0f, 1.0f, 1.0f, 1.0f },{ 0.0f, 0.9f, 0.0f, 1.0f } }, // 2
-	{ { 1.0f, 0.0f, 1.0f, 1.0f },{ 0.0f, 0.9f, 0.0f, 1.0f } }, // 1
-
-	{ { 1.0f, 1.0f, 1.0f, 1.0f },{ 0.0f, 0.0f, 0.9f, 1.0f } }, // 2 - TOP
-	{ { 1.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.0f, 0.9f, 1.0f } }, // 6
-	{ { 0.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.0f, 0.9f, 1.0f } }, // 7
-	{ { 0.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.0f, 0.9f, 1.0f } }, // 7  
-	{ { 0.0f, 1.0f, 1.0f, 1.0f },{ 0.0f, 0.0f, 0.9f, 1.0f } }, // 3
-	{ { 1.0f, 1.0f, 1.0f, 1.0f },{ 0.0f, 0.0f, 0.9f, 1.0f } }, // 2
-
-	{ { 1.0f, 0.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.9f, 1.0f } }, // 5 - BACK
-	{ { 0.0f, 0.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.9f, 1.0f } }, // 4
-	{ { 0.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.9f, 1.0f } }, // 7
-	{ { 0.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.9f, 1.0f } }, // 7  
-	{ { 1.0f, 1.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.9f, 1.0f } }, // 6
-	{ { 1.0f, 0.0f, 0.0f, 1.0f },{ 0.0f, 0.9f, 0.9f, 1.0f } }, // 5
-
-	{ { 0.0f, 0.0f, 0.0f, 1.0f },{ 0.9f, 0.0f, 0.9f, 1.0f } }, // 4 - LEFT
-	{ { 0.0f, 0.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.9f, 1.0f } }, // 0
-	{ { 0.0f, 1.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.9f, 1.0f } }, // 3
-	{ { 0.0f, 1.0f, 1.0f, 1.0f },{ 0.9f, 0.0f, 0.9f, 1.0f } }, // 3  
-	{ { 0.0f, 1.0f, 0.0f, 1.0f },{ 0.9f, 0.0f, 0.9f, 1.0f } }, // 7
-	{ { 0.0f, 0.0f, 0.0f, 1.0f },{ 0.9f, 0.0f, 0.9f, 1.0f } }, // 4
-
-	{ { 0.0f, 0.0f, 1.0f, 1.0f },{ 0.9f, 0.9f, 0.0f, 1.0f } }, // 0 - BOTTOM
-	{ { 0.0f, 0.0f, 0.0f, 1.0f },{ 0.9f, 0.9f, 0.0f, 1.0f } }, // 4
-	{ { 1.0f, 0.0f, 0.0f, 1.0f },{ 0.9f, 0.9f, 0.0f, 1.0f } }, // 5
-	{ { 1.0f, 0.0f, 0.0f, 1.0f },{ 0.9f, 0.9f, 0.0f, 1.0f } }, // 5  
-	{ { 1.0f, 0.0f, 1.0f, 1.0f },{ 0.9f, 0.9f, 0.0f, 1.0f } }, // 1
-	{ { 0.0f, 0.0f, 1.0f, 1.0f },{ 0.9f, 0.9f, 0.0f, 1.0f } }  // 0
-};
-
-Mesh::Mesh() {
+Mesh::Mesh(std::string& filename) {
+	createMesh(filename);
 	createBufferObjects();
 }
 
-Mesh::~Mesh() {}
+void Mesh::parseVertex(std::stringstream& sin)
+{
+	Vertex v;
+	sin >> v.x >> v.y >> v.z;
+	vertexData.push_back(v);
+}
 
-void Mesh::createBufferObjects() {
+void Mesh::parseTexcoord(std::stringstream& sin)
+{
+	Texcoord t;
+	sin >> t.u >> t.v;
+	texcoordData.push_back(t);
+}
+
+void Mesh::parseNormal(std::stringstream& sin)
+{
+	Normal n;
+	sin >> n.nx >> n.ny >> n.nz;
+	normalData.push_back(n);
+}
+
+void Mesh::parseFace(std::stringstream& sin)
+{
+	std::string token;
+	for (int i = 0; i < 3; i++) {
+		std::getline(sin, token, '/');
+		if (token.size() > 0) vertexIdx.push_back(std::stoi(token));
+		std::getline(sin, token, '/');
+		if (token.size() > 0) texcoordIdx.push_back(std::stoi(token));
+		std::getline(sin, token, ' ');
+		if (token.size() > 0) normalIdx.push_back(std::stoi(token));
+	}
+}
+
+void Mesh::parseLine(std::stringstream& sin)
+{
+	std::string s;
+	sin >> s;
+	if (s.compare("v") == 0) parseVertex(sin);
+	else if (s.compare("vt") == 0) parseTexcoord(sin);
+	else if (s.compare("vn") == 0) parseNormal(sin);
+	else if (s.compare("f") == 0) parseFace(sin);
+}
+
+void Mesh::loadMeshData(std::string& filename)
+{
+	std::ifstream ifile(filename);
+	while (ifile.good()) {
+		std::string line;
+		std::getline(ifile, line);
+		parseLine(std::stringstream(line));
+	}
+	texCoordsLoaded = (texcoordIdx.size() > 0);
+	normalsLoaded = (normalIdx.size() > 0);
+}
+
+void Mesh::processMeshData()
+{
+	for (unsigned int i = 0; i < vertexIdx.size(); i++) {
+		unsigned int vi = vertexIdx[i];
+		Vertex v = vertexData[vi - 1];
+		vertices.push_back(v);
+		if (texCoordsLoaded) {
+			unsigned int ti = texcoordIdx[i];
+			Texcoord t = texcoordData[ti - 1];
+			texCoords.push_back(t);
+		}
+		if (normalsLoaded) {
+			unsigned int ni = normalIdx[i];
+			Normal n = normalData[ni - 1];
+			normals.push_back(n);
+		}
+	}
+}
+
+void Mesh::freeMeshData()
+{
+	vertexData.clear();
+	texcoordData.clear();
+	normalData.clear();
+	vertexIdx.clear();
+	texcoordIdx.clear();
+	normalIdx.clear();
+}
+
+const void Mesh::createMesh(std::string& filename)
+{
+	loadMeshData(filename);
+	processMeshData();
+	freeMeshData();
+}
+
+void Mesh::createBufferObjects()
+{
 	glGenVertexArrays(1, &VaoId);
 	glBindVertexArray(VaoId);
 	{
 		glGenBuffers(1, &VboVertices);
 		glBindBuffer(GL_ARRAY_BUFFER, VboVertices);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(VERTICES);
-		glVertexAttribPointer(VERTICES, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-		glEnableVertexAttribArray(COLORS);
-		glVertexAttribPointer(COLORS, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)sizeof(Vertices[0].XYZW));
-
-		glGenBuffers(1, &VboCamera);
-		glBindBuffer(GL_UNIFORM_BUFFER, VboCamera);
-		glBufferData(GL_UNIFORM_BUFFER, sizeof(Matrix4().m) * 2, 0, GL_STREAM_DRAW);
-		glBindBufferBase(GL_UNIFORM_BUFFER, UBO_BP, VboCamera);
+		glVertexAttribPointer(VERTICES, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 	}
-
+	if (texCoordsLoaded)
+	{
+		glGenBuffers(1, &VboTexcoords);
+		glBindBuffer(GL_ARRAY_BUFFER, VboTexcoords);
+		glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(Texcoord), &texCoords[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(TEXCOORDS);
+		glVertexAttribPointer(TEXCOORDS, 2, GL_FLOAT, GL_FALSE, sizeof(Texcoord), 0);
+	}
+	if (normalsLoaded)
+	{
+		glGenBuffers(1, &VboNormals);
+		glBindBuffer(GL_ARRAY_BUFFER, VboNormals);
+		glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(Normal), &normals[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(NORMALS);
+		glVertexAttribPointer(NORMALS, 3, GL_FLOAT, GL_FALSE, sizeof(Normal), 0);
+	}
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create VAOs and VBOs.");
 }
 
-void Mesh::draw() {
-	Camera* camera = ManagerSceneGraph::instance()->getSceneGraph("main")->camera;
-
-	//camera--mesh
-	glBindBuffer(GL_UNIFORM_BUFFER, VboCamera);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(camera->ViewMatrix.m), camera->ViewMatrix.m);
-	if (camera->isOrtho)
-		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(camera->ViewMatrix.m), sizeof(camera->OrthoProjectionMatrix.m), camera->OrthoProjectionMatrix.m);
-	else
-		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(camera->ViewMatrix.m), sizeof(camera->PerspectiveProjectionMatrix.m), camera->PerspectiveProjectionMatrix.m);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not draw camera.");
-
-	//mesh
+void Mesh::destroyBufferObjects()
+{
 	glBindVertexArray(VaoId);
-	//glUniform4f(shader->getAttribute("in_Color"), 1.0f, 0.0f, 0.0f, 1.0f);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-
-	//reset scene
-	glUseProgram(0);
+	glDisableVertexAttribArray(VERTICES);
+	glDisableVertexAttribArray(TEXCOORDS);
+	glDisableVertexAttribArray(NORMALS);
+	glDeleteBuffers(1, &VboVertices);
+	glDeleteBuffers(1, &VboTexcoords);
+	glDeleteBuffers(1, &VboNormals);
+	glDeleteVertexArrays(1, &VaoId);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+}
+
+void Mesh::bindVertexArray() {
+	glBindVertexArray(VaoId);
+}
+
+void Mesh::draw()
+{
+	bindVertexArray();
+	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 }

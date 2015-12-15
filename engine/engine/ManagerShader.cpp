@@ -6,11 +6,11 @@ SINGLETON_IMPLEMENTATION_NO_CONSTRUCTOR(ManagerShader)
 
 ManagerShader::ManagerShader() {}
 
-void ManagerShader::add(char* name, ShaderProgram* shaderProgram) {
-	shaderPrograms.insert(std::pair<char*, ShaderProgram*>(name, shaderProgram));
+void ManagerShader::add(char* name, VSShaderLib* shaderProgram) {
+	shaderPrograms.insert(std::pair<char*, VSShaderLib*>(name, shaderProgram));
 }
 
-ShaderProgram* ManagerShader::get(char* name) {
+VSShaderLib* ManagerShader::get(char* name) {
 	try {
 		return shaderPrograms.find(name)->second;
 	} catch (std::exception) {

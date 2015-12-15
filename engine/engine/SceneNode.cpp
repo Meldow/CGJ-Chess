@@ -1,9 +1,13 @@
 #pragma once
 #include "SceneNode.h"
-#include "ShaderProgram.h"
+#include "VSShaderLib.h"
 #include "Mesh.h"
+#include "Material.h"
+#include "Texture.h"
 
-SceneNode::SceneNode() {}
+SceneNode::SceneNode() {
+	modelMatrix = Matrix4().identity();
+}
 
 SceneNode::~SceneNode() {}
 
@@ -18,6 +22,25 @@ SceneNode* SceneNode::getSceneNode(char* name) {
 	return sceneNodes[name];
 }
 
+void SceneNode::loadMaterialUniforms() {
+	shaderProgram->setUniform("mat.ambient", material->getAmbient());
+	shaderProgram->setUniform("mat.diffuse", material->getDiffuse());
+	shaderProgram->setUniform("mat.specular", material->getSpecular());
+	shaderProgram->setUniform("mat.shininess", material->getShininess());
+}
+
+void SceneNode::loadTextureUniforms() {
+	texture->draw();
+	shaderProgram->setUniform("tex_map", 0);
+}
+
+void SceneNode::setUniforms() {
+	shaderProgram->setUniform("ModelMatrix", modelMatrix.data());
+
+	loadMaterialUniforms();
+	loadTextureUniforms();
+}
+
 void SceneNode::update() {
 	if (isDebug) std::cout << "\nUpdating SceneNode::name::" << name;
 
@@ -28,7 +51,8 @@ void SceneNode::draw() {
 	if (isDebug) std::cout << "\nDrawaing SceneNode::name::" << name;
 
 	if (shaderProgram) {
-		shaderProgram->draw(modelMatrix * Matrix4().translate(-0.5f, -0.5f, -0.5f));
+		setUniforms();
+
 		mesh->draw();
 	}
 

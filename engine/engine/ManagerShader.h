@@ -2,21 +2,21 @@
 #include "Singleton.h"
 #include <map>
 
-class ShaderProgram;
+class VSShaderLib;
 class ManagerShader {
 	SINGLETON_HEADER(ManagerShader)
 public:
 	char* name;
-	std::map<char*, ShaderProgram*> shaderPrograms;		//contains ids of all uniforms
+	std::map<char*, VSShaderLib*> shaderPrograms;		//contains ids of all uniforms
 
-	void add(char* name, ShaderProgram* material);
-	ShaderProgram* get(char* name);
+	void add(char* name, VSShaderLib* material);
+	VSShaderLib* get(char* name);
 
 	/*
 	* Debugger
 	*/
 	void flushManagerMesh();
 private:
-	std::map<char*, ShaderProgram*>::iterator _shaderProgramsIterator;
+	std::map<char*, VSShaderLib*>::iterator _shaderProgramsIterator;
 };
 

@@ -1,27 +1,29 @@
 #pragma once
 
-#include "Matrices.h"
 #include "Dependencies/glew/glew.h"
+#include "Matrices.h"
 
 class Camera {
-public:
+
+private:
+
 	Matrix4 ViewMatrix;
-	Matrix4 OrthoProjectionMatrix;
-	Matrix4 PerspectiveProjectionMatrix;
+	Matrix4 ProjectionMatrix;
 	Matrix4 RotationMatrix;
-	float Distance = 10.0f;
-	bool isOrtho = false;
-	
-	GLint VboID;
 
-	bool isDebug = false;
+public:
 
-	Camera();
+	float Distance = 15.0f;
+
+	Camera(GLuint UBO_BP);
 	~Camera();
 
-	Matrix4 Ortho(float left, float right, float bottom, float top, float mNear, float mFar);
-	Matrix4 Perspective(float fov, float aspect, float mNear, float mFar);
-	Matrix4 Perspective(float fov, float width, float height, float mNear, float mFar);
+	void createUniformBuffer(GLuint UBO_BP);
+
+	void setRotationMatrix(Matrix4 rotation);
+
+	Matrix4 perspective(float fov, float aspect, float mNear, float mFar);
 
 	void update();
+
 };

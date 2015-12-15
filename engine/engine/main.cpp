@@ -6,11 +6,13 @@ int WinX = 640, WinY = 480;
 int WindowHandle = 0;
 unsigned int FrameCount = 0;
 
-GLuint VaoId, VboVertices, VboCamera = -1;
 GLint UboId, UniformId = -1;
+const GLuint UBO_BP = 0;
 
-ShaderProgram* shader;
+VSShaderLib* shader;
 Mesh* mesh;
+Material* material;
+Texture* texture;
 
 //TODO refactor
 // Mouse Tracking Variables
@@ -26,19 +28,30 @@ Quaternion qBase;
 /////////////////////////////////////////////////////////////////////// SHADERs
 
 void createShaderProgram() {
-	shader = new ShaderProgram();
-	shader->addShader(GL_VERTEX_SHADER, "C:/Users/Alex/Documents/Visual Studio 2015/Projects/CGJ-Chess/engine/resources/shaders/base/simple.vert");
-	shader->addShader(GL_FRAGMENT_SHADER, "C:/Users/Alex/Documents/Visual Studio 2015/Projects/CGJ-Chess/engine/resources/shaders/base/simple.frag");
-	shader->addAttribute("in_Position", Mesh::VERTICES);
-	shader->addAttribute("in_Color", Mesh::COLORS);
+	shader = new VSShaderLib();
+	shader->init();
+	shader->loadShader(VSShaderLib::VERTEX_SHADER, "shaders/vertexShader.vert");
+	shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/fragShader.frag");
 
-	shader->link();
-	shader->addUniform("ModelMatrix");
-	shader->addUniformBlock("SharedMatrices", UBO_BP);
-	shader->create();
+	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::VERTICES, "in_Position");
+	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::TEXCOORDS, "in_TexCoord");
+	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::NORMALS, "in_Normal");
 
-	//todo
-	//glUniformBlockBinding(shader->_programId, shader->getUniformBlock("ShaderMatrices"), UBO_BP);
+	shader->prepareProgram();
+
+	shader->addUniform("ModelMatrix", GL_FLOAT_MAT4, 1);
+
+	UboId = glGetUniformBlockIndex(shader->getProgramIndex(), "SharedMatrices");
+	glUniformBlockBinding(shader->getProgramIndex(), UboId, UBO_BP);
+
+	//Material
+	shader->addUniform("mat.ambient", GL_FLOAT_VEC4, 1);
+	shader->addUniform("mat.diffuse", GL_FLOAT_VEC4, 1);
+	shader->addUniform("mat.specular", GL_FLOAT_VEC4, 1);
+	shader->addUniform("mat.shininess", GL_FLOAT, 1);
+
+	//Texture
+	shader->addUniform("tex_map", GL_INT, 1);
 
 	ManagerShader::instance()->add("shader1", shader);
 	ManagerShader::instance()->flushManagerMesh();
@@ -54,34 +67,55 @@ void destroyShaderProgram() {
 
 /////////////////////////////////////////////////////////////////////// VAOs & VBOs
 
-void createMesh() {
-	mesh = new Mesh();
+void createBufferObjects()
+{
+	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create VAOs and VBOs.");
+}
+
+void destroyBufferObjects()
+{
+	mesh->destroyBufferObjects();
+
+	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not destroy VAOs and VBOs.");
+}
+
+/////////////////////////////////////////////////////////////////////// SCENE
+
+void createMesh() 
+{
+	mesh = new Mesh(std::string("Models/cube.obj"));
 	ManagerMesh::instance()->add("mesh1", mesh);
 	ManagerMesh::instance()->add("mesh2", mesh);
 	ManagerMesh::instance()->add("mesh3", mesh);
 	ManagerMesh::instance()->add("mesh4", mesh);
 	ManagerMesh::instance()->add("mesh5", mesh);
 	ManagerMesh::instance()->flushManagerMesh();
-	
-	Material* mat = new Material();
-	Material* mat2 = new Material();
-	ManagerMaterial::instance()->add("material1", mat);
+}
+
+void createMaterial()
+{
+	material = new Material(std::string("Models/red.mtl"));
+	Material* mat2 = new Material(std::string("Models/red.mtl"));
+	ManagerMaterial::instance()->add("material1", material);
 	ManagerMaterial::instance()->add("material2", mat2);
 	ManagerMaterial::instance()->flushManagerMesh();
 }
 
-void destroyBufferObjects() {
-	std::cout << "\nTrying to destroy BufferObjects";
+void createTexture()
+{
+	texture = new Texture("Models/stone.tga");
 }
 
 void createSceneGraph() {
 	SceneGraph* sceneGraph = new SceneGraph();
 	ManagerSceneGraph::instance()->addSceneGraph("main", sceneGraph);
-	ManagerSceneGraph::instance()->getSceneGraph("main")->camera = new Camera();
+	ManagerSceneGraph::instance()->getSceneGraph("main")->camera = new Camera(UBO_BP);
 
 	SceneNode* mainNode = new SceneNode();
 	sceneGraph->addSceneNode("mainNode", mainNode);
 	mainNode->mesh = mesh;
+	mainNode->material = material;
+	mainNode->texture = texture;
 	mainNode->shaderProgram = shader;
 }
 /////////////////////////////////////////////////////////////////////// SCENE
@@ -129,13 +163,13 @@ void timer(int value) {
 /////////////////////////////////////////////////////////////////////// KEYBOARD
 
 void processKeys(unsigned char key, int xx, int yy) {
-	switch (key) {
+	/*switch (key) {
 	case 'p': case 'P':
 		Camera* camera = ManagerSceneGraph::instance()->getSceneGraph("main")->camera;
 		camera->isOrtho = !camera->isOrtho;
 		std::cout << "KEYBOARD(P)::isOrtho::" << camera->isOrtho;
 		break;
-	}
+	}*/
 }
 
 /////////////////////////////////////////////////////////////////////// MOUSE
@@ -175,12 +209,12 @@ void processMouseMotion(int xx, int yy) {
 		deltaXRotation = Matrix4().rotateY(alphaAux);
 		Matrix4 deltaYRotation;
 		deltaYRotation = Matrix4().rotateX(betaAux);
-		ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix = deltaXRotation * deltaYRotation;
+		ManagerSceneGraph::instance()->getSceneGraph("main")->camera->setRotationMatrix(deltaXRotation * deltaYRotation);
 	} else {
 		Quaternion qDeltaX = Quaternion(alphaAux, Vector3(0.0f, 1.0f, 0.0f));
 		Quaternion qDeltaY = Quaternion(betaAux, Vector3(1.0f, 0.0f, 0.0f));
 		Quaternion qResult = qDeltaX * qDeltaY * qBase;
-		ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix = qResult.quaternionToMatrix();
+		ManagerSceneGraph::instance()->getSceneGraph("main")->camera->setRotationMatrix(qResult.quaternionToMatrix());
 	}
 }
 
@@ -258,6 +292,8 @@ void init(int argc, char* argv[]) {
 	setupOpenGL();
 
 	createMesh();
+	createMaterial();
+	createTexture();
 	createShaderProgram();
 	createSceneGraph();
 	setupCallbacks();

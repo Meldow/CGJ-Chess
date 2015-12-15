@@ -543,6 +543,13 @@ Matrix4& Matrix4::rotateZ(float angle) {
 	return *this;
 }
 
+std::string Matrix4::toString() {
+	return "| " + std::to_string(m[0]) + " " + std::to_string(m[4]) + " " + std::to_string(m[8]) + " " + std::to_string(m[12]) + " |\n" +
+		"| " + std::to_string(m[1]) + " " + std::to_string(m[5]) + " " + std::to_string(m[9]) + " " + std::to_string(m[13]) + " |\n" +
+		"| " + std::to_string(m[2]) + " " + std::to_string(m[6]) + " " + std::to_string(m[10]) + " " + std::to_string(m[14]) + " |\n" +
+		"| " + std::to_string(m[3]) + " " + std::to_string(m[7]) + " " + std::to_string(m[11]) + " " + std::to_string(m[15]) + " |\n";
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////

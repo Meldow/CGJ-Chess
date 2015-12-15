@@ -1,26 +1,36 @@
 #include "Camera.h"
-#include "ManagerOpenGLErrors.h"
 
-Camera::Camera() {
-	ViewMatrix.translate(0.0f, 0.0f, -Distance);
-	OrthoProjectionMatrix = Ortho(-2.0f, 2.0f, -2.0f, 2.0f, 1.0f, 50.0f);
-	PerspectiveProjectionMatrix = Perspective(30, 640.0f / 480.0f, 1, 50);
+GLuint VboCamera;
+
+Camera::Camera(GLuint UBO_BP)
+{
+	ViewMatrix = Matrix4().identity();
+	ProjectionMatrix = Matrix4().identity();
+	RotationMatrix = Matrix4().identity();
+
+	createUniformBuffer(UBO_BP);
 }
 
-Camera::~Camera() {}
-
-Matrix4 Camera::Ortho(float left, float right, float bottom, float top, float mNear, float mFar) {
-	if (mNear <= 0.0f || mFar <= 0.0f) { std::cout << "ERROR: Near/Far == 0."; return{}; }
-
-	Matrix4 result = Matrix4(2 / (right - left), 0.0f, 0.0f, 0.0f,
-		0.0f, 2 / (top - bottom), 0.0f, 0.0f,
-		0.0f, 0.0f, -2 / (mFar - mNear), 0.0f,
-		(left + right) / (left - right), (bottom + top) / (bottom - top), (mNear + mFar) / (mNear - mFar), 1.0f);
-	//std::cout << "\nResult\n" << result << "\n\n\n";
-	return result;
+Camera::~Camera()
+{
+	//Destroy uniform buffer
 }
 
-Matrix4 Camera::Perspective(float fov, float aspect, float mNear, float mFar) {
+void Camera::createUniformBuffer(GLuint UBO_BP)
+{
+	glGenBuffers(1, &VboCamera);
+	glBindBuffer(GL_UNIFORM_BUFFER, VboCamera);
+	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(Matrix4), 0, GL_STATIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	glBindBufferBase(GL_UNIFORM_BUFFER, UBO_BP, VboCamera);
+}
+
+void Camera::setRotationMatrix(Matrix4 rotation)
+{
+	RotationMatrix = rotation;
+}
+
+Matrix4 Camera::perspective(float fov, float aspect, float mNear, float mFar) {
 
 	float d = 1.0f / tan(fov * (M_PI / 360.0f));
 
@@ -34,10 +44,16 @@ Matrix4 Camera::Perspective(float fov, float aspect, float mNear, float mFar) {
 	return res;
 }
 
-Matrix4 Camera::Perspective(float fov, float width, float height, float mNear, float mFar) {
-	return Perspective(fov, width / height, mNear, mFar);
+void Camera::update()
+{
+	ViewMatrix = Matrix4().translate(0.0f, 0.0f, -Distance) * RotationMatrix;
+	glBindBuffer(GL_UNIFORM_BUFFER, VboCamera);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(ViewMatrix.m), ViewMatrix.data());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	ProjectionMatrix = perspective(30, 640.0f / 480.0f, 1, 30);
+	glBindBuffer(GL_UNIFORM_BUFFER, VboCamera);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(ViewMatrix.m), sizeof(ProjectionMatrix.m), ProjectionMatrix.data());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void Camera::update() {
-	ViewMatrix = Matrix4().translate(0.0f, 0.0f, -Distance) * RotationMatrix;
-}
