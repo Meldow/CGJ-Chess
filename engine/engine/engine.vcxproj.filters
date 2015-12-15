@@ -126,4 +126,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\fragShader.frag" />
+    <None Include="shaders\vertexShader.vert" />
+  </ItemGroup>
 </Project>

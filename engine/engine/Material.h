@@ -9,30 +9,14 @@
 #include "Dependencies/glew/glew.h"
 #include "Dependencies/freeglut/freeglut.h"
 
-typedef struct {
-	GLfloat kR, kG, kB, kA;
-} Ambient;
-
-typedef struct {
-	GLfloat kR, kG, kB, kA;
-} Diffuse;
-
-typedef struct {
-	GLfloat kR, kG, kB, kA;
-} Specular;
-
-typedef struct {
-	Ambient ambient;
-	Diffuse diffuse;
-	Specular specular;
-	GLfloat shininess;
-} Mat;
-
 class Material {
 
 private:
 
-	Mat _mat;
+	float ambient[4];
+	float diffuse[4];
+	float specular[4];
+	float shininess;
 
 public:
 
@@ -51,6 +35,6 @@ public:
 	float* getAmbient();
 	float* getDiffuse();
 	float* getSpecular();
-	float* getShininess();
+	float getShininess();
 
 };

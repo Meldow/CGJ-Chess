@@ -7,29 +7,29 @@ Material::Material(std::string& filename)
 
 void Material::parseAmbient(std::stringstream& sin)
 {
-	sin >> _mat.ambient.kR >> _mat.ambient.kG >> _mat.ambient.kB;
+	sin >> ambient[0] >> ambient[1] >> ambient[2];
 }
 
 void Material::parseDiffuse(std::stringstream& sin)
 {
-	sin >> _mat.diffuse.kR >> _mat.diffuse.kG >> _mat.diffuse.kB;
+	sin >> diffuse[0] >> diffuse[1] >> diffuse[2];
 }
 
 void Material::parseSpecular(std::stringstream& sin)
 {
-	sin >> _mat.specular.kR >> _mat.specular.kG >> _mat.specular.kB;
+	sin >> specular[0] >> specular[1] >> specular[2];
 }
 
 void Material::parseShininess(std::stringstream& sin)
 {
-	sin >> _mat.shininess;
+	sin >> shininess;
 }
 
 void Material::parseTransparency(std::stringstream& sin)
 {
 	GLfloat alpha;
 	sin >> alpha;
-	_mat.ambient.kA = _mat.diffuse.kA = _mat.specular.kA = alpha;
+	ambient[3] = diffuse[3] = specular[3] = alpha;
 }
 
 void Material::parseLine(std::stringstream& sin)
@@ -60,39 +60,20 @@ const void Material::createMaterial(std::string& filename)
 
 float* Material::getAmbient()
 {
-	float amb[] = {
-		_mat.ambient.kR,
-		_mat.ambient.kG,
-		_mat.ambient.kB,
-		_mat.ambient.kA
-	};
-	return amb;
+	return ambient;
 }
 
 float* Material::getDiffuse()
 {
-	float diffuse[] = {
-		_mat.diffuse.kR,
-		_mat.diffuse.kG,
-		_mat.diffuse.kB,
-		_mat.diffuse.kA
-	};
 	return diffuse;
 }
 
 float* Material::getSpecular()
 {
-	float spec[] = {
-		_mat.specular.kR,
-		_mat.specular.kG,
-		_mat.specular.kB,
-		_mat.specular.kA
-	};
-	return spec;
+	return specular;
 }
 
-float* Material::getShininess()
+float Material::getShininess()
 {
-	float shininess[] = { _mat.shininess };
 	return shininess;
 }

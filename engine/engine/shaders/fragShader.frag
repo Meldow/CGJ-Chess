@@ -22,8 +22,8 @@ void main(void)
 {
 	vec4 texel = texture(tex_map, DataIn.Tex_Coord);
 	
-	out_Color = texel;
-	//out_Color = mat.diffuse * texel;
+	//out_Color = texel;
+	out_Color = mat.diffuse;
 	//out_Color = vec4(DataIn.Tex_Coord, 0.0, 0.0);
 	//out_Color = DataIn.VertexPos;
 	//out_Color = mat.specular;

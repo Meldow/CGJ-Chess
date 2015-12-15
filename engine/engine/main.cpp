@@ -83,7 +83,7 @@ void destroyBufferObjects()
 
 void createMesh() 
 {
-	mesh = new Mesh(std::string("Models/cube.obj"));
+	mesh = new Mesh(std::string("Models/pawn.obj"));
 	ManagerMesh::instance()->add("mesh1", mesh);
 	ManagerMesh::instance()->add("mesh2", mesh);
 	ManagerMesh::instance()->add("mesh3", mesh);
@@ -94,7 +94,7 @@ void createMesh()
 
 void createMaterial()
 {
-	material = new Material(std::string("Models/red.mtl"));
+	material = new Material(std::string("Models/pawn.mtl"));
 	Material* mat2 = new Material(std::string("Models/red.mtl"));
 	ManagerMaterial::instance()->add("material1", material);
 	ManagerMaterial::instance()->add("material2", mat2);
