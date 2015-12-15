@@ -8,16 +8,16 @@ public:
 	Camera* camera;
 	char* name;
 
-	bool isDebug = false;
+	bool isDebug = true;
 
 	SceneGraph();
 	~SceneGraph();
 
 	void addSceneNode(char* name, SceneNode* scene_node);
 	SceneNode* getSceneNode(char* name);
-
+	
+	void update();
 	void draw();
-
 private:
 	std::map<const char*, SceneNode*> sceneNodes;
 	std::map<const char*, SceneNode*>::iterator _sceneNodesIterator;

@@ -107,10 +107,7 @@ void display() {
 
 void update() {
 	glutPostRedisplay();
-
-	Camera* camera = ManagerSceneGraph::instance()->getSceneGraph("main")->camera;
-	camera->update();
-
+	ManagerSceneGraph::instance()->getSceneGraph("main")->update();
 }
 
 void reshape(int w, int h) {

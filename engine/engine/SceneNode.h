@@ -23,6 +23,7 @@ public:
 	void addSceneNode(char* name, SceneNode* scene_node);
 	SceneNode* getSceneNode(char* name);
 	//update
+	void update();
 	void draw();
 private:
 	std::map<const char*, SceneNode*> sceneNodes;

@@ -15,6 +15,16 @@ SceneNode* SceneGraph::getSceneNode(char* name) {
 	return sceneNodes[name];
 }
 
+void SceneGraph::update() {
+	if (isDebug) std::cout << "\nUpdating SceneGraph::name::" << name;
+
+	camera->update();
+
+	for (_sceneNodesIterator = sceneNodes.begin(); _sceneNodesIterator != sceneNodes.end(); ++_sceneNodesIterator) {
+		_sceneNodesIterator->second->update();
+	}
+}
+
 void SceneGraph::draw() {
 	if (isDebug) std::cout << "\nDrawaing SceneGraph::name::" << name;
 
