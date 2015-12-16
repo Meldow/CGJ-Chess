@@ -155,15 +155,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="BaseLight.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagerMaterial.cpp" />
     <ClCompile Include="ManagerMesh.cpp" />
     <ClCompile Include="ManagerOpenGLErrors.cpp" />
     <ClCompile Include="ManagerSceneGraph.cpp" />
     <ClCompile Include="ManagerShader.cpp" />
+    <ClCompile Include="ManagerTexture.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Matrices.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="SceneGraph.cpp" />
     <ClCompile Include="SceneNode.cpp" />
@@ -176,14 +179,17 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="IDrawable.h" />
+    <ClInclude Include="BaseLight.h" />
     <ClInclude Include="ManagerMaterial.h" />
     <ClInclude Include="ManagerMesh.h" />
     <ClInclude Include="ManagerOpenGLErrors.h" />
     <ClInclude Include="ManagerSceneGraph.h" />
     <ClInclude Include="ManagerShader.h" />
+    <ClInclude Include="ManagerTexture.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Matrices.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="PointLight.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="SceneGraph.h" />
     <ClInclude Include="SceneNode.h" />
