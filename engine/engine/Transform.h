@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "Vectors.h"
 
 class Transform {
@@ -16,7 +17,7 @@ private:
 	void setScale(float x, float y, float z);
 	void setRotation(float angle, float x, float y, float z);
 
-	//getters
+	// getters
 	Vector3 getPosition();
 	Vector3 getScale();
 	Vector4 getRotation();
