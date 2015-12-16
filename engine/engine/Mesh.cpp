@@ -8,29 +8,25 @@ Mesh::Mesh(std::string& filename) {
 	createBufferObjects();
 }
 
-void Mesh::parseVertex(std::stringstream& sin)
-{
+void Mesh::parseVertex(std::stringstream& sin) {
 	Vertex v;
 	sin >> v.x >> v.y >> v.z;
 	vertexData.push_back(v);
 }
 
-void Mesh::parseTexcoord(std::stringstream& sin)
-{
+void Mesh::parseTexcoord(std::stringstream& sin) {
 	Texcoord t;
 	sin >> t.u >> t.v;
 	texcoordData.push_back(t);
 }
 
-void Mesh::parseNormal(std::stringstream& sin)
-{
+void Mesh::parseNormal(std::stringstream& sin) {
 	Normal n;
 	sin >> n.nx >> n.ny >> n.nz;
 	normalData.push_back(n);
 }
 
-void Mesh::parseFace(std::stringstream& sin)
-{
+void Mesh::parseFace(std::stringstream& sin) {
 	std::string token;
 	for (int i = 0; i < 3; i++) {
 		std::getline(sin, token, '/');
@@ -42,8 +38,7 @@ void Mesh::parseFace(std::stringstream& sin)
 	}
 }
 
-void Mesh::parseLine(std::stringstream& sin)
-{
+void Mesh::parseLine(std::stringstream& sin) {
 	std::string s;
 	sin >> s;
 	if (s.compare("v") == 0) parseVertex(sin);
@@ -52,8 +47,7 @@ void Mesh::parseLine(std::stringstream& sin)
 	else if (s.compare("f") == 0) parseFace(sin);
 }
 
-void Mesh::loadMeshData(std::string& filename)
-{
+void Mesh::loadMeshData(std::string& filename) {
 	std::ifstream ifile(filename);
 	while (ifile.good()) {
 		std::string line;
@@ -64,8 +58,7 @@ void Mesh::loadMeshData(std::string& filename)
 	normalsLoaded = (normalIdx.size() > 0);
 }
 
-void Mesh::processMeshData()
-{
+void Mesh::processMeshData() {
 	for (unsigned int i = 0; i < vertexIdx.size(); i++) {
 		unsigned int vi = vertexIdx[i];
 		Vertex v = vertexData[vi - 1];
@@ -83,8 +76,7 @@ void Mesh::processMeshData()
 	}
 }
 
-void Mesh::freeMeshData()
-{
+void Mesh::freeMeshData() {
 	vertexData.clear();
 	texcoordData.clear();
 	normalData.clear();
@@ -93,15 +85,13 @@ void Mesh::freeMeshData()
 	normalIdx.clear();
 }
 
-const void Mesh::createMesh(std::string& filename)
-{
+const void Mesh::createMesh(std::string& filename) {
 	loadMeshData(filename);
 	processMeshData();
 	freeMeshData();
 }
 
-void Mesh::createBufferObjects()
-{
+void Mesh::createBufferObjects() {
 	glGenVertexArrays(1, &VaoId);
 	glBindVertexArray(VaoId);
 	{
@@ -111,16 +101,14 @@ void Mesh::createBufferObjects()
 		glEnableVertexAttribArray(VERTICES);
 		glVertexAttribPointer(VERTICES, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 	}
-	if (texCoordsLoaded)
-	{
+	if (texCoordsLoaded) {
 		glGenBuffers(1, &VboTexcoords);
 		glBindBuffer(GL_ARRAY_BUFFER, VboTexcoords);
 		glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(Texcoord), &texCoords[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(TEXCOORDS);
 		glVertexAttribPointer(TEXCOORDS, 2, GL_FLOAT, GL_FALSE, sizeof(Texcoord), 0);
 	}
-	if (normalsLoaded)
-	{
+	if (normalsLoaded) {
 		glGenBuffers(1, &VboNormals);
 		glBindBuffer(GL_ARRAY_BUFFER, VboNormals);
 		glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(Normal), &normals[0], GL_STATIC_DRAW);
@@ -131,8 +119,7 @@ void Mesh::createBufferObjects()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Mesh::destroyBufferObjects()
-{
+void Mesh::destroyBufferObjects() {
 	glBindVertexArray(VaoId);
 	glDisableVertexAttribArray(VERTICES);
 	glDisableVertexAttribArray(TEXCOORDS);
@@ -149,8 +136,7 @@ void Mesh::bindVertexArray() {
 	glBindVertexArray(VaoId);
 }
 
-void Mesh::draw()
-{
+void Mesh::draw() {
 	bindVertexArray();
 	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 }

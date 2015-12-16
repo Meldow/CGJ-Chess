@@ -40,6 +40,7 @@
 // pre conditions are established with asserts
 // if having errors using the lib switch to Debug mode
 #include <assert.h>
+#include <iostream>
 
 GLenum
 VSShaderLib::spGLShaderTypes[VSShaderLib::COUNT_SHADER_TYPE] = {
@@ -112,7 +113,23 @@ VSShaderLib::loadShader(VSShaderLib::ShaderType st, std::string fileName) {
 		glAttachShader(pProgram, pShader[st]);
 		glCompileShader(pShader[st]);
 
+		//////////////////////////////////////////////////////////////////////// DEBUG
+		GLint result = GL_FALSE;
+		int logLength;
+		glGetShaderiv(pShader[st], GL_COMPILE_STATUS, &result);
+		glGetShaderiv(pShader[st], GL_INFO_LOG_LENGTH, &logLength);
+
+		glGetProgramiv(pProgram, GL_INFO_LOG_LENGTH, &logLength);
+		std::vector<char> programError((logLength > 1) ? logLength : 1);
+		glGetProgramInfoLog(pProgram, logLength, NULL, &programError[0]);
+		std::cout << &programError[0] << std::endl;
+
+		if (programError.size() > 1)std::getchar();	//
+		////////////////////////////////////////////////////////////////////////
+
 		free(s);
+	} else {
+		std::cout << "\nFile could not be found::" << fileName;
 	}
 }
 
@@ -121,8 +138,17 @@ void
 VSShaderLib::prepareProgram() {
 
 	glLinkProgram(pProgram);
-	//addUniforms();
-	//addBlocks();
+	
+	//////////////////////////////////////////////////////////////////////// Debug
+	GLint result = GL_FALSE;
+	int logLength;
+
+	glGetProgramiv(pProgram, GL_LINK_STATUS, &result);
+	glGetProgramiv(pProgram, GL_INFO_LOG_LENGTH, &logLength);
+	std::vector<char> programError((logLength > 1) ? logLength : 1);
+	glGetProgramInfoLog(pProgram, logLength, NULL, &programError[0]);
+	//should identify the shader name/path
+	std::cout << &programError[0] << std::endl;
 }
 
 
@@ -452,8 +478,7 @@ VSShaderLib::getShaderInfoLog(VSShaderLib::ShaderType st) {
 	if (pShader[st]) {
 		glGetShaderiv(pShader[st], GL_INFO_LOG_LENGTH, &infologLength);
 
-		if (infologLength > 0)
-		{
+		if (infologLength > 0) {
 			infoLog = (char *)malloc(infologLength);
 			glGetShaderInfoLog(pShader[st], infologLength, &charsWritten, infoLog);
 			if (charsWritten)
@@ -462,8 +487,7 @@ VSShaderLib::getShaderInfoLog(VSShaderLib::ShaderType st) {
 				pResult = "OK";
 			free(infoLog);
 		}
-	}
-	else
+	} else
 		pResult = "Shader not loaded";
 	return pResult;
 }
@@ -482,8 +506,7 @@ VSShaderLib::getProgramInfoLog() {
 
 		glGetProgramiv(pProgram, GL_INFO_LOG_LENGTH, &infologLength);
 
-		if (infologLength > 0)
-		{
+		if (infologLength > 0) {
 			infoLog = (char *)malloc(infologLength);
 			glGetProgramInfoLog(pProgram, infologLength, &charsWritten, infoLog);
 			pResult = infoLog;
@@ -678,8 +701,7 @@ VSShaderLib::addBlocks() {
 						auxSize = 4 * uniMatStride;
 						break;
 					}
-				}
-				else
+				} else
 					auxSize = typeSize(uniType);
 
 				bUni.offset = uniOffset;
@@ -697,8 +719,7 @@ VSShaderLib::addBlocks() {
 			block.bindingIndex = spBlockCount;
 			spBlocks[name] = block;
 			spBlockCount++;
-		}
-		else
+		} else
 			glUniformBlockBinding(pProgram, i, spBlocks[name].bindingIndex);
 
 	}

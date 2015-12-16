@@ -2,21 +2,20 @@
 
 GLuint texture_id;
 
-Texture::Texture(char *fileName)
-{
+Texture::Texture(char *fileName) {
 	createTexture(fileName);
 }
 
-void Texture::createTexture(char *fileName)
-{
+void Texture::createTexture(char *fileName) {
 	Image *pBitMap;
 	int textureType = GL_RGB;
 
 	if (!fileName) return;
 
 	pBitMap = load(fileName);
-	if (pBitMap == NULL)
-		exit(0);
+	if (pBitMap == NULL) {
+		std::cout << "\nCould not generate texture::" << fileName;
+	}
 
 	glGenTextures(1, &texture_id);
 	glBindTexture(GL_TEXTURE_2D, texture_id);
@@ -30,16 +29,14 @@ void Texture::createTexture(char *fileName)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	if (pBitMap)
-	{
+	if (pBitMap) {
 		if (pBitMap->data)
 			free(pBitMap->data);
 		free(pBitMap);
 	}
 }
 
-Image * Texture::load(char *fileName)
-{
+Image * Texture::load(char *fileName) {
 	Image *pImgData;
 	FILE *pFile;
 	WORD width = 0, height = 0;
@@ -47,14 +44,13 @@ Image * Texture::load(char *fileName)
 	int channels = 0, stride = 0, i = 0;
 
 	//read file
-	if ((pFile = fopen(fileName, "rb")) == NULL)
-	{
+	if ((pFile = fopen(fileName, "rb")) == NULL) {
 		std::cerr << "Error loading .tga file" << std::endl;
 		return NULL;
 	}
 
-	pImgData = (Image*) malloc(sizeof(Image));
-	
+	pImgData = (Image*)malloc(sizeof(Image));
+
 	fread(&length, sizeof(byte), 1, pFile);
 	fseek(pFile, 1, SEEK_CUR);
 	fread(&imgType, sizeof(byte), 1, pFile);
@@ -64,37 +60,30 @@ Image * Texture::load(char *fileName)
 	fread(&bits, sizeof(byte), 1, pFile);
 	fseek(pFile, length + 1, SEEK_CUR);
 
-	if (imgType != TGA_RLE)
-	{
-		if (bits == 24 || bits == 32)
-		{
+	if (imgType != TGA_RLE) {
+		if (bits == 24 || bits == 32) {
 			channels = bits / 8;
 			stride = channels * width;
 			pImgData->data = new unsigned char[stride * height];
 
-			for (int y = 0; y < height; y++)
-			{
+			for (int y = 0; y < height; y++) {
 				unsigned char *pLine = &(pImgData->data[stride * y]);
 				fread(pLine, stride, 1, pFile);
 
-				for (i = 0; i < stride; i += channels)
-				{
+				for (i = 0; i < stride; i += channels) {
 					int temp = pLine[i];
 					pLine[i] = pLine[i + 2];
 					pLine[i + 2] = temp;
 				}
 			}
-		}
-		else if (bits == 16)
-		{
+		} else if (bits == 16) {
 			unsigned short pixels = 0;
 			int r = 0, g = 0, b = 0;
 			channels = 3;
 			stride = channels * width;
 			pImgData->data = new unsigned char[stride * height];
 
-			for (int i = 0; i < width*height; i++)
-			{
+			for (int i = 0; i < width*height; i++) {
 				fread(&pixels, sizeof(unsigned short), 1, pFile);
 
 				b = (pixels & 0x1f) << 3;
@@ -105,12 +94,9 @@ Image * Texture::load(char *fileName)
 				pImgData->data[i * 3 + 1] = g;
 				pImgData->data[i * 3 + 2] = b;
 			}
-		}
-		else
+		} else
 			return NULL;
-	}
-	else
-	{
+	} else {
 		byte rleID = 0;
 		int colorsRead = 0;
 		channels = bits / 8;
@@ -119,41 +105,35 @@ Image * Texture::load(char *fileName)
 		pImgData->data = new unsigned char[stride * height];
 		byte *pColors = new byte[channels];
 
-		while (i < width*height)
-		{
+		while (i < width*height) {
 			fread(&rleID, sizeof(byte), 1, pFile);
 
-			if (rleID < 128)
-			{
+			if (rleID < 128) {
 				rleID++;
-				while (rleID)
-				{
+				while (rleID) {
 					fread(pColors, sizeof(byte) * channels, 1, pFile);
 
 					pImgData->data[colorsRead + 0] = pColors[2];
 					pImgData->data[colorsRead + 1] = pColors[1];
 					pImgData->data[colorsRead + 2] = pColors[0];
 
-					if (bits == 32)	
+					if (bits == 32)
 						pImgData->data[colorsRead + 3] = pColors[3];
 
 					i++;
 					rleID--;
 					colorsRead += channels;
 				}
-			}
-			else
-			{
+			} else {
 				rleID -= 127;
 				fread(pColors, sizeof(byte) * channels, 1, pFile);
 
-				while (rleID)
-				{
+				while (rleID) {
 					pImgData->data[colorsRead + 0] = pColors[2];
 					pImgData->data[colorsRead + 1] = pColors[1];
 					pImgData->data[colorsRead + 2] = pColors[0];
 
-					if (bits == 32)	
+					if (bits == 32)
 						pImgData->data[colorsRead + 3] = pColors[3];
 
 					i++;
@@ -173,8 +153,7 @@ Image * Texture::load(char *fileName)
 	return pImgData;
 }
 
-void Texture::draw()
-{
+void Texture::draw() {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture_id);
 }

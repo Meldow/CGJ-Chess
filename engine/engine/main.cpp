@@ -41,7 +41,7 @@ void createShaderProgram() {
 
 	shader->addUniform("ModelMatrix", GL_FLOAT_MAT4, 1);
 
-	UboId = glGetUniformBlockIndex(shader->getProgramIndex(), "SharedMatrices");
+	UboId = glGetUniformBlockIndex(shader->getProgramIndex(), "Camera");
 	glUniformBlockBinding(shader->getProgramIndex(), UboId, UBO_BP);
 
 	//Material

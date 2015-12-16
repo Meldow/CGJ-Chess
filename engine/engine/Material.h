@@ -1,13 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <vector>
-
-#include "Dependencies/glew/glew.h"
-#include "Dependencies/freeglut/freeglut.h"
 
 class Material {
 

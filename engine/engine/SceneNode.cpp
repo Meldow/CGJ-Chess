@@ -4,7 +4,6 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "Texture.h"
-#include <string>
 
 SceneNode::SceneNode() {
 	modelMatrix = Matrix4().identity();
@@ -38,8 +37,8 @@ void SceneNode::loadTextureUniforms() {
 void SceneNode::setUniforms() {
 	shaderProgram->setUniform("ModelMatrix", modelMatrix.data());
 
-	loadMaterialUniforms();
-	loadTextureUniforms();
+	if(material) loadMaterialUniforms();
+	if(texture) loadTextureUniforms();
 }
 
 void SceneNode::update() {
@@ -53,8 +52,7 @@ void SceneNode::draw() {
 
 	if (shaderProgram) {
 		setUniforms();
-
-		mesh->draw();
+		if(mesh) mesh->draw();
 	}
 
 	for (_sceneNodesIterator = sceneNodes.begin(); _sceneNodesIterator != sceneNodes.end(); ++_sceneNodesIterator) {
