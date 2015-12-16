@@ -9,11 +9,6 @@ unsigned int FrameCount = 0;
 GLint UboId, UniformId = -1;
 const GLuint UBO_BP = 0;
 
-VSShaderLib* shader;
-Mesh* mesh;
-Material* material;
-Texture* texture;
-
 //TODO refactor
 // Mouse Tracking Variables
 int startX, startY, startZ = 0, tracking = 0;
@@ -28,7 +23,7 @@ Quaternion qBase;
 /////////////////////////////////////////////////////////////////////// SHADERs
 
 void createShaderProgram() {
-	shader = new VSShaderLib();
+	VSShaderLib* shader = new VSShaderLib();
 	shader->init();
 	shader->loadShader(VSShaderLib::VERTEX_SHADER, "shaders/vertexShader.vert");
 	shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/fragShader.frag");
@@ -53,7 +48,7 @@ void createShaderProgram() {
 	//Texture
 	shader->addUniform("tex_map", GL_INT, 1);
 
-	ManagerShader::instance()->add("shader1", shader);
+	ManagerShader::instance()->add("baseshader", shader);
 	ManagerShader::instance()->flushManagerMesh();
 
 	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create shaders(new).");
@@ -67,43 +62,35 @@ void destroyShaderProgram() {
 
 /////////////////////////////////////////////////////////////////////// VAOs & VBOs
 
-void createBufferObjects()
-{
+void createBufferObjects() {
 	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create VAOs and VBOs.");
 }
 
-void destroyBufferObjects()
-{
-	mesh->destroyBufferObjects();
+void destroyBufferObjects() {
+	//mesh->destroyBufferObjects();
 
 	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not destroy VAOs and VBOs.");
 }
 
 /////////////////////////////////////////////////////////////////////// SCENE
 
-void createMesh() 
-{
-	mesh = new Mesh(std::string("Models/pawn.obj"));
-	ManagerMesh::instance()->add("mesh1", mesh);
-	ManagerMesh::instance()->add("mesh2", mesh);
-	ManagerMesh::instance()->add("mesh3", mesh);
-	ManagerMesh::instance()->add("mesh4", mesh);
-	ManagerMesh::instance()->add("mesh5", mesh);
+void createMesh() {
+	Mesh* mesh = new Mesh(std::string("Models/pawn.obj"));
+	ManagerMesh::instance()->add("pawn", mesh);
 	ManagerMesh::instance()->flushManagerMesh();
 }
 
-void createMaterial()
-{
-	material = new Material(std::string("Models/pawn.mtl"));
+void createMaterial() {
+	Material* material = new Material(std::string("Models/pawn.mtl"));
 	Material* mat2 = new Material(std::string("Models/red.mtl"));
-	ManagerMaterial::instance()->add("material1", material);
-	ManagerMaterial::instance()->add("material2", mat2);
+	ManagerMaterial::instance()->add("pawn", material);
+	ManagerMaterial::instance()->add("red", mat2);
 	ManagerMaterial::instance()->flushManagerMesh();
 }
 
-void createTexture()
-{
-	texture = new Texture("Models/stone.tga");
+void createTexture() {
+	Texture* texture = new Texture("Models/stone.tga");
+	ManagerTexture::instance()->add("stone", texture);
 }
 
 void createSceneGraph() {
@@ -113,10 +100,10 @@ void createSceneGraph() {
 
 	SceneNode* mainNode = new SceneNode();
 	sceneGraph->addSceneNode("mainNode", mainNode);
-	mainNode->mesh = mesh;
-	mainNode->material = material;
-	mainNode->texture = texture;
-	mainNode->shaderProgram = shader;
+	mainNode->mesh = ManagerMesh::instance()->get("pawn");
+	mainNode->material = ManagerMaterial::instance()->get("pawn");
+	mainNode->texture = ManagerTexture::instance()->get("stone");
+	mainNode->shaderProgram = ManagerShader::instance()->get("baseshader");
 }
 /////////////////////////////////////////////////////////////////////// SCENE
 

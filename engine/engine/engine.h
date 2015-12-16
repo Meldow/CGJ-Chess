@@ -28,6 +28,7 @@
 #include "SceneGraph.h"
 #include "SceneNode.h"
 #include "Material.h"
+#include "BaseLight.h"
 
 /*
 * Managers
@@ -37,3 +38,4 @@
 #include "ManagerMesh.h"
 #include "ManagerMaterial.h"
 #include "ManagerShader.h"
+#include "ManagerTexture.h"
