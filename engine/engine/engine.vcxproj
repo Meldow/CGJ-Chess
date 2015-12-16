@@ -169,6 +169,7 @@
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="vsShaderLib.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +190,7 @@
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="Vectors.h" />
     <ClInclude Include="vsShaderLib.h" />
     <ClInclude Include="WelcomeScreen.h" />
