@@ -38,7 +38,9 @@ private:
 	std::map<const char*, SceneNode*> sceneNodes;
 	std::map<const char*, SceneNode*>::iterator _sceneNodesIterator;
 
+	Matrix4* calculateGraphModelMatrix();
 	void setUniforms();
 	void loadMaterialUniforms();
 	void loadTextureUniforms();
+	void updateModelMatrix();
 };

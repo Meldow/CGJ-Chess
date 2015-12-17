@@ -34,7 +34,7 @@ void SceneNode::loadMaterialUniforms() {
 	shaderProgram->setUniform("mat.diffuse", material->getDiffuse());
 	shaderProgram->setUniform("mat.specular", material->getSpecular());
 	shaderProgram->setUniform("mat.shininess", material->getShininess());
-	
+
 	Matrix4* nm = new Matrix4(modelMatrix);
 	shaderProgram->setUniform("NormalMatrix", nm->invert().transpose().data());
 
@@ -47,7 +47,24 @@ void SceneNode::loadTextureUniforms() {
 	shaderProgram->setUniform("tex_map", 0);
 }
 
+void SceneNode::updateModelMatrix() {
+	modelMatrix = Matrix4().translate(transform.position);
+		//TODO
+		//.rotate(transform.rotation.x, Vector3(1, 0, 0))
+		//.rotate(transform.rotation.y, Vector3(0, 1, 0))
+		//.rotate(transform.rotation.z, Vector3(0, 0, 1))
+		//.scale(transform.scale.x, transform.scale.y, transform.scale.z);
+}
+
+Matrix4* SceneNode::calculateGraphModelMatrix() {
+	return new Matrix4();
+}
+
 void SceneNode::setUniforms() {
+	//calculate model matrix
+	updateModelMatrix();
+	std::cout << "\nmodel::" << name << " | position:: " << transform.position << "\n" << modelMatrix;
+
 	shaderProgram->setUniform("ModelMatrix", modelMatrix.data());
 
 	if (material) loadMaterialUniforms();
@@ -84,7 +101,7 @@ void SceneNode::draw() {
 		}
 		setUniforms();
 		if (mesh) mesh->draw();
-		
+
 		if (shaderProgram->needBlend) {
 			glDisable(GL_BLEND);
 			glDisable(GL_CULL_FACE);
