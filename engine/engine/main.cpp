@@ -2,7 +2,7 @@
 
 #define CAPTION "CGJ - Chess"
 
-int WinX = 640, WinY = 480;
+int WinX = 800, WinY = 600;
 int WindowHandle = 0;
 unsigned int FrameCount = 0;
 
@@ -27,8 +27,8 @@ bool pickObject = false;
 void createShaderProgram() {
 	VSShaderLib* shader = new VSShaderLib();
 	shader->init();
-	shader->loadShader(VSShaderLib::VERTEX_SHADER, "shaders/vertexShader.vert");
-	shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/fragShader.frag");
+	shader->loadShader(VSShaderLib::VERTEX_SHADER, "shaders/lighting/vs.glsl");
+	shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/lighting/fs.glsl");
 
 	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::VERTICES, "in_Position");
 	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::TEXCOORDS, "in_TexCoord");
@@ -84,7 +84,7 @@ void createMesh() {
 	ManagerMesh::instance()->add("queen", mesh);
 
 	Mesh* mesh2 = new Mesh(std::string("Models/pawn.obj"));
-	ManagerMesh::instance()->add("pawn", mesh);
+	ManagerMesh::instance()->add("pawn", mesh2);
 
 
 	ManagerMesh::instance()->flushManagerMesh();
@@ -114,6 +114,7 @@ void createSceneGraph() {
 	mainNode->material = ManagerMaterial::instance()->get("pawn");
 	mainNode->texture = ManagerTexture::instance()->get("stone");
 	mainNode->shaderProgram = ManagerShader::instance()->get("baseshader");
+	mainNode->modelMatrix = Matrix4().translate(0, -.5, 0);
 
 	SceneNode* mainNode2 = new SceneNode();
 	sceneGraph->addSceneNode("mainNode2", mainNode2);
@@ -121,7 +122,7 @@ void createSceneGraph() {
 	mainNode2->material = ManagerMaterial::instance()->get("pawn");
 	mainNode2->texture = ManagerTexture::instance()->get("stone");
 	mainNode2->shaderProgram = ManagerShader::instance()->get("baseshader");
-	mainNode2->modelMatrix = Matrix4().translate(0.5, 0, 0);
+	mainNode2->modelMatrix = Matrix4().translate(0.75, -.5, 0);
 }
 
 void createLights() {

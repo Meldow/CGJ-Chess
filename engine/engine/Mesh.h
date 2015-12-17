@@ -33,6 +33,9 @@ private:
 
 	std::vector <unsigned int> vertexIdx, texcoordIdx, normalIdx;
 
+	GLuint VaoId;
+	GLuint VboVertices, VboTexcoords, VboNormals;
+
 public:
 
 	static const int VERTICES = 0;

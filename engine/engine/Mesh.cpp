@@ -1,8 +1,5 @@
 #include "Mesh.h"
 
-GLuint VaoId;
-GLuint VboVertices, VboTexcoords, VboNormals;
-
 Mesh::Mesh(std::string& filename) {
 	createMesh(filename);
 	createBufferObjects();
