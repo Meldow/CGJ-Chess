@@ -16,7 +16,7 @@ BoundingBox::~BoundingBox() {}
 
 // setters
 void BoundingBox::setPosition(float x, float y, float z) {
-	boundingBoxMin = Vector3(x - boundingBoxSize.x, y - boundingBoxSize.y, z - boundingBoxSize.z);
+	boundingBoxMin = Vector3(x - boundingBoxSize.x, y, z - boundingBoxSize.z);
 	boundingBoxMax = Vector3(x + boundingBoxSize.x, y + boundingBoxSize.y, z + boundingBoxSize.z);
 }
 
