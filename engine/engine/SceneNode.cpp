@@ -72,21 +72,38 @@ void SceneNode::setUniforms() {
 
 void SceneNode::update() {
 	if (isDebug) std::cout << "\nUpdating SceneNode::name::" << name;
-	//std::cout << transform.position.x << "," << transform.position.y << ";" << transform.position.z << "\n";
-	if (sceneGraph->checkIntersection) {
-		if (boundingBox->checkRayIntersection(sceneGraph->rayOrigin, sceneGraph->rayDirection)) {
-			std::cout << "colision\n";
-			objectPicked = true;
+
+	boundingBox->setPosition(transform.position.x, transform.position.y, transform.position.z);
+
+	for (_sceneNodesIterator = sceneNodes.begin(); _sceneNodesIterator != sceneNodes.end(); ++_sceneNodesIterator) {
+		_sceneNodesIterator->second->update();
+		if (sceneGraph->checkIntersection) {
+			if (childPicked) {
+				if (_sceneNodesIterator->second->objectPicked)
+					_sceneNodesIterator->second->checkIntersection();
+			}
+			else {
+				_sceneNodesIterator->second->checkIntersection();
+			}
 		}
-	} else objectPicked = false;
+		else {
+			childPicked = false;
+			_sceneNodesIterator->second->objectPicked = false;
+		}
+	}
+}
+
+void SceneNode::checkIntersection() {
+	if (boundingBox->checkRayIntersection(sceneGraph->rayOrigin, sceneGraph->rayDirection)) {
+		objectPicked = true;
+		parentNode->childPicked = true;
+	}
 
 	if (objectPicked) {
 		float camDist = sceneGraph->camera->Distance;
 		transform.setPosition(sceneGraph->rayPoint.x * camDist, sceneGraph->rayPoint.y * camDist, sceneGraph->rayPoint.z * camDist);
 		modelMatrix = Matrix4().translate(transform.position.x, transform.position.y, transform.position.z);
 	}
-
-	boundingBox->setPosition(transform.position.x, transform.position.y, transform.position.z);
 }
 
 void SceneNode::draw() {

@@ -24,6 +24,7 @@ public:
 	Transform transform;
 	BoundingBox* boundingBox;
 	bool objectPicked = false;
+	bool childPicked = false;
 	bool isDebug = false;
 
 	SceneNode();
@@ -34,6 +35,8 @@ public:
 	//update
 	void update();
 	void draw();
+	void checkIntersection();
+
 private:
 	std::map<const char*, SceneNode*> sceneNodes;
 	std::map<const char*, SceneNode*>::iterator _sceneNodesIterator;
