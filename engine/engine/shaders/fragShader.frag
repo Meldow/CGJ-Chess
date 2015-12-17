@@ -7,11 +7,44 @@ struct Materials {
 	float shininess;
 };
 
+struct BaseLight                                                                    
+{                                                                                   
+    vec3 Color;                                                                     
+    float AmbientIntensity;                                                         
+    float DiffuseIntensity;                                                         
+};                                                                                  
+                                                                                    
+struct DirectionalLight                                                             
+{                                                                                   
+    BaseLight Base;                                                                 
+    vec3 Direction;                                                                 
+};                                                                                  
+                                                                                    
+struct Attenuation                                                                  
+{                                                                                   
+    float Constant;                                                                 
+    float Linear;                                                                   
+    float Exp;                                                                      
+};                                                                                  
+                                                                                    
+struct PointLight                                                                           
+{                                                                                           
+    BaseLight Base;                                                                         
+    vec3 Position;                                                                          
+    Attenuation Atten;                                                                      
+};                                                                                          
+                                                                                            
+struct SpotLight                                                                            
+{                                                                                           
+    PointLight Base;                                                                        
+    vec3 Direction;                                                                         
+    float Cutoff;                                                                           
+};
+
 uniform Materials mat;
 uniform sampler2D tex_map;
 
-uniform Camera
-{
+uniform Camera {
     mat4 ViewMatrix;
     mat4 ProjectionMatrix;
 };
@@ -26,7 +59,6 @@ in Data {
 out vec4 out_Color;
 
 void main(void) {
-	/*
 	//Material
 	vec3 MaterialEmissiveColor = vec3(0.1,0.1,0.1);
 	vec3 MaterialAmbientColor = vec3(mat.ambient);
@@ -34,6 +66,10 @@ void main(void) {
 	vec3 MaterialSpecularColor = vec3(mat.specular);
 	float MaterialShininess = mat.shininess;
 	
+	
+	//First light Model
+	
+
 	//Light
 	vec3 LightPosition = vec3(2.0,2.0,2.0);
 	vec3 LightAmbientColor = vec3(0.2, 0.2, 0.2);
@@ -41,7 +77,7 @@ void main(void) {
 	vec3 LightSpecularColor = vec3( 0.1, 0.1, 0.1);
 	vec3 LightAttenuation = vec3( 0.1, 0.1, 0.1);
 	float LightRange = 10.0;
-	
+
 	//lighting
 	vec3 V = vec3(DataIn.EyeVertexPos);
 	vec3 N = normalize(DataIn.Normal);
@@ -81,10 +117,10 @@ void main(void) {
 	}
 
 	out_Color = vec4(emissive + color, 1.0);
-	*/
 	
-	vec4 texel = texture(tex_map, DataIn.Tex_Coord);
-	out_Color = texel;
+	
+	//vec4 texel = texture(tex_map, DataIn.Tex_Coord);
+	//out_Color = texel;
 	//out_Color = mat.diffuse;
 	//out_Color = vec4(DataIn.Tex_Coord, 0.0, 0.0);
 	//out_Color = DataIn.VertexPos;

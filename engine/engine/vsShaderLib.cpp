@@ -179,7 +179,6 @@ VSShaderLib::setVertexAttribName(VSShaderLib::AttribType at, std::string name) {
 
 void
 VSShaderLib::addUniform(std::string name, GLenum type, unsigned int size) {
-
 	myUniforms u;
 	u.type = type;
 	u.location = glGetUniformLocation(pProgram, name.c_str());

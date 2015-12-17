@@ -27,6 +27,7 @@ void SceneNode::loadMaterialUniforms() {
 	shaderProgram->setUniform("mat.diffuse", material->getDiffuse());
 	shaderProgram->setUniform("mat.specular", material->getSpecular());
 	shaderProgram->setUniform("mat.shininess", material->getShininess());
+
 }
 
 void SceneNode::loadTextureUniforms() {

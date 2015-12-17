@@ -28,7 +28,7 @@
 #include "SceneGraph.h"
 #include "SceneNode.h"
 #include "Material.h"
-#include "BaseLight.h"
+#include "Light.h"
 
 /*
 * Managers

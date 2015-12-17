@@ -45,6 +45,7 @@ void createShaderProgram() {
 	shader->addUniform("mat.specular", GL_FLOAT_VEC4, 1);
 	shader->addUniform("mat.shininess", GL_FLOAT, 1);
 
+
 	//Texture
 	shader->addUniform("tex_map", GL_INT, 1);
 
