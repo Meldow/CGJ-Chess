@@ -49,11 +49,11 @@ void SceneNode::loadTextureUniforms() {
 
 void SceneNode::updateModelMatrix() {
 	modelMatrix = Matrix4().translate(transform.position);
-		//TODO
-		//.rotate(transform.rotation.x, Vector3(1, 0, 0))
-		//.rotate(transform.rotation.y, Vector3(0, 1, 0))
-		//.rotate(transform.rotation.z, Vector3(0, 0, 1))
-		//.scale(transform.scale.x, transform.scale.y, transform.scale.z);
+	//TODO
+	//.rotate(transform.rotation.x, Vector3(1, 0, 0))
+	//.rotate(transform.rotation.y, Vector3(0, 1, 0))
+	//.rotate(transform.rotation.z, Vector3(0, 0, 1))
+	//.scale(transform.scale.x, transform.scale.y, transform.scale.z);
 }
 
 Matrix4* SceneNode::calculateGraphModelMatrix() {
@@ -63,7 +63,6 @@ Matrix4* SceneNode::calculateGraphModelMatrix() {
 void SceneNode::setUniforms() {
 	//calculate model matrix
 	updateModelMatrix();
-	std::cout << "\nmodel::" << name << " | position:: " << transform.position << "\n" << modelMatrix;
 
 	shaderProgram->setUniform("ModelMatrix", modelMatrix.data());
 
