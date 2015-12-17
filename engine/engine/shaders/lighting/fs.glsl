@@ -70,7 +70,6 @@ vec4 CalcPointLights(vec3 Normal, vec3 EyePos) {
 	vec4 LightPosition = vec4(0.0,0.0,-3.0, 1.0);
 	vec3 LightAmbientColor = vec3(0.25, 0.25, 0.25);
 	vec3 LightDiffuseColor = vec3( 0.3, 0.1, 0.1);
-	vec3 LightSpecularColor = vec3( 0.0, 0.0, 0.2);
 	vec3 LightAttenuation = vec3( 1.0, 0.045, 0.0075);
 	float LightRange = 10.0;
 	
