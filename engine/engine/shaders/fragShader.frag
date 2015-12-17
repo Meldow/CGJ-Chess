@@ -45,7 +45,6 @@ struct SpotLight
 };
 
 uniform Material mat;
-//uniform PointLight pLights[MAX_POINT_LIGHTS];
 uniform sampler2D tex_map;
 
 uniform Camera {
@@ -59,6 +58,10 @@ in Data {
 	vec3 Normal;
 	vec2 Tex_Coord;
 } DataIn;
+
+//lights
+//uniform int mlwNumPointLights;   
+//uniform PointLight mlwPointLights;
 
 out vec4 out_Color;
 
@@ -119,8 +122,13 @@ void main(void) {
 	vec3 V = vec3(DataIn.EyeVertexPos);
 	vec3 N = normalize(DataIn.Normal);
 	
+	vec4 TotalLight = vec4(0,0,0,0);
 	//point light
-	vec4 TotalLight = CalcPointLights(N, V);
+	/*for (int i = 0 ; i < gNumPointLights ; i++) {                                           
+        //TotalLight += CalcPointLight(gPointLights[i], Normal);
+		TotaLight += CalcPointLights(N, V);
+    } */
+	
 	
 	out_Color = vec4(MaterialEmissiveColor, 1.0) + TotalLight;
 	

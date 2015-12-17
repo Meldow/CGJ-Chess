@@ -108,6 +108,15 @@ void createSceneGraph() {
 	mainNode->texture = ManagerTexture::instance()->get("stone");
 	mainNode->shaderProgram = ManagerShader::instance()->get("baseshader");
 }
+
+void createLights() {
+	PointLight* point_light = new PointLight();
+	ManagerLight::instance()->addPointLight("main", point_light);
+	ManagerLight::instance()->addPointLight("main2", point_light);
+	ManagerLight::instance()->addPointLight("main3", point_light);
+	ManagerLight::instance()->addPointLight("main4", point_light);
+	ManagerLight::instance()->addPointLight("main5", point_light);
+}
 /////////////////////////////////////////////////////////////////////// SCENE
 
 void drawScene() {
@@ -155,9 +164,9 @@ void timer(int value) {
 void processKeys(unsigned char key, int xx, int yy) {
 	switch (key) {
 		// Temporary
-		case 'p': case 'P':
-			pickObject = !pickObject;
-			break;
+	case 'p': case 'P':
+		pickObject = !pickObject;
+		break;
 	}
 }
 
@@ -194,7 +203,7 @@ void processMouseMotion(int xx, int yy) {
 		betaAux = (beta + deltaY);
 	}
 
-	if (pickObject) 
+	if (pickObject)
 		ManagerSceneGraph::instance()->getSceneGraph("main")->calculateRay(xx, yy, WinX, WinY);
 	else {
 		if (gimbal_lock) {
@@ -203,14 +212,13 @@ void processMouseMotion(int xx, int yy) {
 			Matrix4 deltaYRotation;
 			deltaYRotation = Matrix4().rotateX(betaAux);
 			ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix = deltaXRotation * deltaYRotation;
-		}
-		else {
+		} else {
 			Quaternion qDeltaX = Quaternion(alphaAux, Vector3(0.0f, 1.0f, 0.0f));
 			Quaternion qDeltaY = Quaternion(betaAux, Vector3(1.0f, 0.0f, 0.0f));
 			Quaternion qResult = qDeltaX * qDeltaY * qBase;
 			ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix = qResult.quaternionToMatrix();
 		}
-	} 
+	}
 }
 
 //Mouse Wheel to rotate Camera on the Z-Axis
@@ -290,6 +298,7 @@ void init(int argc, char* argv[]) {
 	createMaterial();
 	createTexture();
 	createShaderProgram();
+	createLights();
 	createSceneGraph();
 	setupCallbacks();
 }

@@ -158,6 +158,7 @@
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ManagerLight.cpp" />
     <ClCompile Include="ManagerMaterial.cpp" />
     <ClCompile Include="ManagerMesh.cpp" />
     <ClCompile Include="ManagerOpenGLErrors.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="engine.h" />
     <ClInclude Include="IDrawable.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="ManagerLight.h" />
     <ClInclude Include="ManagerMaterial.h" />
     <ClInclude Include="ManagerMesh.h" />
     <ClInclude Include="ManagerOpenGLErrors.h" />
