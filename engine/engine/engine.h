@@ -29,6 +29,7 @@
 #include "SceneNode.h"
 #include "Material.h"
 #include "Light.h"
+#include "Transform.h"
 
 /*
 * Managers
