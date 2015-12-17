@@ -4,13 +4,9 @@
 
 class BoundingBox {
 public:
+	BoundingBox();
 	BoundingBox(float sizeX, float sizeY, float sizeZ);
 	~BoundingBox();
-
-private:
-	Vector3 boundingBoxSize;
-	Vector3 boundingBoxMin;
-	Vector3 boundingBoxMax;
 
 	// setters
 	void setPosition(float x, float y, float z);
@@ -21,4 +17,9 @@ private:
 	Vector3 getBoundingBoxMax();
 
 	bool checkRayIntersection(Vector3 ray_origin, Vector3 ray_direction);
+
+private:
+	Vector3 boundingBoxSize;
+	Vector3 boundingBoxMin;
+	Vector3 boundingBoxMax;
 };

@@ -4,7 +4,7 @@
 
 Transform::Transform() {
 	Vector3 position = Vector3(0.0f, 0.0f, 0.0f);
-	Vector3 scale = Vector3(0.0f, 0.0f, 0.0f);
+	Vector3 scale = Vector3(1.0f, 1.0f, 1.0f);
 	Vector4 rotation = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
@@ -28,17 +28,4 @@ void Transform::setRotation(float angle, float x, float y, float z) {
 	rotation.x = x;
 	rotation.y = y;
 	rotation.z = z;
-}
-
-// getters
-Vector3 Transform::getPosition() {
-	return position;
-}
-
-Vector3 Transform::getScale() {
-	return scale;
-}
-
-Vector4 Transform::getRotation() {
-	return rotation;
 }
