@@ -39,3 +39,4 @@
 #include "ManagerMaterial.h"
 #include "ManagerShader.h"
 #include "ManagerTexture.h"
+#include "ManagerLight.h"

@@ -160,6 +160,8 @@ public:
 	bool isProgramLinked();
 
 
+	bool needBlend = false;
+
 protected:
 
 	// AUX STRUCTURES

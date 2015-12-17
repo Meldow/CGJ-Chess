@@ -5,6 +5,7 @@
 #include "Material.h"
 #include "Texture.h"
 #include "SceneGraph.h"
+#include "ManagerLight.h"
 
 SceneNode::SceneNode() {
 	modelMatrix = Matrix4().identity();
@@ -31,6 +32,8 @@ void SceneNode::loadMaterialUniforms() {
 	shaderProgram->setUniform("mat.specular", material->getSpecular());
 	shaderProgram->setUniform("mat.shininess", material->getShininess());
 
+	shaderProgram->setUniform("mlwNumPointLights", ManagerLight::instance()->getLightsCount());
+
 }
 
 void SceneNode::loadTextureUniforms() {
@@ -41,8 +44,8 @@ void SceneNode::loadTextureUniforms() {
 void SceneNode::setUniforms() {
 	shaderProgram->setUniform("ModelMatrix", modelMatrix.data());
 
-	if(material) loadMaterialUniforms();
-	if(texture) loadTextureUniforms();
+	if (material) loadMaterialUniforms();
+	if (texture) loadTextureUniforms();
 }
 
 void SceneNode::update() {
@@ -52,8 +55,7 @@ void SceneNode::update() {
 		if (boundingBox->checkRayIntersection(sceneGraph->rayOrigin, sceneGraph->rayDirection)) {
 			objectPicked = true;
 		}
-	}
-	else objectPicked = false;
+	} else objectPicked = false;
 
 	if (objectPicked) {
 		float camDist = sceneGraph->camera->Distance;
@@ -68,8 +70,12 @@ void SceneNode::draw() {
 	if (isDebug) std::cout << "\nDrawaing SceneNode::name::" << name;
 
 	if (shaderProgram) {
+		if(shaderProgram->needBlend) glEnable(GL_BLEND);
+		
 		setUniforms();
-		if(mesh) mesh->draw();
+		if (mesh) mesh->draw();
+		
+		if (!shaderProgram->needBlend) glDisable(GL_BLEND);
 	}
 
 	for (_sceneNodesIterator = sceneNodes.begin(); _sceneNodesIterator != sceneNodes.end(); ++_sceneNodesIterator) {
