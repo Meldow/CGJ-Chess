@@ -30,6 +30,10 @@ void Material::parseTransparency(std::stringstream& sin) {
 	ambient[3] = diffuse[3] = specular[3] = alpha;
 }
 
+void Material::setAlpha(float alpha) {
+	ambient[3] = diffuse[3] = specular[3] = alpha;
+}
+
 void Material::parseLine(std::stringstream& sin) {
 	std::string s;
 	sin >> s;

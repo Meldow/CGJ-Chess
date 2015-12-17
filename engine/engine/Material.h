@@ -21,6 +21,8 @@ public:
 	void parseShininess(std::stringstream& sin);
 	void parseTransparency(std::stringstream& sin);
 
+	void setAlpha(float alpha);
+
 	void parseLine(std::stringstream& sin);
 	void loadMaterialData(std::string& filename);
 	const void createMaterial(std::string& filename);
