@@ -28,7 +28,7 @@ SceneNode* SceneNode::getSceneNode(char* name) {
 
 void SceneNode::loadMaterialUniforms() {
 	if (shaderProgram) {
-		if (shaderProgram->needBlend) material->setAlpha(0.1);
+		if (shaderProgram->needBlend) material->setAlpha(0.5);
 	}
 	shaderProgram->setUniform("mat.ambient", material->getAmbient());
 	shaderProgram->setUniform("mat.diffuse", material->getDiffuse());
