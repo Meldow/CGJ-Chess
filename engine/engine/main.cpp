@@ -20,6 +20,8 @@ float alphaAux = 0.0f, betaAux = 0.0f, phiAux = 0.0f;
 bool gimbal_lock = false;
 Quaternion qBase;
 
+bool pickObject = false;
+
 /////////////////////////////////////////////////////////////////////// SHADERs
 
 void createShaderProgram() {
@@ -150,13 +152,12 @@ void timer(int value) {
 /////////////////////////////////////////////////////////////////////// KEYBOARD
 
 void processKeys(unsigned char key, int xx, int yy) {
-	/*switch (key) {
-	case 'p': case 'P':
-		Camera* camera = ManagerSceneGraph::instance()->getSceneGraph("main")->camera;
-		camera->isOrtho = !camera->isOrtho;
-		std::cout << "KEYBOARD(P)::isOrtho::" << camera->isOrtho;
-		break;
-	}*/
+	switch (key) {
+		// Temporary
+		case 'p': case 'P':
+			pickObject = !pickObject;
+			break;
+	}
 }
 
 /////////////////////////////////////////////////////////////////////// MOUSE
@@ -173,6 +174,7 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 
 	//stop tracking the mouse
 	else if (state == GLUT_UP) {
+		ManagerSceneGraph::instance()->getSceneGraph("main")->checkIntersection = false;
 		if (tracking == 1) {
 			alpha = alpha + (xx - startX);
 			beta = beta + (yy - startY);
@@ -191,18 +193,23 @@ void processMouseMotion(int xx, int yy) {
 		betaAux = (beta + deltaY);
 	}
 
-	if (gimbal_lock) {
-		Matrix4 deltaXRotation;
-		deltaXRotation = Matrix4().rotateY(alphaAux);
-		Matrix4 deltaYRotation;
-		deltaYRotation = Matrix4().rotateX(betaAux);
-		ManagerSceneGraph::instance()->getSceneGraph("main")->camera->setRotationMatrix(deltaXRotation * deltaYRotation);
-	} else {
-		Quaternion qDeltaX = Quaternion(alphaAux, Vector3(0.0f, 1.0f, 0.0f));
-		Quaternion qDeltaY = Quaternion(betaAux, Vector3(1.0f, 0.0f, 0.0f));
-		Quaternion qResult = qDeltaX * qDeltaY * qBase;
-		ManagerSceneGraph::instance()->getSceneGraph("main")->camera->setRotationMatrix(qResult.quaternionToMatrix());
-	}
+	if (pickObject) 
+		ManagerSceneGraph::instance()->getSceneGraph("main")->calculateRay(xx, yy, WinX, WinY);
+	else {
+		if (gimbal_lock) {
+			Matrix4 deltaXRotation;
+			deltaXRotation = Matrix4().rotateY(alphaAux);
+			Matrix4 deltaYRotation;
+			deltaYRotation = Matrix4().rotateX(betaAux);
+			ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix = deltaXRotation * deltaYRotation;
+		}
+		else {
+			Quaternion qDeltaX = Quaternion(alphaAux, Vector3(0.0f, 1.0f, 0.0f));
+			Quaternion qDeltaY = Quaternion(betaAux, Vector3(1.0f, 0.0f, 0.0f));
+			Quaternion qResult = qDeltaX * qDeltaY * qBase;
+			ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix = qResult.quaternionToMatrix();
+		}
+	} 
 }
 
 //Mouse Wheel to rotate Camera on the Z-Axis

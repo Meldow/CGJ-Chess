@@ -1,17 +1,22 @@
 #pragma once
 #include "BoundingBox.h"
 
+BoundingBox::BoundingBox() {
+	boundingBoxMin = Vector3(0.0f, 0.0f, 0.0f);
+	boundingBoxMax = Vector3(0.0f, 0.0f, 0.0f);
+}
+
 BoundingBox::BoundingBox(float sizeX, float sizeY, float sizeZ) {
-	Vector3 boundingBoxSize = Vector3(sizeX, sizeY, sizeZ);
-	Vector3 boundingBoxMin = Vector3(0.0f, 0.0f, 0.0f);
-	Vector3 boundingBoxMax = Vector3(0.0f, 0.0f, 0.0f);
+	boundingBoxSize = Vector3(sizeX, sizeY, sizeZ);
+	boundingBoxMin = Vector3(0.0f, 0.0f, 0.0f);
+	boundingBoxMax = Vector3(0.0f, 0.0f, 0.0f);
 }
 
 BoundingBox::~BoundingBox() {}
 
 // setters
 void BoundingBox::setPosition(float x, float y, float z) {
-	boundingBoxMin = Vector3(x, y, z);
+	boundingBoxMin = Vector3(x - boundingBoxSize.x, y - boundingBoxSize.y, z - boundingBoxSize.z);
 	boundingBoxMax = Vector3(x + boundingBoxSize.x, y + boundingBoxSize.y, z + boundingBoxSize.z);
 }
 

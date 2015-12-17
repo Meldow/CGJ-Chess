@@ -1,6 +1,8 @@
 #pragma once
 #include <map>
 #include "Matrices.h"
+#include "Transform.h"
+#include "BoundingBox.h"
 
 class VSShaderLib;
 class Mesh;
@@ -19,7 +21,9 @@ public:
 	Texture* texture;
 
 	char* name;
-	//BoxCollider* collider;
+	Transform transform;
+	BoundingBox* boundingBox;
+	bool objectPicked = false;
 	bool isDebug = false;
 
 	SceneNode();

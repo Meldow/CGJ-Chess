@@ -4,9 +4,12 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "Texture.h"
+#include "SceneGraph.h"
 
 SceneNode::SceneNode() {
 	modelMatrix = Matrix4().identity();
+	transform = Transform();
+	boundingBox = new BoundingBox(0.607f, 1.091f, 0.607f);
 }
 
 SceneNode::~SceneNode() {}
@@ -44,7 +47,20 @@ void SceneNode::setUniforms() {
 void SceneNode::update() {
 	if (isDebug) std::cout << "\nUpdating SceneNode::name::" << name;
 
-	//update boxcollider position (with transform)
+	if (sceneGraph->checkIntersection) {
+		if (boundingBox->checkRayIntersection(sceneGraph->rayOrigin, sceneGraph->rayDirection)) {
+			objectPicked = true;
+		}
+	}
+	else objectPicked = false;
+
+	if (objectPicked) {
+		float camDist = sceneGraph->camera->Distance;
+		transform.setPosition(sceneGraph->rayPoint.x * camDist, sceneGraph->rayPoint.y * camDist, sceneGraph->rayPoint.z * camDist);
+		modelMatrix = Matrix4().translate(transform.position.x, transform.position.y, transform.position.z);
+	}
+
+	boundingBox->setPosition(transform.position.x, transform.position.y, transform.position.z);
 }
 
 void SceneNode::draw() {

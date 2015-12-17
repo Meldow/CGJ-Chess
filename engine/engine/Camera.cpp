@@ -25,11 +25,6 @@ void Camera::createUniformBuffer(GLuint UBO_BP)
 	glBindBufferBase(GL_UNIFORM_BUFFER, UBO_BP, VboCamera);
 }
 
-void Camera::setRotationMatrix(Matrix4 rotation)
-{
-	RotationMatrix = rotation;
-}
-
 Matrix4 Camera::perspective(float fov, float aspect, float mNear, float mFar) {
 
 	float d = 1.0f / tan(fov * (M_PI / 360.0f));

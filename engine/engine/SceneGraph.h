@@ -8,6 +8,11 @@ public:
 	Camera* camera;
 	char* name;
 
+	Vector3 rayOrigin;
+	Vector3 rayDirection;
+	Vector3 rayPoint;
+	bool checkIntersection = false;
+
 	bool isDebug = false;
 
 	SceneGraph();
@@ -18,6 +23,8 @@ public:
 
 	void update();
 	void draw();
+
+	void calculateRay(int mouseX, int mouseY, int winX, int winY);
 private:
 	std::map<const char*, SceneNode*> sceneNodes;
 	std::map<const char*, SceneNode*>::iterator _sceneNodesIterator;
