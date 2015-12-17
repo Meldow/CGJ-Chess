@@ -47,6 +47,7 @@ void createShaderProgram() {
 	shader->addUniform("mat.specular", GL_FLOAT_VEC4, 1);
 	shader->addUniform("mat.shininess", GL_FLOAT, 1);
 
+	shader->addUniform("mlwNumPointLights", GL_INT, 1);
 
 	//Texture
 	shader->addUniform("tex_map", GL_INT, 1);
@@ -78,8 +79,13 @@ void destroyBufferObjects() {
 /////////////////////////////////////////////////////////////////////// SCENE
 
 void createMesh() {
-	Mesh* mesh = new Mesh(std::string("Models/pawn.obj"));
+	Mesh* mesh = new Mesh(std::string("Models/queen.obj"));
+	ManagerMesh::instance()->add("queen", mesh);
+
+	Mesh* mesh2 = new Mesh(std::string("Models/pawn.obj"));
 	ManagerMesh::instance()->add("pawn", mesh);
+
+
 	ManagerMesh::instance()->flushManagerMesh();
 }
 
@@ -107,6 +113,14 @@ void createSceneGraph() {
 	mainNode->material = ManagerMaterial::instance()->get("pawn");
 	mainNode->texture = ManagerTexture::instance()->get("stone");
 	mainNode->shaderProgram = ManagerShader::instance()->get("baseshader");
+
+	SceneNode* mainNode2 = new SceneNode();
+	sceneGraph->addSceneNode("mainNode2", mainNode2);
+	mainNode2->mesh = ManagerMesh::instance()->get("queen");
+	mainNode2->material = ManagerMaterial::instance()->get("pawn");
+	mainNode2->texture = ManagerTexture::instance()->get("stone");
+	mainNode2->shaderProgram = ManagerShader::instance()->get("baseshader");
+	mainNode2->modelMatrix = Matrix4().translate(0.5, 0, 0);
 }
 
 void createLights() {
@@ -115,7 +129,6 @@ void createLights() {
 	ManagerLight::instance()->addPointLight("main2", point_light);
 	ManagerLight::instance()->addPointLight("main3", point_light);
 	ManagerLight::instance()->addPointLight("main4", point_light);
-	ManagerLight::instance()->addPointLight("main5", point_light);
 }
 /////////////////////////////////////////////////////////////////////// SCENE
 

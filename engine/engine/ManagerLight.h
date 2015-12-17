@@ -17,10 +17,12 @@ public:
 	void addDirectionalLight(char* name, DirectionalLight* directionalLight);
 	void addPointLight(char* name, PointLight* pointLight);
 	void addSpotLight(char* name, SpotLight* spotLight);
-	
+
 	DirectionalLight* getDirectionalLight(char* name);
 	PointLight* getPointLight(char* name);
 	SpotLight* getSpotLight(char* name);
+
+	int getLightsCount();
 
 private:
 	const unsigned int MAX_POINT_LIGHTS = 4;

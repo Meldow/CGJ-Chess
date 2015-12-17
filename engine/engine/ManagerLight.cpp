@@ -54,3 +54,7 @@ SpotLight* ManagerLight::getSpotLight(char* name) {
 	std::cout << "\nManagerLight::getSpotLight::Element not found::" << name;
 	return nullptr;
 }
+
+int ManagerLight::getLightsCount() {
+	return directionalLights.size() + pointLights.size() + spotLights.size();
+}

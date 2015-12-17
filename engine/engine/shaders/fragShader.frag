@@ -60,7 +60,7 @@ in Data {
 } DataIn;
 
 //lights
-//uniform int mlwNumPointLights;   
+uniform int mlwNumPointLights;   
 //uniform PointLight mlwPointLights;
 
 out vec4 out_Color;
@@ -128,11 +128,10 @@ void main(void) {
         //TotalLight += CalcPointLight(gPointLights[i], Normal);
 		TotaLight += CalcPointLights(N, V);
     } */
-	
+	TotalLight += CalcPointLights(N, V);
 	
 	out_Color = vec4(MaterialEmissiveColor, 1.0) + TotalLight;
-	
-	
+		
 	//vec4 texel = texture(tex_map, DataIn.Tex_Coord);
 	//out_Color = texel;
 	//out_Color = mat.diffuse;
