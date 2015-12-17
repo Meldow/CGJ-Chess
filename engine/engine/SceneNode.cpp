@@ -70,8 +70,12 @@ void SceneNode::draw() {
 	if (isDebug) std::cout << "\nDrawaing SceneNode::name::" << name;
 
 	if (shaderProgram) {
+		if(shaderProgram->needBlend) glEnable(GL_BLEND);
+		
 		setUniforms();
 		if (mesh) mesh->draw();
+		
+		if (!shaderProgram->needBlend) glDisable(GL_BLEND);
 	}
 
 	for (_sceneNodesIterator = sceneNodes.begin(); _sceneNodesIterator != sceneNodes.end(); ++_sceneNodesIterator) {

@@ -49,6 +49,7 @@ void createShaderProgram() {
 
 	shader->addUniform("mlwNumPointLights", GL_INT, 1);
 
+	shader->needBlend = false;
 	//Texture
 	shader->addUniform("tex_map", GL_INT, 1);
 
