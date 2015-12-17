@@ -5,7 +5,6 @@
 class BoundingBox {
 public:
 	BoundingBox();
-	BoundingBox(float sizeX, float sizeY, float sizeZ);
 	~BoundingBox();
 
 	// setters

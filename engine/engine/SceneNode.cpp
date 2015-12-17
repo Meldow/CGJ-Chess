@@ -10,7 +10,7 @@
 SceneNode::SceneNode() {
 	modelMatrix = Matrix4().identity();
 	transform = Transform();
-	boundingBox = new BoundingBox(0.607f, 1.091f, 0.607f);
+	boundingBox = new BoundingBox();
 }
 
 SceneNode::~SceneNode() {}
@@ -72,9 +72,10 @@ void SceneNode::setUniforms() {
 
 void SceneNode::update() {
 	if (isDebug) std::cout << "\nUpdating SceneNode::name::" << name;
-
+	//std::cout << transform.position.x << "," << transform.position.y << ";" << transform.position.z << "\n";
 	if (sceneGraph->checkIntersection) {
 		if (boundingBox->checkRayIntersection(sceneGraph->rayOrigin, sceneGraph->rayDirection)) {
+			std::cout << "colision\n";
 			objectPicked = true;
 		}
 	} else objectPicked = false;

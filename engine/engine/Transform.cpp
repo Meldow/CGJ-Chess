@@ -3,9 +3,9 @@
 #include <string>
 
 Transform::Transform() {
-	Vector3 position = Vector3(0.0f, 0.0f, 0.0f);
-	Vector3 scale = Vector3(1.0f, 1.0f, 1.0f);
-	Vector4 rotation = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	position = Vector3(0.0f, 0.0f, 0.0f);
+	scale = Vector3(1.0f, 1.0f, 1.0f);
+	rotation = Vector3(0.0f, 0.0f, 0.0f);
 }
 
 Transform::~Transform() {}
@@ -23,8 +23,7 @@ void Transform::setScale(float x, float y, float z) {
 	scale.z = z;
 }
 
-void Transform::setRotation(float angle, float x, float y, float z) {
-	rotation.w = angle;
+void Transform::setRotation(float x, float y, float z) {
 	rotation.x = x;
 	rotation.y = y;
 	rotation.z = z;
