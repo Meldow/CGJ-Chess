@@ -177,12 +177,12 @@ void main(void) {
 		
 	//vec4 texel = texture(tex_map, DataIn.Tex_Coord);
 	//out_Color = texel;
-	//out_Color = mat.diffuse;
+	out_Color = mat.diffuse;
 	//out_Color = vec4(DataIn.Tex_Coord, 0.0, 0.0);
 	//out_Color = DataIn.VertexPos;
 	//out_Color = mat.specular;
 	//out_Color = vec4(0.5, 0.5, 0.5, 1.0);
 	//out_Color = vec4(colorFresnel,1.0);
-	out_Color = reflectedColor + vec4(MaterialEmissiveColor, 1.0) + TotalLight;
+	//out_Color = reflectedColor + vec4(MaterialEmissiveColor, 1.0) + TotalLight;
 
 }
