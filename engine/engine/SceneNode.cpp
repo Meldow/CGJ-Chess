@@ -27,6 +27,9 @@ SceneNode* SceneNode::getSceneNode(char* name) {
 }
 
 void SceneNode::loadMaterialUniforms() {
+	if (shaderProgram) {
+		if (shaderProgram->needBlend) material->setAlpha(0.5);
+	}
 	shaderProgram->setUniform("mat.ambient", material->getAmbient());
 	shaderProgram->setUniform("mat.diffuse", material->getDiffuse());
 	shaderProgram->setUniform("mat.specular", material->getSpecular());
@@ -70,8 +73,10 @@ void SceneNode::draw() {
 	if (isDebug) std::cout << "\nDrawaing SceneNode::name::" << name;
 
 	if (shaderProgram) {
-		if(shaderProgram->needBlend) glEnable(GL_BLEND);
-		
+		if (shaderProgram->needBlend) {
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_BLEND);
+		}
 		setUniforms();
 		if (mesh) mesh->draw();
 		
