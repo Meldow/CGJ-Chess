@@ -2,12 +2,7 @@
 #include "BoundingBox.h"
 
 BoundingBox::BoundingBox() {
-	boundingBoxMin = Vector3(0.0f, 0.0f, 0.0f);
-	boundingBoxMax = Vector3(0.0f, 0.0f, 0.0f);
-}
-
-BoundingBox::BoundingBox(float sizeX, float sizeY, float sizeZ) {
-	boundingBoxSize = Vector3(sizeX, sizeY, sizeZ);
+	boundingBoxSize = Vector3(0.0f, 0.0f, 0.0f);
 	boundingBoxMin = Vector3(0.0f, 0.0f, 0.0f);
 	boundingBoxMax = Vector3(0.0f, 0.0f, 0.0f);
 }
@@ -34,6 +29,8 @@ Vector3 BoundingBox::getBoundingBoxMax() {
 }
 
 bool BoundingBox::checkRayIntersection(Vector3 ray_origin, Vector3 ray_direction) {
+	if (boundingBoxSize == Vector3(0.0f, 0.0f, 0.0f)) return false;
+
 	float tmin, tmax, tymin, tymax, tzmin, tzmax, divx, divy, divz;
 
 	divx = 1 / ray_direction.x;
