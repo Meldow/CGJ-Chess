@@ -24,11 +24,11 @@ bool pickObject = false;
 
 /////////////////////////////////////////////////////////////////////// SHADERs
 
-void createShaderProgram() {
+void createFresnelShader() {
 	VSShaderLib* shader = new VSShaderLib();
 	shader->init();
-	shader->loadShader(VSShaderLib::VERTEX_SHADER, "shaders/lighting/vs.glsl");
-	shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/lighting/fs.glsl");
+	shader->loadShader(VSShaderLib::VERTEX_SHADER, "shaders/vertexShader-fresnel.vert");
+	shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/fragShader-fresnel.frag");
 
 	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::VERTICES, "in_Position");
 	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::TEXCOORDS, "in_TexCoord");
@@ -54,12 +54,51 @@ void createShaderProgram() {
 	//Texture
 	shader->addUniform("tex_map", GL_INT, 1);
 
+	ManagerShader::instance()->add("fresnelshader", shader);
+	ManagerShader::instance()->flushManagerMesh();
+
+	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create shaders(new).");
+};
+
+void createBaseShader() {
+	VSShaderLib* shader = new VSShaderLib();
+	shader->init();
+	shader->loadShader(VSShaderLib::VERTEX_SHADER, "shaders/vertexShader.vert");
+	shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/fragShader.frag");
+
+	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::VERTICES, "in_Position");
+	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::TEXCOORDS, "in_TexCoord");
+	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::NORMALS, "in_Normal");
+
+	shader->prepareProgram();
+
+	shader->addUniform("ModelMatrix", GL_FLOAT_MAT4, 1);
+
+	UboId = glGetUniformBlockIndex(shader->getProgramIndex(), "Camera");
+	glUniformBlockBinding(shader->getProgramIndex(), UboId, UBO_BP);
+
+	//Material
+	shader->addUniform("mat.ambient", GL_FLOAT_VEC4, 1);
+	shader->addUniform("mat.diffuse", GL_FLOAT_VEC4, 1);
+	shader->addUniform("mat.specular", GL_FLOAT_VEC4, 1);
+	shader->addUniform("mat.shininess", GL_FLOAT, 1);
+
+	shader->addUniform("mlwNumPointLights", GL_INT, 1);
+
+	shader->needBlend = false;
+	//Texture
+	shader->addUniform("tex_map", GL_INT, 1);
+
 	ManagerShader::instance()->add("baseshader", shader);
 	ManagerShader::instance()->flushManagerMesh();
 
 	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create shaders(new).");
-
 };
+
+void createShaderProgram() {
+	createFresnelShader();
+	createBaseShader();
+}
 
 void destroyShaderProgram() {
 	std::cout << "\nTrying to destroy ShaderProgram";
@@ -81,12 +120,26 @@ void destroyBufferObjects() {
 /////////////////////////////////////////////////////////////////////// SCENE
 
 void createMesh() {
-	Mesh* mesh = new Mesh(std::string("Models/queen.obj"));
-	ManagerMesh::instance()->add("queen", mesh);
+	Mesh* mesh = new Mesh(std::string("Models/board.obj"));
+	ManagerMesh::instance()->add("board", mesh);
 
 	Mesh* mesh2 = new Mesh(std::string("Models/pawn.obj"));
 	ManagerMesh::instance()->add("pawn", mesh2);
 
+	Mesh* mesh3 = new Mesh(std::string("Models/rock.obj"));
+	ManagerMesh::instance()->add("rock", mesh3);
+
+	Mesh* mesh4 = new Mesh(std::string("Models/horse.obj"));
+	ManagerMesh::instance()->add("horse", mesh4);
+
+	Mesh* mesh5 = new Mesh(std::string("Models/bishop.obj"));
+	ManagerMesh::instance()->add("bishop", mesh5);
+
+	Mesh* mesh6 = new Mesh(std::string("Models/queen.obj"));
+	ManagerMesh::instance()->add("queen", mesh6);
+
+	Mesh* mesh7 = new Mesh(std::string("Models/king.obj"));
+	ManagerMesh::instance()->add("king", mesh7);
 
 	ManagerMesh::instance()->flushManagerMesh();
 }
@@ -100,8 +153,8 @@ void createMaterial() {
 }
 
 void createTexture() {
-	Texture* texture = new Texture("Models/stone.tga");
-	ManagerTexture::instance()->add("stone", texture);
+	Texture* texture = new Texture("Models/marble.tga");
+	ManagerTexture::instance()->add("marble", texture);
 }
 
 void createSceneGraph() {
@@ -109,21 +162,140 @@ void createSceneGraph() {
 	ManagerSceneGraph::instance()->addSceneGraph("main", sceneGraph);
 	ManagerSceneGraph::instance()->getSceneGraph("main")->camera = new Camera(UBO_BP);
 
-	SceneNode* mainNode = new SceneNode();
-	sceneGraph->addSceneNode("mainNode", mainNode);
-	mainNode->mesh = ManagerMesh::instance()->get("pawn");
-	mainNode->material = ManagerMaterial::instance()->get("pawn");
-	mainNode->texture = ManagerTexture::instance()->get("stone");
-	mainNode->shaderProgram = ManagerShader::instance()->get("baseshader");
-	mainNode->modelMatrix = Matrix4().translate(0, -.5, 0);
+	SceneNode* boardNode = new SceneNode();
+	sceneGraph->addSceneNode("boardNode", boardNode);
+	boardNode->mesh = ManagerMesh::instance()->get("board");
+	boardNode->material = ManagerMaterial::instance()->get("pawn");
+	boardNode->texture = ManagerTexture::instance()->get("marble");
+	boardNode->shaderProgram = ManagerShader::instance()->get("baseshader");
 
-	SceneNode* mainNode2 = new SceneNode();
-	sceneGraph->addSceneNode("mainNode2", mainNode2);
-	mainNode2->mesh = ManagerMesh::instance()->get("queen");
-	mainNode2->material = ManagerMaterial::instance()->get("pawn");
-	mainNode2->texture = ManagerTexture::instance()->get("stone");
-	mainNode2->shaderProgram = ManagerShader::instance()->get("baseshader");
-	mainNode2->modelMatrix = Matrix4().translate(0.75, -.5, 0);
+	SceneNode* pawnB1Node = new SceneNode();
+	boardNode->addSceneNode("pawnB1Node", pawnB1Node);
+	pawnB1Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB1Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB1Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB1Node->modelMatrix = Matrix4().translate(5.358f, 0.0f, 3.827f);
+
+	SceneNode* pawnB2Node = new SceneNode();
+	boardNode->addSceneNode("pawnB2Node", pawnB2Node);
+	pawnB2Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB2Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB2Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB2Node->modelMatrix = Matrix4().translate(3.827f, 0.0f, 3.827f);
+
+	SceneNode* pawnB3Node = new SceneNode();
+	boardNode->addSceneNode("pawnB3Node", pawnB3Node);
+	pawnB3Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB3Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB3Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB3Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB3Node->modelMatrix = Matrix4().translate(2.296f, 0.0f, 3.827f);
+
+	SceneNode* pawnB4Node = new SceneNode();
+	boardNode->addSceneNode("pawnB4Node", pawnB4Node);
+	pawnB4Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB4Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB4Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB4Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB4Node->modelMatrix = Matrix4().translate(0.765f, 0.0f, 3.827f);
+
+	SceneNode* pawnB5Node = new SceneNode();
+	boardNode->addSceneNode("pawnB5Node", pawnB5Node);
+	pawnB5Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB5Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB5Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB5Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB5Node->modelMatrix = Matrix4().translate(-0.765f, 0.0f, 3.827f);
+
+	SceneNode* pawnB6Node = new SceneNode();
+	boardNode->addSceneNode("pawnB6Node", pawnB6Node);
+	pawnB6Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB6Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB6Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB6Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB6Node->modelMatrix = Matrix4().translate(-2.296f, 0.0f, 3.827f);
+
+	SceneNode* pawnB7Node = new SceneNode();
+	boardNode->addSceneNode("pawnB7Node", pawnB7Node);
+	pawnB7Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB7Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB7Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB7Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB7Node->modelMatrix = Matrix4().translate(-3.827f, 0.0f, 3.827f);
+
+	SceneNode* pawnB8Node = new SceneNode();
+	boardNode->addSceneNode("pawnB8Node", pawnB8Node);
+	pawnB8Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB8Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB8Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB8Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB8Node->modelMatrix = Matrix4().translate(-5.358f, 0.0f, 3.827f);
+
+	SceneNode* rockB1Node = new SceneNode();
+	boardNode->addSceneNode("rockB1Node", rockB1Node);
+	rockB1Node->mesh = ManagerMesh::instance()->get("rock");
+	rockB1Node->material = ManagerMaterial::instance()->get("pawn");
+	rockB1Node->texture = ManagerTexture::instance()->get("marble");
+	rockB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	rockB1Node->modelMatrix = Matrix4().translate(5.358f, 0.0f, 5.358f);
+
+	SceneNode* rockB2Node = new SceneNode();
+	boardNode->addSceneNode("rockB2Node", rockB2Node);
+	rockB2Node->mesh = ManagerMesh::instance()->get("rock");
+	rockB2Node->material = ManagerMaterial::instance()->get("pawn");
+	rockB2Node->texture = ManagerTexture::instance()->get("marble");
+	rockB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	rockB2Node->modelMatrix = Matrix4().translate(-5.358f, 0.0f, 5.358f);
+
+	SceneNode* horseB1Node = new SceneNode();
+	boardNode->addSceneNode("horseB1Node", horseB1Node);
+	horseB1Node->mesh = ManagerMesh::instance()->get("horse");
+	horseB1Node->material = ManagerMaterial::instance()->get("pawn");
+	horseB1Node->texture = ManagerTexture::instance()->get("marble");
+	horseB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	horseB1Node->modelMatrix = Matrix4().translate(3.827f, 0.0f, 5.358f);
+
+	SceneNode* horseB2Node = new SceneNode();
+	boardNode->addSceneNode("horseB2Node", horseB2Node);
+	horseB2Node->mesh = ManagerMesh::instance()->get("horse");
+	horseB2Node->material = ManagerMaterial::instance()->get("pawn");
+	horseB2Node->texture = ManagerTexture::instance()->get("marble");
+	horseB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	horseB2Node->modelMatrix = Matrix4().translate(-3.827f, 0.0f, 5.358f);
+
+	SceneNode* bishopB1Node = new SceneNode();
+	boardNode->addSceneNode("bishopB1Node", bishopB1Node);
+	bishopB1Node->mesh = ManagerMesh::instance()->get("bishop");
+	bishopB1Node->material = ManagerMaterial::instance()->get("pawn");
+	bishopB1Node->texture = ManagerTexture::instance()->get("marble");
+	bishopB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	bishopB1Node->modelMatrix = Matrix4().translate(2.296f, 0.0f, 5.358f);
+
+	SceneNode* bishopB2Node = new SceneNode();
+	boardNode->addSceneNode("bishopB2Node", bishopB2Node);
+	bishopB2Node->mesh = ManagerMesh::instance()->get("bishop");
+	bishopB2Node->material = ManagerMaterial::instance()->get("pawn");
+	bishopB2Node->texture = ManagerTexture::instance()->get("marble");
+	bishopB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	bishopB2Node->modelMatrix = Matrix4().translate(-2.296f, 0.0f, 5.358f);
+
+	SceneNode* queenB1Node = new SceneNode();
+	boardNode->addSceneNode("queenB1Node", queenB1Node);
+	queenB1Node->mesh = ManagerMesh::instance()->get("queen");
+	queenB1Node->material = ManagerMaterial::instance()->get("pawn");
+	queenB1Node->texture = ManagerTexture::instance()->get("marble");
+	queenB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	queenB1Node->modelMatrix = Matrix4().translate(-0.765f, 0.0f, 5.358f);
+
+	SceneNode* kingB1Node = new SceneNode();
+	boardNode->addSceneNode("kingB1Node", kingB1Node);
+	kingB1Node->mesh = ManagerMesh::instance()->get("king");
+	kingB1Node->material = ManagerMaterial::instance()->get("pawn");
+	kingB1Node->texture = ManagerTexture::instance()->get("marble");
+	kingB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	kingB1Node->modelMatrix = Matrix4().translate(0.765f, 0.0f, 5.358f);
 }
 
 void createLights() {

@@ -70,15 +70,21 @@ in vec3 exRefractR;
 in vec3 exRefractG;
 in vec3 exRefractB;
 
+vec4 ambientReflection;
+vec4 diffuseReflection;
+vec4 specularReflection;
+float fresnel;
+vec4 reflectedColor;
+
 out vec4 out_Color;
 
 vec4 CalcPointLights(vec3 Normal, vec3 EyePos) {
 	//Light
 	vec3 LightPosition = vec3(2.0,0.0,0.0);
-	vec3 LightAmbientColor = vec3(0.2, 0.2, 0.2);
-	vec3 LightDiffuseColor = vec3( 0.1, 0.1, 0.1);
-	vec3 LightSpecularColor = vec3( 0.1, 0.1, 0.1);
-	vec3 LightAttenuation = vec3( 0.1, 0.1, 0.1);
+	vec4 LightAmbientColor = vec4(0.2, 0.2, 0.2, 1.0);
+	vec4 LightDiffuseColor = vec4(0.1, 0.1, 0.1, 1.0);
+	vec4 LightSpecularColor = vec4(0.1, 0.1, 0.1, 1.0);
+	vec4 LightAttenuation = vec4(0.1, 0.1, 0.1, 1.0);
 	float LightRange = 10.0;
 	
 	//light specific
@@ -90,22 +96,22 @@ vec4 CalcPointLights(vec3 Normal, vec3 EyePos) {
 	vec3 E = normalize(-EyePos);
 	vec3 H = normalize(L + E);
 
-	vec3 color = vec3(0.0);
+	vec4 color = vec4(0.0);
 	//if light in range - pointlight
 	if(Ldistance < LightRange) {
 		//Ambient
-		vec3 ambient = LightAmbientColor * vec3(mat.ambient);
+		vec4 ambient = LightAmbientColor * mat.ambient;
 		float NdotL = max(dot(Normal,L), 0.0);
 		//Diffuse
-		vec3 diffuse = LightDiffuseColor * vec3(mat.diffuse) * NdotL;
+		vec4 diffuse = LightDiffuseColor * mat.diffuse * NdotL;
 		//Specular
-		vec3 specular = vec3(0.0);
+		vec4 specular = vec4(0.0);
 		
 		if(NdotL > 0.0) {
 			// BLINN SPECULAR TERM (using half-vector H)
 			float NdotH = max(dot(Normal,H), 0.0);
 			float Blinn = pow(NdotH, mat.shininess * 4.0); // adjustment
-			specular = LightSpecularColor * vec3(mat.specular) * Blinn;
+			specular = LightSpecularColor * mat.specular * Blinn;
 		}
 		//atennuation
 		float attenuation = 1.0 / (
@@ -114,9 +120,31 @@ vec4 CalcPointLights(vec3 Normal, vec3 EyePos) {
 			LightAttenuation.z * pow(Ldistance, 2.0));	
 
 		color = ambient + (diffuse + specular) * attenuation;
+
+
+
+
+
+	//Interpolated normal, light direction and view direction
+	 vec3 N = normalize(DataIn.Normal);
+
+	 //Fresnel approximation
+	 float base = 1-dot(E, H);
+	 float exp = pow(base, 5);
+	 fresnel = exp+pow((1.0f-(1.0f/1.31f)), 2)/pow((1.0f+(1.0f/1.31f)), 2)*(1.0-exp);
+
+	 //Blinn-phong reflection model
+	 ambientReflection = mat.ambient;
+	 diffuseReflection = mat.diffuse*clamp(dot(L, N), 0, 1);
+	 specularReflection = mat.specular*max(0.0,pow(dot(N, H), 80));
+
+	 //Final color of the fragment
+	 reflectedColor =  ambientReflection + diffuseReflection + fresnel*specularReflection;
+
+
 	}
 	
-	return vec4(color, 1.0);
+	return color;
 }
 
 void main(void) {
@@ -145,14 +173,16 @@ void main(void) {
 	refractColor.b = (texture(tex_map, vec2(exRefractB))).b;
 	vec3 colorFresnel = mix(refractColor, reflectColor, exRatio);
 	
-	out_Color = vec4(MaterialEmissiveColor, 1.0) + TotalLight;
+	//out_Color = vec4(MaterialEmissiveColor, 1.0) + TotalLight;
 		
 	//vec4 texel = texture(tex_map, DataIn.Tex_Coord);
 	//out_Color = texel;
-	//out_Color = mat.diffuse;
+	out_Color = mat.diffuse;
 	//out_Color = vec4(DataIn.Tex_Coord, 0.0, 0.0);
 	//out_Color = DataIn.VertexPos;
 	//out_Color = mat.specular;
 	//out_Color = vec4(0.5, 0.5, 0.5, 1.0);
-	out_Color = vec4(colorFresnel,1.0);
+	//out_Color = vec4(colorFresnel,1.0);
+	//out_Color = reflectedColor + vec4(MaterialEmissiveColor, 1.0) + TotalLight;
+
 }

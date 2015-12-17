@@ -28,7 +28,7 @@ SceneNode* SceneNode::getSceneNode(char* name) {
 
 void SceneNode::loadMaterialUniforms() {
 	if (shaderProgram) {
-		if (shaderProgram->needBlend) material->setAlpha(0.5);
+		if (shaderProgram->needBlend) material->setAlpha(0.1);
 	}
 	shaderProgram->setUniform("mat.ambient", material->getAmbient());
 	shaderProgram->setUniform("mat.diffuse", material->getDiffuse());
@@ -79,11 +79,17 @@ void SceneNode::draw() {
 		if (shaderProgram->needBlend) {
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glEnable(GL_BLEND);
+			glEnable(GL_CULL_FACE);
+			glDepthMask(GL_FALSE);
 		}
 		setUniforms();
 		if (mesh) mesh->draw();
 		
-		if (!shaderProgram->needBlend) glDisable(GL_BLEND);
+		if (shaderProgram->needBlend) {
+			glDisable(GL_BLEND);
+			glDisable(GL_CULL_FACE);
+			glDepthMask(GL_TRUE);
+		}
 	}
 
 	for (_sceneNodesIterator = sceneNodes.begin(); _sceneNodesIterator != sceneNodes.end(); ++_sceneNodesIterator) {
