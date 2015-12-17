@@ -63,7 +63,6 @@ Matrix4* SceneNode::calculateGraphModelMatrix() {
 void SceneNode::setUniforms() {
 	//calculate model matrix
 	updateModelMatrix();
-	std::cout << "\nmodel::" << name << " | position:: " << transform.position << "\n" << modelMatrix;
 
 	shaderProgram->setUniform("ModelMatrix", modelMatrix.data());
 
