@@ -92,6 +92,7 @@ public:
 	void        setColumn(int index, const Vector3& v);
 
 	const float* get() const;
+	float* data();
 	float       getDeterminant();
 
 	Matrix3&    identity();
@@ -163,6 +164,7 @@ public:
 	Matrix4&    invertProjective();                     // inverse of projective matrix using partitioning
 	Matrix4&    invertGeneral();                        // inverse of generic matrix
 	Matrix4&	clean();
+	Matrix3*	convertMatrix3();
 	//	GLfloat*	getGLFloat();
 
 	// transform matrix
@@ -175,7 +177,6 @@ public:
 	Matrix4&    rotateZ(float angle);                   // rotate on Z-axis with degree
 	Matrix4&    scale(float scale);                     // uniform scale
 	Matrix4&    scale(float sx, float sy, float sz);    // scale by (sx, sy, sz) on each axis
-
 														// operators
 	Matrix4     operator+(const Matrix4& rhs) const;    // add rhs
 	Matrix4     operator-(const Matrix4& rhs) const;    // subtract rhs

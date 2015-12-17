@@ -67,16 +67,16 @@ out vec4 out_Color;
 
 vec4 CalcPointLights(vec3 Normal, vec3 EyePos) {
 	//Light
-	vec3 LightPosition = vec3(0.0,0.0,-3.0);
-	vec3 LightAmbientColor = vec3(0.2, 0.2, 0.2);
-	vec3 LightDiffuseColor = vec3( 0.9, 0.1, 0.1);
-	vec3 LightSpecularColor = vec3( 0.1, 0.1, 0.1);
+	vec4 LightPosition = vec4(0.0,0.0,-3.0, 1.0);
+	vec3 LightAmbientColor = vec3(0.25, 0.25, 0.25);
+	vec3 LightDiffuseColor = vec3( 0.3, 0.1, 0.1);
+	vec3 LightSpecularColor = vec3( 0.0, 0.0, 0.2);
 	vec3 LightAttenuation = vec3( 1.0, 0.045, 0.0075);
 	float LightRange = 10.0;
 	
 	//light specific
 	//for each light
-	vec3 Lpos = vec3(ViewMatrix * vec4(LightPosition,1.0));
+	vec3 Lpos = vec3(ViewMatrix * LightPosition);
 	vec3 L = Lpos - EyePos;
 	float Ldistance = length(L);
 	L = normalize(L);
@@ -90,7 +90,8 @@ vec4 CalcPointLights(vec3 Normal, vec3 EyePos) {
 		vec3 ambient = LightAmbientColor * vec3(mat.ambient);
 		float NdotL = max(dot(Normal,L), 0.0);
 		//Diffuse
-		vec3 diffuse = LightDiffuseColor * vec3(mat.diffuse) * NdotL;
+		//vec3 diffuse = LightDiffuseColor * vec3(mat.diffuse) * NdotL;
+		vec3 diffuse = vec3(NdotL,NdotL,NdotL);
 		//Specular
 		vec3 specular = vec3(0.0);
 		
@@ -98,7 +99,7 @@ vec4 CalcPointLights(vec3 Normal, vec3 EyePos) {
 			// BLINN SPECULAR TERM (using half-vector H)
 			float NdotH = max(dot(Normal,H), 0.0);
 			float Blinn = pow(NdotH, mat.shininess * 4.0); // adjustment
-			specular = LightSpecularColor * vec3(mat.specular) * Blinn;
+			specular = vec3(mat.specular) * Blinn;
 		}
 		//atennuation
 		float attenuation = 1.0 / (
@@ -114,8 +115,7 @@ vec4 CalcPointLights(vec3 Normal, vec3 EyePos) {
 
 void main(void) {
 	//Material
-	vec3 MaterialEmissiveColor = vec3(0.1,0.1,0.1);
-	
+	vec3 MaterialEmissiveColor = vec3(0.15,0.15,0.15);
 	vec3 emissive = MaterialEmissiveColor;
 	
 	//lighting

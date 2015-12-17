@@ -7,6 +7,8 @@ Camera::Camera(GLuint UBO_BP)
 	ViewMatrix = Matrix4().identity();
 	ProjectionMatrix = Matrix4().identity();
 	RotationMatrix = Matrix4().identity();
+	
+	ProjectionMatrix = perspective(30, 800.0f / 600.0f, 1, 200);
 
 	createUniformBuffer(UBO_BP);
 }
@@ -46,7 +48,6 @@ void Camera::update()
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(ViewMatrix.m), ViewMatrix.data());
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-	ProjectionMatrix = perspective(30, 640.0f / 480.0f, 1, 30);
 	glBindBuffer(GL_UNIFORM_BUFFER, VboCamera);
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(ViewMatrix.m), sizeof(ProjectionMatrix.m), ProjectionMatrix.data());
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);

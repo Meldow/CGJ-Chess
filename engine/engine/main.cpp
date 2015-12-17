@@ -37,6 +37,7 @@ void createShaderProgram() {
 	shader->prepareProgram();
 
 	shader->addUniform("ModelMatrix", GL_FLOAT_MAT4, 1);
+	shader->addUniform("NormalMatrix", GL_FLOAT_MAT4, 1);
 
 	UboId = glGetUniformBlockIndex(shader->getProgramIndex(), "Camera");
 	glUniformBlockBinding(shader->getProgramIndex(), UboId, UBO_BP);
@@ -126,11 +127,17 @@ void createSceneGraph() {
 }
 
 void createLights() {
-	PointLight* point_light = new PointLight();
-	ManagerLight::instance()->addPointLight("main", point_light);
-	ManagerLight::instance()->addPointLight("main2", point_light);
-	ManagerLight::instance()->addPointLight("main3", point_light);
-	ManagerLight::instance()->addPointLight("main4", point_light);
+	PointLight* pointlight = new PointLight();
+	ManagerLight::instance()->addPointLight("main", pointlight);
+
+	pointlight->Position = Vector3(0.0f, 0.0f, -3.0f);
+	pointlight->Color = Vector3(0.15, 1.0, 0.64);	//yellow
+	pointlight->AmbientIntensity = 0.2;
+	pointlight->DiffuseIntensity = 0.2;
+	pointlight->Attenuation.Constant = 1.0f;
+	pointlight->Attenuation.Linear = 0.045f;
+	pointlight->Attenuation.Exp = 0.0075f;
+
 }
 /////////////////////////////////////////////////////////////////////// SCENE
 

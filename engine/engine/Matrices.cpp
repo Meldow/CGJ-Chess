@@ -69,6 +69,9 @@ Matrix3& Matrix3::transpose() {
 }
 
 
+float* Matrix3::data() {
+	return m;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // return determinant of 3x3 matrix
@@ -119,8 +122,6 @@ Matrix3& Matrix3::invert() {
 
 	return *this;
 }
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // transpose 4x4 matrix
@@ -559,4 +560,15 @@ Matrix4& Matrix4::clean() {
 		if (fabs(m[i]) < (float)1.0e-5) m[i] = 0.0f;
 	}
 	return *this;
+}
+
+Matrix3* Matrix4::convertMatrix3() {
+	// | 0 2 |    | 0 3 6 |    |  0  4  8 12 |
+	// | 1 3 |    | 1 4 7 |    |  1  5  9 13 |
+	//            | 2 5 8 |    |  2  6 10 14 |
+	//                         |  3  7 11 15 |
+
+	return new Matrix3(m[0], m[1], m[2],
+		m[4], m[5], m[6],
+		m[8], m[9], m[10]);
 }

@@ -34,6 +34,9 @@ void SceneNode::loadMaterialUniforms() {
 	shaderProgram->setUniform("mat.diffuse", material->getDiffuse());
 	shaderProgram->setUniform("mat.specular", material->getSpecular());
 	shaderProgram->setUniform("mat.shininess", material->getShininess());
+	
+	Matrix4* nm = new Matrix4(modelMatrix);
+	shaderProgram->setUniform("NormalMatrix", nm->invert().transpose().data());
 
 	shaderProgram->setUniform("mlwNumPointLights", ManagerLight::instance()->getLightsCount());
 
