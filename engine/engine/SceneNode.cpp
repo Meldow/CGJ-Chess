@@ -131,12 +131,7 @@ void SceneNode::draw() {
 	if (isDebug) std::cout << "\nDrawaing SceneNode::name::" << name;
 
 	if (shaderProgram) {
-		if (shaderProgram->needBlend) {
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glEnable(GL_BLEND);
-			glEnable(GL_CULL_FACE);
-			glDepthMask(GL_FALSE);
-		}
+		
 		if (shaderProgram->enableStencil) {
 			glEnable(GL_STENCIL_TEST);
 			glStencilFunc(GL_ALWAYS, 1, 0xFF); // Set any stencil to 1
@@ -150,10 +145,26 @@ void SceneNode::draw() {
 			glDisable(GL_STENCIL_TEST);
 			glCullFace(GL_BACK);
 		}
-
+		if (shaderProgram->needBlend) {
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_BLEND);
+			glEnable(GL_CULL_FACE);
+			glCullFace(GL_BACK);
+			glDepthMask(GL_FALSE);
+		}
+		//if (shaderProgram->disableStencil) glCullFace(GL_FRONT);
+		if(name == "pawnB2NodeInv")  glCullFace(GL_FRONT);
+		if(name == "pawnB1NodeInv")  glCullFace(GL_FRONT);
 		setUniforms();
 		if (shaderProgram->affectedByLights) setLightUniforms();
 		if (mesh) mesh->draw();
+
+
+		if (shaderProgram->needBlend) {
+			glDisable(GL_BLEND);
+			//glDisable(GL_CULL_FACE);
+			glDepthMask(GL_TRUE);
+		}
 
 		if (shaderProgram->enableStencil) {
 			glStencilFunc(GL_EQUAL, 1, 0xFF); // Pass test if stencil value is 1
@@ -162,11 +173,6 @@ void SceneNode::draw() {
 			glCullFace(GL_FRONT);
 		}
 
-		if (shaderProgram->needBlend) {
-			glDisable(GL_BLEND);
-			glDisable(GL_CULL_FACE);
-			glDepthMask(GL_TRUE);
-		}
 	}
 
 	for (_sceneNodesIterator = sceneNodes.begin(); _sceneNodesIterator != sceneNodes.end(); ++_sceneNodesIterator) {
