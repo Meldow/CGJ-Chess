@@ -133,7 +133,7 @@ void SceneNode::draw() {
 	if (isDebug) std::cout << "\nDrawaing SceneNode::name::" << name;
 
 	if (shaderProgram) {
-		
+		//only table
 		if (shaderProgram->enableStencil) {
 			glEnable(GL_STENCIL_TEST);
 			glStencilFunc(GL_ALWAYS, 1, 0xFF); // Set any stencil to 1
@@ -143,7 +143,8 @@ void SceneNode::draw() {
 			glDepthMask(GL_FALSE); // Don't write to depth buffer
 			glClear(GL_STENCIL_BUFFER_BIT); // Clear stencil buffer (0 by default)
 		}
-		if (shaderProgram->disableStencil) {
+		//only normal pawns (NOT inversed ones)
+		if (!isReflex) {
 			glDisable(GL_STENCIL_TEST);
 			glCullFace(GL_BACK);
 		}

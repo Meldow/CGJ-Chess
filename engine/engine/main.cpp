@@ -51,7 +51,31 @@ void createFresnelShader() {
 	shader->addUniform("mat.specular", GL_FLOAT_VEC4, 1);
 	shader->addUniform("mat.shininess", GL_FLOAT, 1);
 
-	shader->addUniform("mlwNumPointLights", GL_INT, 1);
+	shader->addUniform("numPointLights", GL_INT, 1);
+
+	for (int i = 0; i < ManagerLight::instance()->pointLights.size(); i++) {
+		char Name[128];
+		memset(Name, 0, sizeof(Name));
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.Color", i);
+		shader->pointLightsLocation[i].Color = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Position", i);
+		shader->pointLightsLocation[i].Position = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.AmbientIntensity", i);
+		shader->pointLightsLocation[i].AmbientIntensity = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.DiffuseIntensity", i);
+		shader->pointLightsLocation[i].DiffuseIntensity = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Atten", i);
+		shader->pointLightsLocation[i].Atten = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Range", i);
+		shader->pointLightsLocation[i].Range = glGetUniformLocation(shader->getProgramIndex(), Name);
+	}
+	shader->affectedByLights = true;
 
 	shader->needBlend = true;
 	//Texture
@@ -270,6 +294,7 @@ void createSceneGraph() {
 	boardNode->texture = ManagerTexture::instance()->get("marble");
 	boardNode->shaderProgram = ManagerShader::instance()->get("baseshader");
 	boardNode->shaderProgram->disableStencil = false;
+	boardNode->isReflex = true;
 
 	SceneNode* boarderNode = new SceneNode();
 	boardNode->addSceneNode("boarderNode", boarderNode);
@@ -278,6 +303,7 @@ void createSceneGraph() {
 	boarderNode->texture = ManagerTexture::instance()->get("3DNoise");
 	boarderNode->shaderProgram = ManagerShader::instance()->get("baseshaderXPTO");
 	boarderNode->shaderProgram->disableStencil = false;
+	boarderNode->isReflex = true;
 
 	SceneNode* pawnB2NodeInv = new SceneNode();
 	boardNode->addSceneNode("pawnB2NodeInv", pawnB2NodeInv);
@@ -285,7 +311,7 @@ void createSceneGraph() {
 	pawnB2NodeInv->material = ManagerMaterial::instance()->get("pawn");
 	pawnB2NodeInv->texture = ManagerTexture::instance()->get("marble");
 	pawnB2NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	pawnB2NodeInv->shaderProgram->disableStencil = false;
+	pawnB2NodeInv->isReflex = true;
 	pawnB2NodeInv->transform.setPosition(3.827f, 0.0f, 3.827f);
 	pawnB2NodeInv->transform.setScale(1.0f, -1.0f, 1.0f);
 
@@ -295,7 +321,7 @@ void createSceneGraph() {
 	pawnB1NodeInv->material = ManagerMaterial::instance()->get("pawn");
 	pawnB1NodeInv->texture = ManagerTexture::instance()->get("marble");
 	pawnB1NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	pawnB1NodeInv->shaderProgram->disableStencil = false;
+	pawnB1NodeInv->isReflex = true;
 	pawnB1NodeInv->transform.setPosition(5.358f, 0.0f, 3.827f);
 	pawnB1NodeInv->transform.setScale(1.0f, -1.0f, 1.0f);
 
@@ -305,7 +331,7 @@ void createSceneGraph() {
 	testPawn->material = ManagerMaterial::instance()->get("pawn");
 	testPawn->texture = ManagerTexture::instance()->get("marble");
 	testPawn->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	testPawn->transform.setPosition(0.0f, 0.0f, 0.0f);
+	testPawn->transform.setPosition(5.358f, 0.0f, 3.827f);
 	testPawn->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
 
 	SceneNode* pawnB2Node = new SceneNode();

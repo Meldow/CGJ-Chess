@@ -28,6 +28,7 @@ public:
 	bool objectPicked = false;
 	bool childPicked = false;
 	bool isDebug = false;
+	bool isReflex = false;
 
 	SceneNode();
 	~SceneNode();
