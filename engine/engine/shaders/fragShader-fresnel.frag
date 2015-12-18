@@ -53,6 +53,7 @@ in Data {
 //lights
 uniform int numPointLights;   
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
+uniform int darken;
 
 //Fresnel
 in float exRatio;
@@ -124,5 +125,7 @@ void main(void) {
 	//out_Color = DataIn.VertexPos;
 	//out_Color = mat.specular;
 	//out_Color = vec4(0.5, 0.5, 0.5, 1.0);
-	out_Color = colorFresnel + TotalLight;
+	vec4 dark = vec4(1.0,1.0,1.0,1.0);
+	if(darken == 1) dark = vec4(0.5,0.5,0.5,1.0);
+	out_Color = (colorFresnel + TotalLight) * dark;
 }

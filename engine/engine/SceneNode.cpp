@@ -77,6 +77,7 @@ void SceneNode::setLightUniforms() {
 	shaderProgram->setUniform("NormalMatrix", nm->invert().transpose().data());
 	int numberPointLights = ManagerLight::instance()->pointLights.size();
 	shaderProgram->setUniform("numPointLights", numberPointLights);
+	shaderProgram->setUniform("darken", isReflex ? 1 : 0);
 
 	//shaderProgram->setUniform("mlwNumPointLights", ManagerLight::instance()->getLightsCount());
 }
@@ -156,9 +157,11 @@ void SceneNode::draw() {
 			glDepthMask(GL_FALSE);
 		}
 		//if (shaderProgram->disableStencil) glCullFace(GL_FRONT);
-		if (name == "pawnB2NodeInv")  glCullFace(GL_FRONT);
-		if (name == "pawnB1NodeInv")  glCullFace(GL_FRONT);
-		if (name == "pawnB3NodeInv")  glCullFace(GL_FRONT);
+		if (name == "pawnB1NodeInv" || name == "pawnB2NodeInv" || name == "pawnB3NodeInv" || name == "pawnB4NodeInv" || 
+			name == "pawnB5NodeInv" || name == "pawnB6NodeInv" || name == "pawnB7NodeInv" || name == "pawnB8NodeInv" ||
+			name == "rockB1NodeInv" || name == "rockB2NodeInv" || name == "horseB1NodeInv" || name == "horseB2NodeInv" ||
+			name == "bishopB1NodeInv" || name == "bishopB2NodeInv" || name == "queenB1NodeInv" || name == "kingB1NodeInv")  
+			glCullFace(GL_FRONT);
 		setUniforms();
 		if (shaderProgram->affectedByLights) setLightUniforms();
 		if (mesh) mesh->draw();
