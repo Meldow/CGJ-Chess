@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <vector>
 #include "Matrices.h"
 #include "Transform.h"
 #include "BoundingBox.h"
@@ -19,6 +20,7 @@ public:
 	Mesh* mesh;
 	Material* material;
 	Texture* texture;
+	Texture* texture1;
 
 	char* name;
 	Transform transform;

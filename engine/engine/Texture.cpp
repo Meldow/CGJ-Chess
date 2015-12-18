@@ -3,6 +3,79 @@
 Texture::Texture() {
 }
 
+void Texture::make3DNoiseTexture(int size) {
+
+	is3DTexture = true;
+
+	float * data = new float[size * size * size];
+	PerlinNoise pn;
+
+	unsigned int kk = 0;
+	// Visit every pixel of the image and assign a color generated with Perlin noise
+	for (unsigned int i = 0; i < size; ++i) {     // y
+		for (unsigned int j = 0; j < size; ++j) {  // x
+			for (unsigned int k = 0; k < size; ++k) {
+				double x = (double)j / ((double)size);
+				double y = (double)i / ((double)size);
+				double z = (double)k / ((double)size);
+				double noise = pn.noise(10 * x, 15 * y, 10 * z);
+				noise *= pn.noise(10 * x, 10 * y, 0.5);
+				
+				data[kk] = static_cast<float>(noise);
+				kk++;
+			}
+		}
+	}
+
+	glGenTextures(1, &texture_id);
+	glBindTexture(GL_TEXTURE_3D, texture_id);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage3D(GL_TEXTURE_3D, 0, GL_R32F, size, size, size, 0, GL_RED, GL_FLOAT, data);
+
+}
+
+void Texture::make2DNoiseTexture(int size) {
+	// Define the size of the image
+	unsigned int width = 512, height = 512;
+
+	float * data = new float[width * height];
+
+	// Create a PerlinNoise object with the reference permutation vector
+	PerlinNoise pn;
+
+	unsigned int kk = 0;
+	// Visit every pixel of the image and assign a color generated with Perlin noise
+	for (unsigned int i = 0; i < height; ++i) {     // y
+		for (unsigned int j = 0; j < width; ++j) {  // x
+			double x = (double)j / ((double)width);
+			double y = (double)i / ((double)height);
+
+			// Typical Perlin noise
+			double n = pn.noise(10 * x, 10 * y, 0.8);
+
+			// Wood like structure
+			n += pn.noise(x, y, 0.8);
+			n = n - floor(n);
+
+			data[kk] = static_cast<float>(n);
+			kk++;
+		}
+	}
+
+
+	glGenTextures(1, &texture_id);
+	glBindTexture(GL_TEXTURE_2D, texture_id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, size, size, 0, GL_RED, GL_FLOAT, data);
+}
+
 void Texture::createTexture(char *fileName) {
 	Image *pBitMap;
 	int textureType = GL_RGB;
@@ -152,5 +225,6 @@ Image * Texture::load(char *fileName) {
 
 void Texture::draw() {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture_id);
+	if (!is3DTexture) glBindTexture(GL_TEXTURE_2D, texture_id);
+	else glBindTexture(GL_TEXTURE_3D, texture_id);
 }
