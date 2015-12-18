@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <iostream>
 #include "PerlinNoise.h"
-#include "ppm.h" 
 
 #include "Dependencies/glew/glew.h"
 #include "Dependencies/freeglut/freeglut.h"

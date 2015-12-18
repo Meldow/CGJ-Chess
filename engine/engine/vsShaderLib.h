@@ -162,6 +162,8 @@ public:
 	// flags
 	bool needBlend = false;
 	bool affectedByLights = false;
+	bool enableStencil = false;
+	bool disableStencil = true;
 
 	//lights
 	static const unsigned int MAX_POINT_LIGHTS = 2;
