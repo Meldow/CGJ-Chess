@@ -316,6 +316,15 @@ void createSceneGraph() {
 	ManagerSceneGraph::instance()->addSceneGraph("main", sceneGraph);
 	ManagerSceneGraph::instance()->getSceneGraph("main")->camera = new Camera(UBO_BP);
 
+	SceneNode* boarderNode = new SceneNode();
+	sceneGraph->addSceneNode("boarderNode", boarderNode);
+	boarderNode->mesh = ManagerMesh::instance()->get("boarder");
+	boarderNode->material = ManagerMaterial::instance()->get("board");
+	boarderNode->texture = ManagerTexture::instance()->get("3DNoise");
+	boarderNode->shaderProgram = ManagerShader::instance()->get("baseshaderXPTO");
+	boarderNode->shaderProgram->disableStencil = false;
+	boarderNode->isReflex = true;
+	boarderNode->transform.setPosition(0.0f, 0.4f, 0.0f);
 
 	SceneNode* boardNode = new SceneNode();
 	sceneGraph->addSceneNode("boardNode", boardNode);
@@ -325,15 +334,6 @@ void createSceneGraph() {
 	boardNode->shaderProgram = ManagerShader::instance()->get("baseshader");
 	boardNode->shaderProgram->disableStencil = false;
 	boardNode->isReflex = true;
-
-	SceneNode* boarderNode = new SceneNode();
-	boardNode->addSceneNode("boarderNode", boarderNode);
-	boarderNode->mesh = ManagerMesh::instance()->get("boarder");
-	boarderNode->material = ManagerMaterial::instance()->get("board");
-	boarderNode->texture = ManagerTexture::instance()->get("3DNoise");
-	boarderNode->shaderProgram = ManagerShader::instance()->get("baseshaderXPTO");
-	boarderNode->shaderProgram->disableStencil = false;
-	boarderNode->isReflex = true;
 
 	SceneNode* pawnB2NodeInv = new SceneNode();
 	boardNode->addSceneNode("pawnB2NodeInv", pawnB2NodeInv);
@@ -355,14 +355,24 @@ void createSceneGraph() {
 	pawnB1NodeInv->transform.setPosition(5.358f, 0.0f, 3.827f);
 	pawnB1NodeInv->transform.setScale(1.0f, -1.0f, 1.0f);
 
-	SceneNode* testPawn = new SceneNode();
-	boardNode->addSceneNode("pawnB1Node", testPawn);
-	testPawn->mesh = ManagerMesh::instance()->get("pawn");
-	testPawn->material = ManagerMaterial::instance()->get("pawn");
-	testPawn->texture = ManagerTexture::instance()->get("marble");
-	testPawn->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	testPawn->transform.setPosition(5.358f, 0.0f, 3.827f);
-	testPawn->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	SceneNode* pawnB3NodeInv = new SceneNode();
+	boardNode->addSceneNode("pawnB3NodeInv", pawnB3NodeInv);
+	pawnB3NodeInv->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB3NodeInv->material = ManagerMaterial::instance()->get("pawn");
+	pawnB3NodeInv->texture = ManagerTexture::instance()->get("marble");
+	pawnB3NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB3NodeInv->isReflex = true;
+	pawnB3NodeInv->transform.setPosition(2.296f, 0.0f, 3.827f);
+	pawnB3NodeInv->transform.setScale(1.0f, -1.0f, 1.0f);
+
+	//SceneNode* testPawn = new SceneNode();
+	//boardNode->addSceneNode("pawnB1Node", testPawn);
+	//testPawn->mesh = ManagerMesh::instance()->get("pawn");
+	//testPawn->material = ManagerMaterial::instance()->get("pawn");
+	//testPawn->texture = ManagerTexture::instance()->get("marble");
+	//testPawn->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	//testPawn->transform.setPosition(5.358f, 0.0f, 3.827f);
+	//testPawn->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
 
 	SceneNode* pawnB2Node = new SceneNode();
 	boardNode->addSceneNode("pawnB2Node", pawnB2Node);

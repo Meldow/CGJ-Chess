@@ -45,11 +45,11 @@ void SceneNode::loadTextureUniforms() {
 
 void SceneNode::updateModelMatrix() {
 	modelMatrix = Matrix4().translate(transform.position)
-	//TODO
-	//.rotate(transform.rotation.x, Vector3(1, 0, 0))
-	//.rotate(transform.rotation.y, Vector3(0, 1, 0))
-	//.rotate(transform.rotation.z, Vector3(0, 0, 1))
-	.scale(transform.scale.x, transform.scale.y, transform.scale.z);
+		//TODO
+		//.rotate(transform.rotation.x, Vector3(1, 0, 0))
+		//.rotate(transform.rotation.y, Vector3(0, 1, 0))
+		//.rotate(transform.rotation.z, Vector3(0, 0, 1))
+		.scale(transform.scale.x, transform.scale.y, transform.scale.z);
 }
 
 void SceneNode::setLightUniforms() {
@@ -156,8 +156,9 @@ void SceneNode::draw() {
 			glDepthMask(GL_FALSE);
 		}
 		//if (shaderProgram->disableStencil) glCullFace(GL_FRONT);
-		if(name == "pawnB2NodeInv")  glCullFace(GL_FRONT);
-		if(name == "pawnB1NodeInv")  glCullFace(GL_FRONT);
+		if (name == "pawnB2NodeInv")  glCullFace(GL_FRONT);
+		if (name == "pawnB1NodeInv")  glCullFace(GL_FRONT);
+		if (name == "pawnB3NodeInv")  glCullFace(GL_FRONT);
 		setUniforms();
 		if (shaderProgram->affectedByLights) setLightUniforms();
 		if (mesh) mesh->draw();
