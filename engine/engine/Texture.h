@@ -28,9 +28,13 @@ typedef struct {
 
 class Texture {
 
+private:
+
+	GLuint texture_id;
+
 public:
 
-	Texture(char *fileName);
+	Texture();
 
 	void createTexture(char *fileName);
 	Image *load(char *fileName);
