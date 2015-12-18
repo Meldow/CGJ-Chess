@@ -7,6 +7,7 @@
 #include "SceneGraph.h"
 #include "ManagerLight.h"
 #include "Light.h"
+#include "Math.h"
 
 SceneNode::SceneNode() {
 	modelMatrix = Matrix4().identity();
@@ -125,7 +126,9 @@ void SceneNode::checkIntersection() {
 
 	if (objectPicked) {
 		float camDist = sceneGraph->camera->Distance;
-		transform.setPosition(sceneGraph->rayPoint.x * camDist, sceneGraph->rayPoint.y * camDist, sceneGraph->rayPoint.z * camDist);
+		transform.setPosition(sceneGraph->rayPoint.x * sqrt(camDist*camDist + transform.position.x*transform.position.x), 
+													sceneGraph->rayPoint.y *  sqrt(camDist*camDist + transform.position.y*transform.position.y),
+												sceneGraph->rayPoint.z *  sqrt(camDist*camDist + transform.position.z*transform.position.z));
 		modelMatrix = Matrix4().translate(transform.position.x, transform.position.y, transform.position.z);
 	}
 }
