@@ -163,6 +163,19 @@ public:
 	bool needBlend = false;
 	bool affectedByLights = false;
 
+	//lights
+	static const unsigned int MAX_POINT_LIGHTS = 2;
+	static const unsigned int MAX_SPOT_LIGHTS = 2;
+
+	struct {
+		GLuint Color;
+		GLuint AmbientIntensity;
+		GLuint DiffuseIntensity;
+		GLuint Position;
+		GLuint Atten;
+		GLuint Range;
+	} pointLightsLocation[MAX_POINT_LIGHTS];
+
 protected:
 
 	// AUX STRUCTURES
@@ -201,7 +214,6 @@ protected:
 
 	/// stores if init has been called
 	bool pInited;
-
 
 	/// blockCount is used to assign binding indexes
 	static int spBlockCount;

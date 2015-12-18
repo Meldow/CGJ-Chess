@@ -2,6 +2,9 @@
 
 #define CAPTION "CGJ - Chess"
 
+#define SNPRINTF _snprintf_s
+
+
 int WinX = 800, WinY = 600;
 int WindowHandle = 0;
 unsigned int FrameCount = 0;
@@ -99,6 +102,7 @@ void createLightingShader() {
 	shader->prepareProgram("shaders/lighting/lighting");
 
 	shader->addUniform("ModelMatrix", GL_FLOAT_MAT4, 1);
+	shader->addUniform("NormalMatrix", GL_FLOAT_MAT4, 1);
 
 	UboId = glGetUniformBlockIndex(shader->getProgramIndex(), "Camera");
 	glUniformBlockBinding(shader->getProgramIndex(), UboId, UBO_BP);
@@ -109,19 +113,36 @@ void createLightingShader() {
 	shader->addUniform("mat.specular", GL_FLOAT_VEC4, 1);
 	shader->addUniform("mat.shininess", GL_FLOAT, 1);
 
-	//shader->addUniform("numPointLights", GL_INT, 1);
+	shader->addUniform("numPointLights", GL_INT, 1);
 
-	shader->addUniform("pointLights.Position", GL_FLOAT_VEC3, 1);
-	//shader->addUniform("pointLights.AmbientIntensity", GL_FLOAT, 1);
-	//shader->addUniform("pointLights.DiffuseIntensity", GL_FLOAT, 1);
-	//shader->addUniform("pointLights.Color", GL_FLOAT_VEC3, 1);
-	//shader->addUniform("pointLights.Atten", GL_FLOAT_VEC3, 1);
-	//shader->addUniform("pointLights.Range", GL_FLOAT, 1);
+	for (int i = 0; i < ManagerLight::instance()->pointLights.size(); i++) {
+		char Name[128];
+		memset(Name, 0, sizeof(Name));
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.Color", i);
+		shader->pointLightsLocation[i].Color = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Position", i);
+		shader->pointLightsLocation[i].Position = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.AmbientIntensity", i);
+		shader->pointLightsLocation[i].AmbientIntensity = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.DiffuseIntensity", i);
+		shader->pointLightsLocation[i].DiffuseIntensity = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Atten", i);
+		shader->pointLightsLocation[i].Atten = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Range", i);
+		shader->pointLightsLocation[i].Range = glGetUniformLocation(shader->getProgramIndex(), Name);
+	}
+
 
 	shader->affectedByLights = true;
 
 	//Texture
-	//shader->addUniform("tex_map", GL_INT, 1);
+	shader->addUniform("tex_map", GL_INT, 1);
 
 	ManagerShader::instance()->add("lighting", shader);
 
@@ -366,13 +387,23 @@ void createSceneGraph() {
 
 void createLights() {
 	PointLight* pointlight = new PointLight();
-	pointlight->Position = Vector3(3.0f, 0.0f, 0.0f);
-	pointlight->Color = Vector3(0.15, 1.0, 0.64);	//yellow
-	pointlight->AmbientIntensity = 0.2;
-	pointlight->DiffuseIntensity = 0.2;
+	pointlight->Position = Vector3(0.0f, 0.0f, -3.0f);
+	pointlight->Color = Vector3(0.9, 0.3, 0.0);
+	pointlight->AmbientIntensity = 0.3f;
+	pointlight->DiffuseIntensity = 2.0f;
 	pointlight->Attenuation = Vector3(1.0f, 0.045f, 0.0075f);
-	pointlight->Range = 10.0f;
-	ManagerLight::instance()->addPointLight("main", pointlight);
+	pointlight->Range = 100.0f;
+	ManagerLight::instance()->addPointLight("pl1", pointlight);
+
+
+	PointLight* pointlight2 = new PointLight();
+	pointlight2->Position = Vector3(3.0f, 0.0f, 0.0f);
+	pointlight2->Color = Vector3(0.0, 0.3, 0.9);
+	pointlight2->AmbientIntensity = 0.3f;
+	pointlight2->DiffuseIntensity = 2.0f;
+	pointlight2->Attenuation = Vector3(1.0f, 0.045f, 0.0075f);
+	pointlight2->Range = 100.0f;
+	ManagerLight::instance()->addPointLight("pl2", pointlight2);
 }
 /////////////////////////////////////////////////////////////////////// SCENE
 
@@ -554,8 +585,8 @@ void init(int argc, char* argv[]) {
 	createMesh();
 	createMaterial();
 	createTexture();
-	createShaderProgram();
 	createLights();
+	createShaderProgram();
 	createSceneGraph();
 	setupCallbacks();
 }

@@ -1,8 +1,8 @@
 #pragma once
-#include "Dependencies/glew/glew.h"
 #include "Vectors.h"
 
 class Matrix4;
+
 struct BaseLight {
 	Vector3 Color;
 	float AmbientIntensity;
@@ -31,54 +31,3 @@ struct SpotLight : public PointLight {
 
 	SpotLight() : Direction(0.0f, 0.0f, 0.0f), Cutoff(0.0f) {}
 };
-
-struct mlwDirectionalLight {
-	GLuint Color;
-	GLuint AmbientIntensity;
-	GLuint DiffuseIntensity;
-	GLuint Direction;
-};
-
-struct mlwPointLight {
-	GLuint Color;
-	GLuint AmbientIntensity;
-	GLuint DiffuseIntensity;
-	GLuint Position;
-	struct {
-		GLuint Constant;
-		GLuint Linear;
-		GLuint Exp;
-	} Atten;
-};
-
-struct mlwSpotLight {
-	GLuint Color;
-	GLuint AmbientIntensity;
-	GLuint DiffuseIntensity;
-	GLuint Position;
-	GLuint Direction;
-	GLuint Cutoff;
-	struct {
-		GLuint Constant;
-		GLuint Linear;
-		GLuint Exp;
-	} Atten;
-};
-
-//class Lighting {
-//public:
-//
-//
-//
-//	Lighting();
-//
-//	void SetDirectionalLight(const DirectionalLight& Light);
-//	void SetPointLights(unsigned int NumLights, const PointLight* pLights);
-//	void SetSpotLights(unsigned int NumLights, const SpotLight* pLights);
-//
-//private:
-//	GLuint m_numPointLightsLocation;
-//	GLuint m_numSpotLightsLocation;
-//
-//	
-//};
