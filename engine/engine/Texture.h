@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include "PerlinNoise.h"
+#include "ppm.h" 
 
 #include "Dependencies/glew/glew.h"
 #include "Dependencies/freeglut/freeglut.h"
@@ -31,11 +33,15 @@ class Texture {
 private:
 
 	GLuint texture_id;
+	bool is3DTexture = false;
 
 public:
 
 	Texture();
 
+
+	void make3DNoiseTexture(int size);
+	void make2DNoiseTexture(int size);
 	void createTexture(char *fileName);
 	Image *load(char *fileName);
 	void draw();

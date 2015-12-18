@@ -8,7 +8,7 @@ struct Material {
 };
 
 uniform Material mat;
-uniform sampler2D tex_map;
+uniform sampler3D tex_map;
 
 uniform mat4 ModelMatrix;
 uniform Camera {
@@ -33,6 +33,13 @@ out vec4 out_Color;
 
 void main(void) {
     
-    vec4 texel = texture(tex_map, DataIn.Tex_Coord);
-    out_Color = texel;
+    vec3 wcPosition = vec3(ModelMatrix * DataIn.VertexPos);
+    vec3 p = wcPosition * 0.5 + 0.5;
+    float noise = texture(tex_map, p).r * 0.5 + 0.5;
+    
+    float intensity = clamp(noise * NoiseFactor, 0.0, 1.0);
+    intensity = cos(DataIn.VertexPos.x * PositionFactor + intensity * IntensityFactor) * 0.5 + 0.5;
+    vec3 color = mix(MarbleColor, VeinColor, intensity);
+    
+    out_Color = vec4(color, 1.0);
 }

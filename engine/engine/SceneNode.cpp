@@ -48,6 +48,7 @@ void SceneNode::loadTextureUniforms() {
 	shaderProgram->setUniform("tex_map", 0);
 }
 
+
 void SceneNode::updateModelMatrix() {
 	modelMatrix = Matrix4().translate(transform.position);
 	//TODO
