@@ -3,7 +3,7 @@
 #include "Vectors.h"
 
 class Matrix4;
-class BaseLight {
+struct BaseLight {
 	Vector3 Color;
 	float AmbientIntensity;
 	float DiffuseIntensity;
@@ -11,13 +11,13 @@ class BaseLight {
 	BaseLight() : Color(0.0f, 0.0f, 0.0f), AmbientIntensity(0.0f), DiffuseIntensity(0.0f) {}
 };
 
-class DirectionalLight : public BaseLight {
+struct DirectionalLight : public BaseLight {
 	Vector3 Direction;
 
 	DirectionalLight() : Direction(0.0f, 0.0f, 0.0f) {}
 };
 
-class PointLight : public BaseLight {
+struct PointLight : public BaseLight {
 	Vector3 Position;
 	float Range;
 	struct {
@@ -33,7 +33,7 @@ class PointLight : public BaseLight {
 	}
 };
 
-class SpotLight : public PointLight {
+struct SpotLight : public PointLight {
 	Vector3 Direction;
 	float Cutoff;
 
