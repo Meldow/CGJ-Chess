@@ -165,6 +165,19 @@ public:
 	bool enableStencil = false;
 	bool disableStencil = true;
 
+	//lights
+	static const unsigned int MAX_POINT_LIGHTS = 2;
+	static const unsigned int MAX_SPOT_LIGHTS = 2;
+
+	struct {
+		GLuint Color;
+		GLuint AmbientIntensity;
+		GLuint DiffuseIntensity;
+		GLuint Position;
+		GLuint Atten;
+		GLuint Range;
+	} pointLightsLocation[MAX_POINT_LIGHTS];
+
 protected:
 
 	// AUX STRUCTURES

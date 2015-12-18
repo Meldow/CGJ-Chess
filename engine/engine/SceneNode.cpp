@@ -35,12 +35,6 @@ void SceneNode::loadMaterialUniforms() {
 	shaderProgram->setUniform("mat.diffuse", material->getDiffuse());
 	shaderProgram->setUniform("mat.specular", material->getSpecular());
 	shaderProgram->setUniform("mat.shininess", material->getShininess());
-
-	Matrix4* nm = new Matrix4(modelMatrix);
-	shaderProgram->setUniform("NormalMatrix", nm->invert().transpose().data());
-
-	shaderProgram->setUniform("mlwNumPointLights", ManagerLight::instance()->getLightsCount());
-
 }
 
 void SceneNode::loadTextureUniforms() {
@@ -59,24 +53,32 @@ void SceneNode::updateModelMatrix() {
 }
 
 void SceneNode::setLightUniforms() {
+	std::map<char*, PointLight*> pointLights = ManagerLight::instance()->pointLights;
+	std::map<char*, PointLight*>::iterator _pointLightIterator;
+	int i;
+	for (_pointLightIterator = pointLights.begin(), i = 0; _pointLightIterator != pointLights.end(); ++_pointLightIterator, i++) {
+		PointLight* pl = _pointLightIterator->second;
+		glUniform3f(shaderProgram->pointLightsLocation[i].Color, pl->Color.x, pl->Color.y, pl->Color.z);
+		glUniform3f(shaderProgram->pointLightsLocation[i].Position, pl->Position.x, pl->Position.y, pl->Position.z);
+		glUniform1f(shaderProgram->pointLightsLocation[i].AmbientIntensity, pl->AmbientIntensity);
+		glUniform1f(shaderProgram->pointLightsLocation[i].DiffuseIntensity, pl->DiffuseIntensity);
+		glUniform3f(shaderProgram->pointLightsLocation[i].Atten, pl->Attenuation.x, pl->Attenuation.y, pl->Attenuation.z);
+		glUniform1f(shaderProgram->pointLightsLocation[i].Range, pl->Range);
 
-	//std::map<char*, PointLight*> pointLights = ManagerLight::instance()->pointLights;
-	//std::map<char*, PointLight*>::iterator _pointLightIterator;
+		//std::cout << "\n-------------";
+		//std::cout << "\nSetting light[" << i << "] :: " << _pointLightIterator->first;
+		//std::cout << "\nColor:: " << pl->Color << "\nPosition:: " << pl->Position;
+		//std::cout << "\nAmbientIntensity:: " << pl->AmbientIntensity;
+		//std::cout << "\nDiffuseIntensity:: " << pl->DiffuseIntensity;
+		//std::cout << "\nAttenuation:: " << pl->Attenuation;
+		//std::cout << "\nRange:: " << pl->Range;
+	}
+	Matrix4* nm = new Matrix4(modelMatrix);
+	shaderProgram->setUniform("NormalMatrix", nm->invert().transpose().data());
+	int numberPointLights = ManagerLight::instance()->pointLights.size();
+	shaderProgram->setUniform("numPointLights", numberPointLights);
 
-	//for (_pointLightIterator = pointLights.begin(); _pointLightIterator != pointLights.end(); ++_pointLightIterator) {
-	//	PointLight* pl = _pointLightIterator->second;
-
-
-	//}
-
-	PointLight* pl = ManagerLight::instance()->getPointLight("main");
-	
-	shaderProgram->setUniform("pointLights.Position", pl->Position.get());
-	shaderProgram->setUniform("pointLights.AmbientIntensity", pl->AmbientIntensity);
-	shaderProgram->setUniform("pointLights.DiffuseIntensity", pl->DiffuseIntensity);
-	shaderProgram->setUniform("pointLights.Color", pl->Color.get());
-	shaderProgram->setUniform("pointLights.Atten", pl->Attenuation.get());
-	shaderProgram->setUniform("pointLights.Range", pl->Range);
+	//shaderProgram->setUniform("mlwNumPointLights", ManagerLight::instance()->getLightsCount());
 }
 
 Matrix4* SceneNode::calculateGraphModelMatrix() {
