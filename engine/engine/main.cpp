@@ -196,6 +196,14 @@ void createTexture() {
 	Texture* texture1 = new Texture();
 	texture1->createTexture("Models/blackMarble.tga");
 	ManagerTexture::instance()->add("BlackMarble", texture1);
+
+	Texture* texture2 = new Texture();
+	texture2->make2DNoiseTexture(32);
+	ManagerTexture::instance()->add("2DNoise", texture2);
+
+	Texture* texture3 = new Texture();
+	texture3->make3DNoiseTexture(32);
+	ManagerTexture::instance()->add("3DNoise", texture3);
 }
 
 void createSceneGraph() {
@@ -374,7 +382,6 @@ void createSceneGraph() {
 	//kingB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	//kingB1Node->transform.setPosition(0.765f, 0.0f, 5.358f);
 	//kingB1Node->boundingBox->setBoundingBoxSize(0.5f, 2.429f, 0.5f);
-
 }
 
 void createLights() {
