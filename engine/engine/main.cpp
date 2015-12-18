@@ -88,6 +88,37 @@ void createBaseShader() {
 
 	ManagerShader::instance()->add("baseshader", shader);
 };
+
+void createBaseShaderXPTO() {
+	VSShaderLib* shader = new VSShaderLib();
+	shader->init();
+	shader->loadShader(VSShaderLib::VERTEX_SHADER, "shaders/vertexShader1.vert");
+	shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/fragShader1.frag");
+
+	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::VERTICES, "in_Position");
+	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::TEXCOORDS, "in_TexCoord");
+	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::NORMALS, "in_Normal");
+
+	shader->prepareProgram("shaders/vertexShader");
+
+	shader->addUniform("ModelMatrix", GL_FLOAT_MAT4, 1);
+
+	UboId = glGetUniformBlockIndex(shader->getProgramIndex(), "Camera");
+	glUniformBlockBinding(shader->getProgramIndex(), UboId, UBO_BP);
+
+	//Material
+	shader->addUniform("mat.ambient", GL_FLOAT_VEC4, 1);
+	shader->addUniform("mat.diffuse", GL_FLOAT_VEC4, 1);
+	shader->addUniform("mat.specular", GL_FLOAT_VEC4, 1);
+	shader->addUniform("mat.shininess", GL_FLOAT, 1);
+
+	//Texture
+	shader->addUniform("tex_map", GL_INT, 1);
+
+	ManagerShader::instance()->add("baseshaderXPTO", shader);
+	ManagerShader::instance()->flushManagerMesh();
+};
+
 void createLightingShader() {
 	VSShaderLib* shader = new VSShaderLib();
 	shader->init();
@@ -148,6 +179,7 @@ void createLightingShader() {
 void createShaderProgram() {
 	createFresnelShader();
 	createBaseShader();
+	createBaseShaderXPTO();
 	createLightingShader();
 	ManagerShader::instance()->flushManagerMesh();
 }
@@ -193,6 +225,9 @@ void createMesh() {
 	Mesh* mesh7 = new Mesh(std::string("Models/king.obj"));
 	ManagerMesh::instance()->add("king", mesh7);
 
+	Mesh* mesh8 = new Mesh(std::string("Models/boardBoarder.obj"));
+	ManagerMesh::instance()->add("boarder", mesh8);
+
 	ManagerMesh::instance()->flushManagerMesh();
 }
 
@@ -210,8 +245,8 @@ void createTexture() {
 	ManagerTexture::instance()->add("marble", texture);
 
 	Texture* texture1 = new Texture();
-	texture1->createTexture("Models/blackMarble.tga");
-	ManagerTexture::instance()->add("BlackMarble", texture1);
+	texture1->createTexture("Models/stone.tga");
+	ManagerTexture::instance()->add("stone", texture1);
 
 	Texture* texture2 = new Texture();
 	texture2->make2DNoiseTexture(32);
@@ -227,6 +262,7 @@ void createSceneGraph() {
 	ManagerSceneGraph::instance()->addSceneGraph("main", sceneGraph);
 	ManagerSceneGraph::instance()->getSceneGraph("main")->camera = new Camera(UBO_BP);
 
+
 	SceneNode* boardNode = new SceneNode();
 	sceneGraph->addSceneNode("boardNode", boardNode);
 	boardNode->mesh = ManagerMesh::instance()->get("board");
@@ -234,6 +270,14 @@ void createSceneGraph() {
 	boardNode->texture = ManagerTexture::instance()->get("marble");
 	boardNode->shaderProgram = ManagerShader::instance()->get("baseshader");
 	boardNode->shaderProgram->disableStencil = false;
+
+	SceneNode* boarderNode = new SceneNode();
+	boardNode->addSceneNode("boarderNode", boarderNode);
+	boarderNode->mesh = ManagerMesh::instance()->get("boarder");
+	boarderNode->material = ManagerMaterial::instance()->get("pawn");
+	boarderNode->texture = ManagerTexture::instance()->get("3DNoise");
+	boarderNode->shaderProgram = ManagerShader::instance()->get("baseshaderXPTO");
+	boarderNode->shaderProgram->disableStencil = false;
 
 	SceneNode* pawnB2NodeInv = new SceneNode();
 	boardNode->addSceneNode("pawnB2NodeInv", pawnB2NodeInv);
