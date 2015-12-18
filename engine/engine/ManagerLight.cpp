@@ -7,6 +7,10 @@ SINGLETON_IMPLEMENTATION_NO_CONSTRUCTOR(ManagerLight)
 
 ManagerLight::ManagerLight() {}
 
+std::map<char*, PointLight*> ManagerLight::getPointLights() {
+	return pointLights;
+}
+
 void ManagerLight::addDirectionalLight(char* name, DirectionalLight* directionalLight) {
 	directionalLights.insert(std::pair<char*, DirectionalLight*>(name, directionalLight));
 }

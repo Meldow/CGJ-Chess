@@ -14,6 +14,8 @@ public:
 	std::map<char*, PointLight*> pointLights;
 	std::map<char*, SpotLight*> spotLights;
 
+	std::map<char*, PointLight*> getPointLights();
+	
 	void addDirectionalLight(char* name, DirectionalLight* directionalLight);
 	void addPointLight(char* name, PointLight* pointLight);
 	void addSpotLight(char* name, SpotLight* spotLight);
@@ -24,7 +26,6 @@ public:
 
 	int getLightsCount();
 
-private:
 	const unsigned int MAX_POINT_LIGHTS = 4;
 	const unsigned int MAX_SPOT_LIGHTS = 4;
 	std::map<char*, DirectionalLight*>::iterator _directionalLightIterator;

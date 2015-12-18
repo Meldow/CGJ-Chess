@@ -20,17 +20,9 @@ struct DirectionalLight : public BaseLight {
 struct PointLight : public BaseLight {
 	Vector3 Position;
 	float Range;
-	struct {
-		float Constant;
-		float Linear;
-		float Exp;
-	} Attenuation;
+	Vector3 Attenuation;
 
-	PointLight() : Position(0.0f, 0.0f, 0.0f), Range(10) {
-		Attenuation.Constant = 1.0f;
-		Attenuation.Linear = 0.045f;
-		Attenuation.Exp = 0.0075f;
-	}
+	PointLight() : Position(0.0f, 0.0f, 0.0f), Range(10), Attenuation(1.0f, 0.045f, 0.0075f) {}
 };
 
 struct SpotLight : public PointLight {

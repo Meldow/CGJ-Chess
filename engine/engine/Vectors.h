@@ -70,7 +70,7 @@ struct Vector3 {
 	float       dot(const Vector3& vec) const;          // dot product
 	Vector3     cross(const Vector3& vec) const;        // cross product
 	bool        equal(const Vector3& vec, float e) const; // compare with epsilon
-
+	float*		get();
 														  // operators
 	Vector3     operator-() const;                      // unary operator (negate)
 	Vector3     operator+(const Vector3& rhs) const;    // add rhs
@@ -91,6 +91,9 @@ struct Vector3 {
 
 	friend Vector3 operator*(const float a, const Vector3 vec);
 	friend std::ostream& operator<<(std::ostream& os, const Vector3& vec);
+
+private:
+	float data[3];
 };
 
 
@@ -383,6 +386,14 @@ inline Vector3 Vector3::cross(const Vector3& rhs) const {
 
 inline bool Vector3::equal(const Vector3& rhs, float epsilon) const {
 	return fabs(x - rhs.x) < epsilon && fabs(y - rhs.y) < epsilon && fabs(z - rhs.z) < epsilon;
+}
+
+inline float* Vector3::get()
+{
+	data[0] = x;
+	data[1] = y;
+	data[2] = z;
+	return data;
 }
 
 inline Vector3 operator*(const float a, const Vector3 vec) {

@@ -135,19 +135,19 @@ VSShaderLib::loadShader(VSShaderLib::ShaderType st, std::string fileName) {
 
 
 void
-VSShaderLib::prepareProgram() {
+VSShaderLib::prepareProgram(std::string name) {
 
 	glLinkProgram(pProgram);
 	
 	//////////////////////////////////////////////////////////////////////// Debug
 	GLint result = GL_FALSE;
 	int logLength;
-
+	
 	glGetProgramiv(pProgram, GL_LINK_STATUS, &result);
 	glGetProgramiv(pProgram, GL_INFO_LOG_LENGTH, &logLength);
 	std::vector<char> programError((logLength > 1) ? logLength : 1);
 	glGetProgramInfoLog(pProgram, logLength, NULL, &programError[0]);
-	//should identify the shader name/path
+	std::cout << "Linking " << name << "...\n";
 	std::cout << &programError[0] << std::endl;
 }
 

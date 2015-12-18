@@ -34,7 +34,8 @@ struct PointLight
 {                                                                                           
     BaseLight Base;                                                                         
     vec3 Position;                                                                          
-    Attenuation Atten;                                                                      
+    vec3 Atten;                                                                      
+	float Range;
 };                                                                                          
                                                                                             
 struct SpotLight                                                                            
@@ -67,15 +68,14 @@ out vec4 out_Color;
 
 vec4 CalcPointLights(vec3 Normal, vec3 EyePos) {
 	//Light
-	vec4 LightPosition = vec4(0.0,0.0,-3.0, 1.0);
-	vec3 LightAmbientColor = vec3(0.25, 0.25, 0.25);
-	vec3 LightDiffuseColor = vec3( 0.3, 0.1, 0.1);
-	vec3 LightAttenuation = vec3( 1.0, 0.045, 0.0075);
+	vec3 LightAmbientColor = pointLights.Base.Color * pointLights.Base.AmbientIntensity;
+	vec3 LightDiffuseColor = pointLights.Base.Color * pointLights.Base.DiffuseIntensity;
+	vec4 LightPosition = vec4(pointLights.Position, 1.0);
+	vec3 LightAttenuation = pointLights.Atten;
+	
+	vec3 Lpos = vec3(ViewMatrix * LightPosition);
 	float LightRange = 10.0;
 	
-	//light specific
-	//for each light
-	vec3 Lpos = vec3(ViewMatrix * LightPosition);
 	vec3 L = Lpos - EyePos;
 	float Ldistance = length(L);
 	L = normalize(L);
@@ -127,6 +127,7 @@ void main(void) {
         //TotalLight += CalcPointLight(gPointLights[i], Normal);
 		TotaLight += CalcPointLights(N, V);
     } */
+	
 	TotalLight += CalcPointLights(N, V);
 	
 	out_Color = vec4(MaterialEmissiveColor, 1.0) + TotalLight;

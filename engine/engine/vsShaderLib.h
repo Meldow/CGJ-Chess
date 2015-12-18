@@ -121,7 +121,7 @@ public:
 	/** Prepares program for usage. Links it and collects information
 	* about uniform variables and uniform blocks
 	*/
-	void prepareProgram();
+	void prepareProgram(std::string name);
 
 	/// generic function to set the uniform <name> to value
 	void setUniform(std::string name, void *value);

@@ -6,6 +6,7 @@
 #include "Texture.h"
 #include "SceneGraph.h"
 #include "ManagerLight.h"
+#include "Light.h"
 
 SceneNode::SceneNode() {
 	modelMatrix = Matrix4().identity();
@@ -57,15 +58,24 @@ void SceneNode::updateModelMatrix() {
 }
 
 void SceneNode::setLightUniforms() {
-	PointLight* pointlight = ManagerLight::instance()->getPointLight("main");
+
+	//std::map<char*, PointLight*> pointLights = ManagerLight::instance()->pointLights;
+	//std::map<char*, PointLight*>::iterator _pointLightIterator;
+
+	//for (_pointLightIterator = pointLights.begin(); _pointLightIterator != pointLights.end(); ++_pointLightIterator) {
+	//	PointLight* pl = _pointLightIterator->second;
 
 
-	//shaderProgram->setUniform("pointLights", );
-	//shaderProgram->setUniform("mat.ambient", material->getAmbient());
-	//shaderProgram->setUniform("mat.ambient", material->getAmbient());
-	//shaderProgram->setUniform("mat.ambient", material->getAmbient());
-	//shaderProgram->setUniform("mat.ambient", material->getAmbient());
+	//}
 
+	PointLight* pl = ManagerLight::instance()->getPointLight("main");
+	
+	shaderProgram->setUniform("pointLights.Position", pl->Position.get());
+	shaderProgram->setUniform("pointLights.AmbientIntensity", pl->AmbientIntensity);
+	shaderProgram->setUniform("pointLights.DiffuseIntensity", pl->DiffuseIntensity);
+	shaderProgram->setUniform("pointLights.Color", pl->Color.get());
+	shaderProgram->setUniform("pointLights.Atten", pl->Attenuation.get());
+	shaderProgram->setUniform("pointLights.Range", pl->Range);
 }
 
 Matrix4* SceneNode::calculateGraphModelMatrix() {
@@ -93,12 +103,10 @@ void SceneNode::update() {
 			if (childPicked) {
 				if (_sceneNodesIterator->second->objectPicked)
 					_sceneNodesIterator->second->checkIntersection();
-			}
-			else {
+			} else {
 				_sceneNodesIterator->second->checkIntersection();
 			}
-		}
-		else {
+		} else {
 			childPicked = false;
 			_sceneNodesIterator->second->objectPicked = false;
 		}

@@ -34,7 +34,7 @@ void createFresnelShader() {
 	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::TEXCOORDS, "in_TexCoord");
 	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::NORMALS, "in_Normal");
 
-	shader->prepareProgram();
+	shader->prepareProgram("shaders/vertexShader-fresnel");
 
 	shader->addUniform("ModelMatrix", GL_FLOAT_MAT4, 1);
 	shader->addUniform("NormalMatrix", GL_FLOAT_MAT4, 1);
@@ -56,8 +56,6 @@ void createFresnelShader() {
 
 	ManagerShader::instance()->add("fresnelshader", shader);
 	ManagerShader::instance()->flushManagerMesh();
-
-	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create shaders(new).");
 };
 void createBaseShader() {
 	VSShaderLib* shader = new VSShaderLib();
@@ -69,7 +67,7 @@ void createBaseShader() {
 	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::TEXCOORDS, "in_TexCoord");
 	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::NORMALS, "in_Normal");
 
-	shader->prepareProgram();
+	shader->prepareProgram("shaders/vertexShader");
 
 	shader->addUniform("ModelMatrix", GL_FLOAT_MAT4, 1);
 
@@ -82,16 +80,11 @@ void createBaseShader() {
 	shader->addUniform("mat.specular", GL_FLOAT_VEC4, 1);
 	shader->addUniform("mat.shininess", GL_FLOAT, 1);
 
-	shader->addUniform("mlwNumPointLights", GL_INT, 1);
-
-	shader->needBlend = false;
 	//Texture
 	shader->addUniform("tex_map", GL_INT, 1);
 
 	ManagerShader::instance()->add("baseshader", shader);
 	ManagerShader::instance()->flushManagerMesh();
-
-	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create shaders(new).");
 };
 void createLightingShader() {
 	VSShaderLib* shader = new VSShaderLib();
@@ -103,7 +96,7 @@ void createLightingShader() {
 	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::TEXCOORDS, "in_TexCoord");
 	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::NORMALS, "in_Normal");
 
-	shader->prepareProgram();
+	shader->prepareProgram("shaders/lighting/lighting");
 
 	shader->addUniform("ModelMatrix", GL_FLOAT_MAT4, 1);
 
@@ -116,16 +109,21 @@ void createLightingShader() {
 	shader->addUniform("mat.specular", GL_FLOAT_VEC4, 1);
 	shader->addUniform("mat.shininess", GL_FLOAT, 1);
 
-	shader->addUniform("mlwNumPointLights", GL_INT, 1);
+	//shader->addUniform("numPointLights", GL_INT, 1);
 
-	shader->needBlend = false;
+	shader->addUniform("pointLights.Position", GL_FLOAT_VEC3, 1);
+	//shader->addUniform("pointLights.AmbientIntensity", GL_FLOAT, 1);
+	//shader->addUniform("pointLights.DiffuseIntensity", GL_FLOAT, 1);
+	//shader->addUniform("pointLights.Color", GL_FLOAT_VEC3, 1);
+	//shader->addUniform("pointLights.Atten", GL_FLOAT_VEC3, 1);
+	//shader->addUniform("pointLights.Range", GL_FLOAT, 1);
+
 	shader->affectedByLights = true;
 
 	//Texture
-	shader->addUniform("tex_map", GL_INT, 1);
+	//shader->addUniform("tex_map", GL_INT, 1);
 
 	ManagerShader::instance()->add("lighting", shader);
-	ManagerShader::instance()->flushManagerMesh();
 
 	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create shaders(new).");
 }
@@ -134,6 +132,7 @@ void createShaderProgram() {
 	createFresnelShader();
 	createBaseShader();
 	createLightingShader();
+	ManagerShader::instance()->flushManagerMesh();
 }
 
 void destroyShaderProgram() {
@@ -361,22 +360,19 @@ void createSceneGraph() {
 
 void createLights() {
 	PointLight* pointlight = new PointLight();
-	ManagerLight::instance()->addPointLight("main", pointlight);
-
-	pointlight->Position = Vector3(0.0f, 0.0f, -3.0f);
+	pointlight->Position = Vector3(3.0f, 0.0f, 0.0f);
 	pointlight->Color = Vector3(0.15, 1.0, 0.64);	//yellow
 	pointlight->AmbientIntensity = 0.2;
 	pointlight->DiffuseIntensity = 0.2;
-	pointlight->Attenuation.Constant = 1.0f;
-	pointlight->Attenuation.Linear = 0.045f;
-	pointlight->Attenuation.Exp = 0.0075f;
+	pointlight->Attenuation = Vector3(1.0f, 0.045f, 0.0075f);
 	pointlight->Range = 10.0f;
+	ManagerLight::instance()->addPointLight("main", pointlight);
 }
 /////////////////////////////////////////////////////////////////////// SCENE
 
 void drawScene() {
 	ManagerSceneGraph::instance()->getSceneGraph("main")->draw();
-	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not draw scene.");
+	//ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not draw scene.");
 }
 
 /////////////////////////////////////////////////////////////////////// CALLBACKS
