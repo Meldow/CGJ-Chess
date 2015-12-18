@@ -5,9 +5,9 @@ in vec4 in_Normal;
 in vec4 in_TexCoord;
 
 uniform mat4 ModelMatrix;
+uniform mat4 NormalMatrix;
 
-uniform Camera
-{
+uniform Camera {
     mat4 ViewMatrix;
     mat4 ProjectionMatrix;
 };
@@ -46,7 +46,7 @@ void main(void)
 	
 	DataOut.EyeVertexPos = vec4(ModelViewMatrix * in_Position);
 	DataOut.VertexPos = in_Position;
-	DataOut.Normal = vec3(in_Normal);	//"downcast" from vec4 to vec3 
+	DataOut.Normal = vec3(NormalMatrix * in_Normal);	//"downcast" from vec4 to vec3 
 	DataOut.Tex_Coord = in_TexCoord.st;
 
 	mat4 invModelViewMatrix = inverse(ViewMatrix * ModelMatrix);

@@ -5,6 +5,7 @@ in vec4 in_Normal;
 in vec4 in_TexCoord;
 
 uniform mat4 ModelMatrix;
+uniform mat4 NormalMatrix;
 
 uniform Camera {
     mat4 ViewMatrix;
@@ -40,14 +41,16 @@ vec3 toWorldSpace(vec3 v)
 
 void main(void)
 {
+	//lighting
 	mat4 ModelViewMatrix = ViewMatrix * ModelMatrix;
 	mat4 ModelViewProjectionMatrix = ProjectionMatrix * ModelViewMatrix;
 	
 	DataOut.EyeVertexPos = vec4(ModelViewMatrix * in_Position);
 	DataOut.VertexPos = in_Position;
-	DataOut.Normal = vec3(in_Normal);	//"downcast" from vec4 to vec3 
+	DataOut.Normal = vec3(NormalMatrix * in_Normal);	//"downcast" from vec4 to vec3 
 	DataOut.Tex_Coord = in_TexCoord.st;
 
+	//fresnel
 	mat4 invModelViewMatrix = inverse(ViewMatrix * ModelMatrix);
 	vec3 cameraPosition = vec3(invModelViewMatrix[3])/invModelViewMatrix[3][3];
 	vec3 V = vec3(in_Position);

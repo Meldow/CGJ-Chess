@@ -107,6 +107,34 @@ void createBaseShader() {
 	shader->addUniform("mat.shininess", GL_FLOAT, 1);
 
 	shader->enableStencil = true;
+
+	shader->addUniform("numPointLights", GL_INT, 1);
+
+	for (int i = 0; i < ManagerLight::instance()->pointLights.size(); i++) {
+		char Name[128];
+		memset(Name, 0, sizeof(Name));
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.Color", i);
+		shader->pointLightsLocation[i].Color = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Position", i);
+		shader->pointLightsLocation[i].Position = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.AmbientIntensity", i);
+		shader->pointLightsLocation[i].AmbientIntensity = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.DiffuseIntensity", i);
+		shader->pointLightsLocation[i].DiffuseIntensity = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Atten", i);
+		shader->pointLightsLocation[i].Atten = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Range", i);
+		shader->pointLightsLocation[i].Range = glGetUniformLocation(shader->getProgramIndex(), Name);
+	}
+
+	shader->affectedByLights = true;
+
 	//Texture
 	shader->addUniform("tex_map", GL_INT, 1);
 
@@ -258,8 +286,10 @@ void createMesh() {
 void createMaterial() {
 	Material* material = new Material(std::string("Models/pawn.mtl"));
 	Material* mat2 = new Material(std::string("Models/red.mtl"));
+	Material* matboard = new Material(std::string("Models/board.mtl"));
 	ManagerMaterial::instance()->add("pawn", material);
 	ManagerMaterial::instance()->add("red", mat2);
+	ManagerMaterial::instance()->add("board", matboard);
 	ManagerMaterial::instance()->flushManagerMesh();
 }
 
@@ -290,7 +320,7 @@ void createSceneGraph() {
 	SceneNode* boardNode = new SceneNode();
 	sceneGraph->addSceneNode("boardNode", boardNode);
 	boardNode->mesh = ManagerMesh::instance()->get("board");
-	boardNode->material = ManagerMaterial::instance()->get("pawn");
+	boardNode->material = ManagerMaterial::instance()->get("board");
 	boardNode->texture = ManagerTexture::instance()->get("marble");
 	boardNode->shaderProgram = ManagerShader::instance()->get("baseshader");
 	boardNode->shaderProgram->disableStencil = false;
@@ -299,7 +329,7 @@ void createSceneGraph() {
 	SceneNode* boarderNode = new SceneNode();
 	boardNode->addSceneNode("boarderNode", boarderNode);
 	boarderNode->mesh = ManagerMesh::instance()->get("boarder");
-	boarderNode->material = ManagerMaterial::instance()->get("pawn");
+	boarderNode->material = ManagerMaterial::instance()->get("board");
 	boarderNode->texture = ManagerTexture::instance()->get("3DNoise");
 	boarderNode->shaderProgram = ManagerShader::instance()->get("baseshaderXPTO");
 	boarderNode->shaderProgram->disableStencil = false;
@@ -483,21 +513,21 @@ void createSceneGraph() {
 void createLights() {
 	PointLight* pointlight = new PointLight();
 	pointlight->Position = Vector3(0.0f, 0.0f, -3.0f);
-	pointlight->Color = Vector3(0.9, 0.3, 0.0);
+	pointlight->Color = Vector3(0.9, 0.9, 0.9);
 	pointlight->AmbientIntensity = 0.3f;
 	pointlight->DiffuseIntensity = 2.0f;
 	pointlight->Attenuation = Vector3(1.0f, 0.045f, 0.0075f);
 	pointlight->Range = 100.0f;
 	ManagerLight::instance()->addPointLight("pl1", pointlight);
 
-	PointLight* pointlight2 = new PointLight();
-	pointlight2->Position = Vector3(3.0f, 0.0f, 0.0f);
-	pointlight2->Color = Vector3(0.0, 0.3, 0.9);
-	pointlight2->AmbientIntensity = 0.3f;
-	pointlight2->DiffuseIntensity = 2.0f;
-	pointlight2->Attenuation = Vector3(1.0f, 0.045f, 0.0075f);
-	pointlight2->Range = 100.0f;
-	ManagerLight::instance()->addPointLight("pl2", pointlight2);
+	//PointLight* pointlight2 = new PointLight();
+	//pointlight2->Position = Vector3(0.0f, 0.0f, 3.0f);
+	//pointlight2->Color = Vector3(0.9, 0.9, 0.9);
+	//pointlight2->AmbientIntensity = 0.3f;
+	//pointlight2->DiffuseIntensity = 2.0f;
+	//pointlight2->Attenuation = Vector3(1.0f, 0.045f, 0.0075f);
+	//pointlight2->Range = 100.0f;
+	//ManagerLight::instance()->addPointLight("pl2", pointlight2);
 }
 /////////////////////////////////////////////////////////////////////// SCENE
 
