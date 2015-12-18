@@ -58,7 +58,6 @@ void createFresnelShader() {
 	shader->addUniform("tex_map", GL_INT, 1);
 
 	ManagerShader::instance()->add("fresnelshader", shader);
-	ManagerShader::instance()->flushManagerMesh();
 };
 void createBaseShader() {
 	VSShaderLib* shader = new VSShaderLib();
@@ -88,7 +87,6 @@ void createBaseShader() {
 	shader->addUniform("tex_map", GL_INT, 1);
 
 	ManagerShader::instance()->add("baseshader", shader);
-	ManagerShader::instance()->flushManagerMesh();
 };
 void createLightingShader() {
 	VSShaderLib* shader = new VSShaderLib();
@@ -139,14 +137,11 @@ void createLightingShader() {
 		shader->pointLightsLocation[i].Range = glGetUniformLocation(shader->getProgramIndex(), Name);
 	}
 
-
 	shader->affectedByLights = true;
 
 	//Texture
 	shader->addUniform("tex_map", GL_INT, 1);
-
 	ManagerShader::instance()->add("lighting", shader);
-
 	ManagerOpenGLErrors::instance()->CheckError("ERROR: Could not create shaders(new).");
 }
 
@@ -255,7 +250,7 @@ void createSceneGraph() {
 	testPawn->mesh = ManagerMesh::instance()->get("pawn");
 	testPawn->material = ManagerMaterial::instance()->get("pawn");
 	testPawn->texture = ManagerTexture::instance()->get("marble");
-	testPawn->shaderProgram = ManagerShader::instance()->get("lighting");
+	testPawn->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	testPawn->transform.setPosition(0.0f, 0.0f, 0.0f);
 	testPawn->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
 
@@ -268,141 +263,141 @@ void createSceneGraph() {
 	pawnB2Node->transform.setPosition(3.827f, 0.0f, 3.827f);
 	pawnB2Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
 
-	//SceneNode* pawnB1Node = new SceneNode();
-	//boardNode->addSceneNode("pawnB1Node", pawnB1Node);
-	//pawnB1Node->mesh = ManagerMesh::instance()->get("pawn");
-	//pawnB1Node->material = ManagerMaterial::instance()->get("pawn");
-	//pawnB1Node->texture = ManagerTexture::instance()->get("marble");
-	//pawnB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//pawnB1Node->transform.setPosition(5.358f, 0.0f, 3.827f);
-	//pawnB1Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	SceneNode* pawnB1Node = new SceneNode();
+	boardNode->addSceneNode("pawnB1Node", pawnB1Node);
+	pawnB1Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB1Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB1Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB1Node->transform.setPosition(5.358f, 0.0f, 3.827f);
+	pawnB1Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
 
 
-	//SceneNode* pawnB3Node = new SceneNode();
-	//boardNode->addSceneNode("pawnB3Node", pawnB3Node);
-	//pawnB3Node->mesh = ManagerMesh::instance()->get("pawn");
-	//pawnB3Node->material = ManagerMaterial::instance()->get("pawn");
-	//pawnB3Node->texture = ManagerTexture::instance()->get("marble");
-	//pawnB3Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//pawnB3Node->transform.setPosition(2.296f, 0.0f, 3.827f);
-	//pawnB3Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	SceneNode* pawnB3Node = new SceneNode();
+	boardNode->addSceneNode("pawnB3Node", pawnB3Node);
+	pawnB3Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB3Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB3Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB3Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB3Node->transform.setPosition(2.296f, 0.0f, 3.827f);
+	pawnB3Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
 
-	//SceneNode* pawnB4Node = new SceneNode();
-	//boardNode->addSceneNode("pawnB4Node", pawnB4Node);
-	//pawnB4Node->mesh = ManagerMesh::instance()->get("pawn");
-	//pawnB4Node->material = ManagerMaterial::instance()->get("pawn");
-	//pawnB4Node->texture = ManagerTexture::instance()->get("marble");
-	//pawnB4Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//pawnB4Node->transform.setPosition(0.765f, 0.0f, 3.827f);
-	//pawnB4Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	SceneNode* pawnB4Node = new SceneNode();
+	boardNode->addSceneNode("pawnB4Node", pawnB4Node);
+	pawnB4Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB4Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB4Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB4Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB4Node->transform.setPosition(0.765f, 0.0f, 3.827f);
+	pawnB4Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
 
-	//SceneNode* pawnB5Node = new SceneNode();
-	//boardNode->addSceneNode("pawnB5Node", pawnB5Node);
-	//pawnB5Node->mesh = ManagerMesh::instance()->get("pawn");
-	//pawnB5Node->material = ManagerMaterial::instance()->get("pawn");
-	//pawnB5Node->texture = ManagerTexture::instance()->get("marble");
-	//pawnB5Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//pawnB5Node->transform.setPosition(-0.765f, 0.0f, 3.827f);
-	//pawnB5Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	SceneNode* pawnB5Node = new SceneNode();
+	boardNode->addSceneNode("pawnB5Node", pawnB5Node);
+	pawnB5Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB5Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB5Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB5Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB5Node->transform.setPosition(-0.765f, 0.0f, 3.827f);
+	pawnB5Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
 
-	//SceneNode* pawnB6Node = new SceneNode();
-	//boardNode->addSceneNode("pawnB6Node", pawnB6Node);
-	//pawnB6Node->mesh = ManagerMesh::instance()->get("pawn");
-	//pawnB6Node->material = ManagerMaterial::instance()->get("pawn");
-	//pawnB6Node->texture = ManagerTexture::instance()->get("marble");
-	//pawnB6Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//pawnB6Node->transform.setPosition(-2.296f, 0.0f, 3.827f);
-	//pawnB6Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	SceneNode* pawnB6Node = new SceneNode();
+	boardNode->addSceneNode("pawnB6Node", pawnB6Node);
+	pawnB6Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB6Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB6Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB6Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB6Node->transform.setPosition(-2.296f, 0.0f, 3.827f);
+	pawnB6Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
 
-	//SceneNode* pawnB7Node = new SceneNode();
-	//boardNode->addSceneNode("pawnB7Node", pawnB7Node);
-	//pawnB7Node->mesh = ManagerMesh::instance()->get("pawn");
-	//pawnB7Node->material = ManagerMaterial::instance()->get("pawn");
-	//pawnB7Node->texture = ManagerTexture::instance()->get("marble");
-	//pawnB7Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//pawnB7Node->transform.setPosition(-3.827f, 0.0f, 3.827f);
-	//pawnB7Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	SceneNode* pawnB7Node = new SceneNode();
+	boardNode->addSceneNode("pawnB7Node", pawnB7Node);
+	pawnB7Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB7Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB7Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB7Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB7Node->transform.setPosition(-3.827f, 0.0f, 3.827f);
+	pawnB7Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
 
-	//SceneNode* pawnB8Node = new SceneNode();
-	//boardNode->addSceneNode("pawnB8Node", pawnB8Node);
-	//pawnB8Node->mesh = ManagerMesh::instance()->get("pawn");
-	//pawnB8Node->material = ManagerMaterial::instance()->get("pawn");
-	//pawnB8Node->texture = ManagerTexture::instance()->get("marble");
-	//pawnB8Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//pawnB8Node->transform.setPosition(-5.358f, 0.0f, 3.827f);
-	//pawnB8Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	SceneNode* pawnB8Node = new SceneNode();
+	boardNode->addSceneNode("pawnB8Node", pawnB8Node);
+	pawnB8Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB8Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB8Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB8Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB8Node->transform.setPosition(-5.358f, 0.0f, 3.827f);
+	pawnB8Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
 
-	//SceneNode* rockB1Node = new SceneNode();
-	//boardNode->addSceneNode("rockB1Node", rockB1Node);
-	//rockB1Node->mesh = ManagerMesh::instance()->get("rock");
-	//rockB1Node->material = ManagerMaterial::instance()->get("pawn");
-	//rockB1Node->texture = ManagerTexture::instance()->get("marble");
-	//rockB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//rockB1Node->transform.setPosition(5.358f, 0.0f, 5.358f);
-	//rockB1Node->boundingBox->setBoundingBoxSize(0.419f, 1.193f, 0.419f);
+	SceneNode* rockB1Node = new SceneNode();
+	boardNode->addSceneNode("rockB1Node", rockB1Node);
+	rockB1Node->mesh = ManagerMesh::instance()->get("rock");
+	rockB1Node->material = ManagerMaterial::instance()->get("pawn");
+	rockB1Node->texture = ManagerTexture::instance()->get("marble");
+	rockB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	rockB1Node->transform.setPosition(5.358f, 0.0f, 5.358f);
+	rockB1Node->boundingBox->setBoundingBoxSize(0.419f, 1.193f, 0.419f);
 
-	//SceneNode* rockB2Node = new SceneNode();
-	//boardNode->addSceneNode("rockB2Node", rockB2Node);
-	//rockB2Node->mesh = ManagerMesh::instance()->get("rock");
-	//rockB2Node->material = ManagerMaterial::instance()->get("pawn");
-	//rockB2Node->texture = ManagerTexture::instance()->get("marble");
-	//rockB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//rockB2Node->transform.setPosition(-5.358f, 0.0f, 5.358f);
-	//rockB2Node->boundingBox->setBoundingBoxSize(0.419f, 1.193f, 0.419f);
+	SceneNode* rockB2Node = new SceneNode();
+	boardNode->addSceneNode("rockB2Node", rockB2Node);
+	rockB2Node->mesh = ManagerMesh::instance()->get("rock");
+	rockB2Node->material = ManagerMaterial::instance()->get("pawn");
+	rockB2Node->texture = ManagerTexture::instance()->get("marble");
+	rockB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	rockB2Node->transform.setPosition(-5.358f, 0.0f, 5.358f);
+	rockB2Node->boundingBox->setBoundingBoxSize(0.419f, 1.193f, 0.419f);
 
-	//SceneNode* horseB1Node = new SceneNode();
-	//boardNode->addSceneNode("horseB1Node", horseB1Node);
-	//horseB1Node->mesh = ManagerMesh::instance()->get("horse");
-	//horseB1Node->material = ManagerMaterial::instance()->get("pawn");
-	//horseB1Node->texture = ManagerTexture::instance()->get("marble");
-	//horseB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//horseB1Node->transform.setPosition(3.827f, 0.0f, 5.358f);
-	//horseB1Node->boundingBox->setBoundingBoxSize(0.419f, 1.429f, 0.419f);
+	SceneNode* horseB1Node = new SceneNode();
+	boardNode->addSceneNode("horseB1Node", horseB1Node);
+	horseB1Node->mesh = ManagerMesh::instance()->get("horse");
+	horseB1Node->material = ManagerMaterial::instance()->get("pawn");
+	horseB1Node->texture = ManagerTexture::instance()->get("marble");
+	horseB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	horseB1Node->transform.setPosition(3.827f, 0.0f, 5.358f);
+	horseB1Node->boundingBox->setBoundingBoxSize(0.419f, 1.429f, 0.419f);
 
-	//SceneNode* horseB2Node = new SceneNode();
-	//boardNode->addSceneNode("horseB2Node", horseB2Node);
-	//horseB2Node->mesh = ManagerMesh::instance()->get("horse");
-	//horseB2Node->material = ManagerMaterial::instance()->get("pawn");
-	//horseB2Node->texture = ManagerTexture::instance()->get("marble");
-	//horseB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//horseB2Node->transform.setPosition(-3.827f, 0.0f, 5.358f);
-	//horseB2Node->boundingBox->setBoundingBoxSize(0.419f, 1.429f, 0.419f);
+	SceneNode* horseB2Node = new SceneNode();
+	boardNode->addSceneNode("horseB2Node", horseB2Node);
+	horseB2Node->mesh = ManagerMesh::instance()->get("horse");
+	horseB2Node->material = ManagerMaterial::instance()->get("pawn");
+	horseB2Node->texture = ManagerTexture::instance()->get("marble");
+	horseB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	horseB2Node->transform.setPosition(-3.827f, 0.0f, 5.358f);
+	horseB2Node->boundingBox->setBoundingBoxSize(0.419f, 1.429f, 0.419f);
 
-	//SceneNode* bishopB1Node = new SceneNode();
-	//boardNode->addSceneNode("bishopB1Node", bishopB1Node);
-	//bishopB1Node->mesh = ManagerMesh::instance()->get("bishop");
-	//bishopB1Node->material = ManagerMaterial::instance()->get("pawn");
-	//bishopB1Node->texture = ManagerTexture::instance()->get("marble");
-	//bishopB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//bishopB1Node->transform.setPosition(2.296f, 0.0f, 5.358f);
-	//bishopB1Node->boundingBox->setBoundingBoxSize(0.419f, 1.7f, 0.419f);
+	SceneNode* bishopB1Node = new SceneNode();
+	boardNode->addSceneNode("bishopB1Node", bishopB1Node);
+	bishopB1Node->mesh = ManagerMesh::instance()->get("bishop");
+	bishopB1Node->material = ManagerMaterial::instance()->get("pawn");
+	bishopB1Node->texture = ManagerTexture::instance()->get("marble");
+	bishopB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	bishopB1Node->transform.setPosition(2.296f, 0.0f, 5.358f);
+	bishopB1Node->boundingBox->setBoundingBoxSize(0.419f, 1.7f, 0.419f);
 
-	//SceneNode* bishopB2Node = new SceneNode();
-	//boardNode->addSceneNode("bishopB2Node", bishopB2Node);
-	//bishopB2Node->mesh = ManagerMesh::instance()->get("bishop");
-	//bishopB2Node->material = ManagerMaterial::instance()->get("pawn");
-	//bishopB2Node->texture = ManagerTexture::instance()->get("marble");
-	//bishopB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//bishopB2Node->transform.setPosition(-2.296f, 0.0f, 5.358f);
-	//bishopB2Node->boundingBox->setBoundingBoxSize(0.419f, 1.7f, 0.419f);
+	SceneNode* bishopB2Node = new SceneNode();
+	boardNode->addSceneNode("bishopB2Node", bishopB2Node);
+	bishopB2Node->mesh = ManagerMesh::instance()->get("bishop");
+	bishopB2Node->material = ManagerMaterial::instance()->get("pawn");
+	bishopB2Node->texture = ManagerTexture::instance()->get("marble");
+	bishopB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	bishopB2Node->transform.setPosition(-2.296f, 0.0f, 5.358f);
+	bishopB2Node->boundingBox->setBoundingBoxSize(0.419f, 1.7f, 0.419f);
 
-	//SceneNode* queenB1Node = new SceneNode();
-	//boardNode->addSceneNode("queenB1Node", queenB1Node);
-	//queenB1Node->mesh = ManagerMesh::instance()->get("queen");
-	//queenB1Node->material = ManagerMaterial::instance()->get("pawn");
-	//queenB1Node->texture = ManagerTexture::instance()->get("marble");
-	//queenB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//queenB1Node->transform.setPosition(-0.765f, 0.0f, 5.358f);
-	//queenB1Node->boundingBox->setBoundingBoxSize(0.5f, 2.146f, 0.5f);
+	SceneNode* queenB1Node = new SceneNode();
+	boardNode->addSceneNode("queenB1Node", queenB1Node);
+	queenB1Node->mesh = ManagerMesh::instance()->get("queen");
+	queenB1Node->material = ManagerMaterial::instance()->get("pawn");
+	queenB1Node->texture = ManagerTexture::instance()->get("marble");
+	queenB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	queenB1Node->transform.setPosition(-0.765f, 0.0f, 5.358f);
+	queenB1Node->boundingBox->setBoundingBoxSize(0.5f, 2.146f, 0.5f);
 
-	//SceneNode* kingB1Node = new SceneNode();
-	//boardNode->addSceneNode("kingB1Node", kingB1Node);
-	//kingB1Node->mesh = ManagerMesh::instance()->get("king");
-	//kingB1Node->material = ManagerMaterial::instance()->get("pawn");
-	//kingB1Node->texture = ManagerTexture::instance()->get("marble");
-	//kingB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//kingB1Node->transform.setPosition(0.765f, 0.0f, 5.358f);
-	//kingB1Node->boundingBox->setBoundingBoxSize(0.5f, 2.429f, 0.5f);
+	SceneNode* kingB1Node = new SceneNode();
+	boardNode->addSceneNode("kingB1Node", kingB1Node);
+	kingB1Node->mesh = ManagerMesh::instance()->get("king");
+	kingB1Node->material = ManagerMaterial::instance()->get("pawn");
+	kingB1Node->texture = ManagerTexture::instance()->get("marble");
+	kingB1Node->shaderProgram = ManagerShader::instance()->get("lighting");
+	kingB1Node->transform.setPosition(0.765f, 0.0f, 5.358f);
+	kingB1Node->boundingBox->setBoundingBoxSize(0.5f, 2.429f, 0.5f);
 }
 
 void createLights() {
@@ -414,7 +409,6 @@ void createLights() {
 	pointlight->Attenuation = Vector3(1.0f, 0.045f, 0.0075f);
 	pointlight->Range = 100.0f;
 	ManagerLight::instance()->addPointLight("pl1", pointlight);
-
 
 	PointLight* pointlight2 = new PointLight();
 	pointlight2->Position = Vector3(3.0f, 0.0f, 0.0f);

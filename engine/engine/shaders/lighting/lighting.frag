@@ -57,8 +57,8 @@ uniform PointLight pointLights[MAX_POINT_LIGHTS];
 out vec4 out_Color;
 
 vec4 CalcPointLights(PointLight pointlight) {
-	//vec3 V = vec3(DataIn.VertexPos);		//incorrect world placement		light does not move
-	vec3 V = vec3(DataIn.EyeVertexPos);	//correct world placement		light rotates
+	vec3 V = vec3(DataIn.VertexPos);		//incorrect world placement		light does not move
+	//vec3 V = vec3(DataIn.EyeVertexPos);	//correct world placement		light rotates
 	vec3 N = normalize(DataIn.Normal);
 	vec3 Lpos = vec3(ViewMatrix * vec4(pointlight.Position,1.0));
 	vec3 L = Lpos - V;
