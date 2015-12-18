@@ -56,6 +56,18 @@ void SceneNode::updateModelMatrix() {
 	//.scale(transform.scale.x, transform.scale.y, transform.scale.z);
 }
 
+void SceneNode::setLightUniforms() {
+	PointLight* pointlight = ManagerLight::instance()->getPointLight("main");
+
+
+	//shaderProgram->setUniform("pointLights", );
+	//shaderProgram->setUniform("mat.ambient", material->getAmbient());
+	//shaderProgram->setUniform("mat.ambient", material->getAmbient());
+	//shaderProgram->setUniform("mat.ambient", material->getAmbient());
+	//shaderProgram->setUniform("mat.ambient", material->getAmbient());
+
+}
+
 Matrix4* SceneNode::calculateGraphModelMatrix() {
 	return new Matrix4();
 }
@@ -100,6 +112,7 @@ void SceneNode::draw() {
 			glDepthMask(GL_FALSE);
 		}
 		setUniforms();
+		if (shaderProgram->affectedByLights) setLightUniforms();
 		if (mesh) mesh->draw();
 
 		if (shaderProgram->needBlend) {

@@ -159,8 +159,9 @@ public:
 	/// returns true if linked, false otherwise
 	bool isProgramLinked();
 
-
+	// flags
 	bool needBlend = false;
+	bool affectedByLights = false;
 
 protected:
 

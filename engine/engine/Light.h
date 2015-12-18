@@ -2,11 +2,8 @@
 #include "Dependencies/glew/glew.h"
 #include "Vectors.h"
 
-#define ARRAY_SIZE_IN_ELEMENTS(a) (sizeof(a)/sizeof(a[0]))
-#define SNPRINTF _snprintf_s
-
 class Matrix4;
-struct BaseLight {
+class BaseLight {
 	Vector3 Color;
 	float AmbientIntensity;
 	float DiffuseIntensity;
@@ -14,13 +11,13 @@ struct BaseLight {
 	BaseLight() : Color(0.0f, 0.0f, 0.0f), AmbientIntensity(0.0f), DiffuseIntensity(0.0f) {}
 };
 
-struct DirectionalLight : public BaseLight {
+class DirectionalLight : public BaseLight {
 	Vector3 Direction;
 
 	DirectionalLight() : Direction(0.0f, 0.0f, 0.0f) {}
 };
 
-struct PointLight : public BaseLight {
+class PointLight : public BaseLight {
 	Vector3 Position;
 	float Range;
 	struct {
@@ -36,14 +33,14 @@ struct PointLight : public BaseLight {
 	}
 };
 
-struct SpotLight : public PointLight {
+class SpotLight : public PointLight {
 	Vector3 Direction;
 	float Cutoff;
 
 	SpotLight() : Direction(0.0f, 0.0f, 0.0f), Cutoff(0.0f) {}
 };
 
-struct mlwDirectionalLight{
+struct mlwDirectionalLight {
 	GLuint Color;
 	GLuint AmbientIntensity;
 	GLuint DiffuseIntensity;

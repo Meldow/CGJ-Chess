@@ -60,8 +60,8 @@ in Data {
 } DataIn;
 
 //lights
-uniform int mlwNumPointLights;   
-//uniform PointLight mlwPointLights;
+uniform int numPointLights;   
+uniform PointLight pointLights;
 
 out vec4 out_Color;
 

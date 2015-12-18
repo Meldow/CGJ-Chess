@@ -31,6 +31,7 @@ public:
 
 	void addSceneNode(char* name, SceneNode* scene_node);
 	SceneNode* getSceneNode(char* name);
+
 	//update
 	void update();
 	void draw();
@@ -43,4 +44,5 @@ private:
 	void loadMaterialUniforms();
 	void loadTextureUniforms();
 	void updateModelMatrix();
+	void setLightUniforms();
 };
