@@ -162,6 +162,8 @@ public:
 	// flags
 	bool needBlend = false;
 	bool affectedByLights = false;
+	bool enableStencil = false;
+	bool disableStencil = true;
 
 protected:
 
@@ -201,7 +203,6 @@ protected:
 
 	/// stores if init has been called
 	bool pInited;
-
 
 	/// blockCount is used to assign binding indexes
 	static int spBlockCount;

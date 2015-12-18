@@ -49,12 +49,12 @@ void SceneNode::loadTextureUniforms() {
 }
 
 void SceneNode::updateModelMatrix() {
-	modelMatrix = Matrix4().translate(transform.position);
+	modelMatrix = Matrix4().translate(transform.position)
 	//TODO
 	//.rotate(transform.rotation.x, Vector3(1, 0, 0))
 	//.rotate(transform.rotation.y, Vector3(0, 1, 0))
 	//.rotate(transform.rotation.z, Vector3(0, 0, 1))
-	//.scale(transform.scale.x, transform.scale.y, transform.scale.z);
+	.scale(transform.scale.x, transform.scale.y, transform.scale.z);
 }
 
 void SceneNode::setLightUniforms() {
@@ -136,9 +136,30 @@ void SceneNode::draw() {
 			glEnable(GL_CULL_FACE);
 			glDepthMask(GL_FALSE);
 		}
+		if (shaderProgram->enableStencil) {
+			glEnable(GL_STENCIL_TEST);
+			glStencilFunc(GL_ALWAYS, 1, 0xFF); // Set any stencil to 1
+			glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+			glStencilMask(0xFF); // Write to stencil buffer
+			glEnable(GL_CULL_FACE);
+			glDepthMask(GL_FALSE); // Don't write to depth buffer
+			glClear(GL_STENCIL_BUFFER_BIT); // Clear stencil buffer (0 by default)
+		}
+		if (shaderProgram->disableStencil) {
+			glDisable(GL_STENCIL_TEST);
+			glCullFace(GL_BACK);
+		}
+
 		setUniforms();
 		if (shaderProgram->affectedByLights) setLightUniforms();
 		if (mesh) mesh->draw();
+
+		if (shaderProgram->enableStencil) {
+			glStencilFunc(GL_EQUAL, 1, 0xFF); // Pass test if stencil value is 1
+			glStencilMask(0x00); // Don't write anything to stencil buffer
+			glDepthMask(GL_TRUE); // Write to depth buffer
+			glCullFace(GL_FRONT);
+		}
 
 		if (shaderProgram->needBlend) {
 			glDisable(GL_BLEND);

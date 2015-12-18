@@ -80,6 +80,7 @@ void createBaseShader() {
 	shader->addUniform("mat.specular", GL_FLOAT_VEC4, 1);
 	shader->addUniform("mat.shininess", GL_FLOAT, 1);
 
+	shader->enableStencil = true;
 	//Texture
 	shader->addUniform("tex_map", GL_INT, 1);
 
@@ -208,6 +209,17 @@ void createSceneGraph() {
 	boardNode->material = ManagerMaterial::instance()->get("pawn");
 	boardNode->texture = ManagerTexture::instance()->get("marble");
 	boardNode->shaderProgram = ManagerShader::instance()->get("baseshader");
+	boardNode->shaderProgram->disableStencil = false;
+
+	SceneNode* pawnB2NodeInv = new SceneNode();
+	boardNode->addSceneNode("pawnB2NodeInv", pawnB2NodeInv);
+	pawnB2NodeInv->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB2NodeInv->material = ManagerMaterial::instance()->get("pawn");
+	pawnB2NodeInv->texture = ManagerTexture::instance()->get("marble");
+	pawnB2NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB2NodeInv->shaderProgram->disableStencil = false;
+	pawnB2NodeInv->transform.setPosition(3.827f, 0.0f, 3.827f);
+	pawnB2NodeInv->transform.setScale(1.0f, -1.0f, 1.0f);
 
 	SceneNode* testPawn = new SceneNode();
 	boardNode->addSceneNode("pawnB1Node", testPawn);
@@ -218,6 +230,15 @@ void createSceneGraph() {
 	testPawn->transform.setPosition(0.0f, 0.0f, 0.0f);
 	testPawn->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
 
+	SceneNode* pawnB2Node = new SceneNode();
+	boardNode->addSceneNode("pawnB2Node", pawnB2Node);
+	pawnB2Node->mesh = ManagerMesh::instance()->get("pawn");
+	pawnB2Node->material = ManagerMaterial::instance()->get("pawn");
+	pawnB2Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
+	pawnB2Node->transform.setPosition(3.827f, 0.0f, 3.827f);
+	pawnB2Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+
 	//SceneNode* pawnB1Node = new SceneNode();
 	//boardNode->addSceneNode("pawnB1Node", pawnB1Node);
 	//pawnB1Node->mesh = ManagerMesh::instance()->get("pawn");
@@ -227,14 +248,6 @@ void createSceneGraph() {
 	//pawnB1Node->transform.setPosition(5.358f, 0.0f, 3.827f);
 	//pawnB1Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
 
-	//SceneNode* pawnB2Node = new SceneNode();
-	//boardNode->addSceneNode("pawnB2Node", pawnB2Node);
-	//pawnB2Node->mesh = ManagerMesh::instance()->get("pawn");
-	//pawnB2Node->material = ManagerMaterial::instance()->get("pawn");
-	//pawnB2Node->texture = ManagerTexture::instance()->get("marble");
-	//pawnB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
-	//pawnB2Node->transform.setPosition(3.827f, 0.0f, 3.827f);
-	//pawnB2Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
 
 	//SceneNode* pawnB3Node = new SceneNode();
 	//boardNode->addSceneNode("pawnB3Node", pawnB3Node);
