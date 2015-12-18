@@ -1,9 +1,6 @@
 #include "Texture.h"
 
-GLuint texture_id;
-
-Texture::Texture(char *fileName) {
-	createTexture(fileName);
+Texture::Texture() {
 }
 
 void Texture::createTexture(char *fileName) {
