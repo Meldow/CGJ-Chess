@@ -6,8 +6,7 @@ in vec4 in_TexCoord;
 
 uniform mat4 ModelMatrix;
 
-uniform Camera
-{
+uniform Camera {
     mat4 ViewMatrix;
     mat4 ProjectionMatrix;
 };
@@ -25,7 +24,7 @@ out vec3 exRefractR;
 out vec3 exRefractG;
 out vec3 exRefractB;
 
-const float ETA = 0.5; // Glass Reflectance coefficient = 4%
+const float ETA = 0.97; // Glass Reflectance coefficient = 4%
 const float ETA_R = ETA; // No aberration if all components equal
 const float ETA_G = ETA;
 const float ETA_B = ETA;
