@@ -169,7 +169,6 @@
     <ClCompile Include="Matrices.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="PerlinNoise.cpp" />
-    <ClCompile Include="ppm.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="SceneGraph.cpp" />
     <ClCompile Include="SceneNode.cpp" />
@@ -195,7 +194,6 @@
     <ClInclude Include="Matrices.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="PerlinNoise.h" />
-    <ClInclude Include="ppm.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="SceneGraph.h" />
     <ClInclude Include="SceneNode.h" />
