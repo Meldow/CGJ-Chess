@@ -755,11 +755,9 @@ void processMouseMotion(int xx, int yy) {
 			Matrix4 deltaXRotation;
 			deltaXRotation = Matrix4().rotateY(alphaAux);
 			Matrix4 deltaYRotation;
-
 			deltaYRotation = Matrix4().rotateX(betaAux);
 			ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix = deltaXRotation * deltaYRotation;
 		} else {
-			std::cout << "alphaAux: " << alphaAux << std::endl;
 			if (betaAux <= 0) betaAux = 0;
 			if (betaAux >= 90) {
 				betaAux = 90;
