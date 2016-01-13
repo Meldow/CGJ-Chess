@@ -169,7 +169,6 @@ void createBaseShaderXPTO() {
 	shader->addUniform("tex_map", GL_INT, 1);
 
 	ManagerShader::instance()->add("baseshaderXPTO", shader);
-	ManagerShader::instance()->flushManagerMesh();
 };
 
 void createLightingShader() {
@@ -234,7 +233,6 @@ void createShaderProgram() {
 	createBaseShader();
 	createBaseShaderXPTO();
 	createLightingShader();
-	ManagerShader::instance()->flushManagerMesh();
 }
 
 void destroyShaderProgram() {
@@ -281,7 +279,6 @@ void createMesh() {
 	Mesh* mesh8 = new Mesh(std::string("Models/boardBoarder.obj"));
 	ManagerMesh::instance()->add("boarder", mesh8);
 
-	ManagerMesh::instance()->flushManagerMesh();
 }
 
 void createMaterial() {
@@ -291,7 +288,6 @@ void createMaterial() {
 	ManagerMaterial::instance()->add("pawn", material);
 	ManagerMaterial::instance()->add("red", mat2);
 	ManagerMaterial::instance()->add("board", matboard);
-	ManagerMaterial::instance()->flushManagerMesh();
 }
 
 void createTexture() {
@@ -646,7 +642,7 @@ void createSceneGraph() {
 void createLights() {
 	PointLight* pointlight = new PointLight();
 	pointlight->Position = Vector3(0.0f, 0.0f, 0.0f);
-	pointlight->Color = Vector3(0.9, 0.9, 0.9);
+	pointlight->Color = Vector3(0.2, 0.2, 0.0);
 	pointlight->AmbientIntensity = 0.3f;
 	pointlight->DiffuseIntensity = 2.0f;
 	pointlight->Attenuation = Vector3(1.0f, 0.045f, 0.0075f);

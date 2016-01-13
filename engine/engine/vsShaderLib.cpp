@@ -138,11 +138,11 @@ void
 VSShaderLib::prepareProgram(std::string name) {
 
 	glLinkProgram(pProgram);
-	
+
 	//////////////////////////////////////////////////////////////////////// Debug
 	GLint result = GL_FALSE;
 	int logLength;
-	
+
 	glGetProgramiv(pProgram, GL_LINK_STATUS, &result);
 	glGetProgramiv(pProgram, GL_INFO_LOG_LENGTH, &logLength);
 	std::vector<char> programError((logLength > 1) ? logLength : 1);
@@ -154,7 +154,6 @@ VSShaderLib::prepareProgram(std::string name) {
 
 void
 VSShaderLib::setProgramOutput(int index, std::string name) {
-
 	glBindFragDataLocation(pProgram, index, name.c_str());
 }
 
@@ -166,14 +165,12 @@ void VSShaderLib::setVertexAttribName(GLuint index, GLuint at, std::string name)
 
 GLint
 VSShaderLib::getProgramOutput(std::string name) {
-
 	return glGetFragDataLocation(pProgram, name.c_str());
 }
 
 
 void
 VSShaderLib::setVertexAttribName(VSShaderLib::AttribType at, std::string name) {
-
 	glBindAttribLocation(pProgram, at, name.c_str());
 }
 
