@@ -717,8 +717,10 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 	// start tracking the mouse
 	if (state == GLUT_DOWN) {
 		if (button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON) {
-			startX = xx;
-			startY = yy;
+			if (!pickObject) {
+				startX = xx;
+				startY = yy;
+			}
 			tracking = 1;
 		}
 	}
@@ -726,7 +728,7 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 	//stop tracking the mouse
 	else if (state == GLUT_UP) {
 		ManagerSceneGraph::instance()->getSceneGraph("main")->checkIntersection = false;
-		if (tracking == 1) {
+		if (tracking == 1 && !pickObject) {
 			alpha = alpha + (xx - startX);
 			beta = beta + (yy - startY);
 		}
@@ -736,12 +738,14 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 
 // Track mouse motion while buttons are pressed
 void processMouseMotion(int xx, int yy) {
-	int deltaX = xx - startX;
-	int deltaY = yy - startY;
+	if (!pickObject) {
+		int deltaX = xx - startX;
+		int deltaY = yy - startY;
 
-	if (tracking == 1) {
-		alphaAux = (alpha + deltaX);
-		betaAux = (beta + deltaY);
+		if (tracking == 1) {
+			alphaAux = (alpha + deltaX);
+			betaAux = (beta + deltaY);
+		}
 	}
 
 	if (pickObject)

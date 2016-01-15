@@ -126,9 +126,9 @@ void SceneNode::checkIntersection() {
 
 	if (objectPicked) {
 		float camDist = sceneGraph->camera->Distance;
-		transform.setPosition(sceneGraph->rayPoint.x * sqrt(camDist*camDist + transform.position.x*transform.position.x), 
-													sceneGraph->rayPoint.y *  sqrt(camDist*camDist + transform.position.y*transform.position.y),
-												sceneGraph->rayPoint.z *  sqrt(camDist*camDist + transform.position.z*transform.position.z));
+		transform.setPosition(sceneGraph->rayPoint.x * sqrt(camDist*camDist + transform.position.x*transform.position.z), 
+							  transform.position.y,
+		   					  sceneGraph->rayPoint.z * sqrt(camDist*camDist + transform.position.z*transform.position.x));
 		modelMatrix = Matrix4().translate(transform.position.x, transform.position.y, transform.position.z);
 	}
 }
