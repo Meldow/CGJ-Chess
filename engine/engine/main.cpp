@@ -330,22 +330,13 @@ void createSceneGraph() {
 	ManagerSceneGraph::instance()->addSceneGraph("main", sceneGraph);
 	ManagerSceneGraph::instance()->getSceneGraph("main")->camera = new Camera(UBO_BP);
 
-	SceneNode* boarderNode = new SceneNode();
-	sceneGraph->addSceneNode("boarderNode", boarderNode);
-	boarderNode->mesh = ManagerMesh::instance()->get("boarder");
-	boarderNode->material = ManagerMaterial::instance()->get("board");
-	boarderNode->texture = ManagerTexture::instance()->get("3DNoise");
-	boarderNode->shaderProgram = ManagerShader::instance()->get("baseshaderXPTO");
-	boarderNode->shaderProgram->disableStencil = false;
-	boarderNode->isReflex = true;
-	boarderNode->transform.setPosition(0.0f, 0.2f, 0.0f);
-
 	SceneNode* tableNode = new SceneNode();
 	sceneGraph->addSceneNode("table", tableNode);
 	tableNode->mesh = ManagerMesh::instance()->get("table");
 	tableNode->material = ManagerMaterial::instance()->get("board");
 	tableNode->texture = ManagerTexture::instance()->get("wood");
 	tableNode->shaderProgram = ManagerShader::instance()->get("baseshader");
+	tableNode->shaderProgram->enableStencil = false;
 	tableNode->shaderProgram->disableStencil = false;
 	tableNode->isReflex = true;
 	tableNode->transform.setPosition(0.0f, -0.1f, 0.0f);
@@ -356,6 +347,7 @@ void createSceneGraph() {
 	supportNode->material = ManagerMaterial::instance()->get("board");
 	supportNode->texture = ManagerTexture::instance()->get("wood");
 	supportNode->shaderProgram = ManagerShader::instance()->get("baseshader");
+	supportNode->shaderProgram->enableStencil = false;
 	supportNode->shaderProgram->disableStencil = false;
 	supportNode->isReflex = true;
 	supportNode->transform.setPosition(0.0f, -0.1f, 0.0f);
@@ -366,9 +358,20 @@ void createSceneGraph() {
 	lampNode->material = ManagerMaterial::instance()->get("board");
 	lampNode->texture = ManagerTexture::instance()->get("ligthSource");
 	lampNode->shaderProgram = ManagerShader::instance()->get("baseshader");
+	lampNode->shaderProgram->enableStencil = false;
 	lampNode->shaderProgram->disableStencil = false;
 	lampNode->isReflex = true;
 	lampNode->transform.setPosition(8.0f, -0.1f, -7.8f);
+
+	SceneNode* boarderNode = new SceneNode();
+	sceneGraph->addSceneNode("boarderNode", boarderNode);
+	boarderNode->mesh = ManagerMesh::instance()->get("boarder");
+	boarderNode->material = ManagerMaterial::instance()->get("board");
+	boarderNode->texture = ManagerTexture::instance()->get("3DNoise");
+	boarderNode->shaderProgram = ManagerShader::instance()->get("baseshaderXPTO");
+	boarderNode->shaderProgram->disableStencil = false;
+	boarderNode->isReflex = true;
+	boarderNode->transform.setPosition(0.0f, 0.2f, 0.0f);
 
 	SceneNode* boardNode = new SceneNode();
 	sceneGraph->addSceneNode("boardNode", boardNode);
