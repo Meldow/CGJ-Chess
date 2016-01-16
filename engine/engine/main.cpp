@@ -171,6 +171,64 @@ void createBaseShaderXPTO() {
 	ManagerShader::instance()->add("baseshaderXPTO", shader);
 };
 
+void createSimpleShader() {
+	VSShaderLib* shader = new VSShaderLib();
+	shader->init();
+	shader->loadShader(VSShaderLib::VERTEX_SHADER, "shaders/vertexShader.vert");
+	shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/fragShader.frag");
+
+	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::VERTICES, "in_Position");
+	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::TEXCOORDS, "in_TexCoord");
+	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::NORMALS, "in_Normal");
+
+	shader->prepareProgram("shaders/vertexShader");
+
+	shader->addUniform("ModelMatrix", GL_FLOAT_MAT4, 1);
+
+	UboId = glGetUniformBlockIndex(shader->getProgramIndex(), "Camera");
+	glUniformBlockBinding(shader->getProgramIndex(), UboId, UBO_BP);
+
+	//Material
+	shader->addUniform("mat.ambient", GL_FLOAT_VEC4, 1);
+	shader->addUniform("mat.diffuse", GL_FLOAT_VEC4, 1);
+	shader->addUniform("mat.specular", GL_FLOAT_VEC4, 1);
+	shader->addUniform("mat.shininess", GL_FLOAT, 1);
+
+	shader->enableStencil = false;
+
+	shader->addUniform("numPointLights", GL_INT, 1);
+
+	for (int i = 0; i < ManagerLight::instance()->pointLights.size(); i++) {
+		char Name[128];
+		memset(Name, 0, sizeof(Name));
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.Color", i);
+		shader->pointLightsLocation[i].Color = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Position", i);
+		shader->pointLightsLocation[i].Position = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.AmbientIntensity", i);
+		shader->pointLightsLocation[i].AmbientIntensity = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.DiffuseIntensity", i);
+		shader->pointLightsLocation[i].DiffuseIntensity = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Atten", i);
+		shader->pointLightsLocation[i].Atten = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Range", i);
+		shader->pointLightsLocation[i].Range = glGetUniformLocation(shader->getProgramIndex(), Name);
+	}
+
+	shader->affectedByLights = true;
+
+	//Texture
+	shader->addUniform("tex_map", GL_INT, 1);
+
+	ManagerShader::instance()->add("simpleshader", shader);
+}
+
 void createLightingShader() {
 	VSShaderLib* shader = new VSShaderLib();
 	shader->init();
@@ -232,6 +290,7 @@ void createShaderProgram() {
 	createFresnelShader();
 	createBaseShader();
 	createBaseShaderXPTO();
+	createSimpleShader();
 	createLightingShader();
 }
 
@@ -330,24 +389,12 @@ void createSceneGraph() {
 	ManagerSceneGraph::instance()->addSceneGraph("main", sceneGraph);
 	ManagerSceneGraph::instance()->getSceneGraph("main")->camera = new Camera(UBO_BP);
 
-	SceneNode* tableNode = new SceneNode();
-	sceneGraph->addSceneNode("table", tableNode);
-	tableNode->mesh = ManagerMesh::instance()->get("table");
-	tableNode->material = ManagerMaterial::instance()->get("board");
-	tableNode->texture = ManagerTexture::instance()->get("wood");
-	tableNode->shaderProgram = ManagerShader::instance()->get("baseshader");
-	tableNode->shaderProgram->enableStencil = false;
-	tableNode->shaderProgram->disableStencil = false;
-	tableNode->isReflex = true;
-	tableNode->transform.setPosition(0.0f, -0.1f, 0.0f);
-
 	SceneNode* supportNode = new SceneNode();
 	sceneGraph->addSceneNode("support", supportNode);
 	supportNode->mesh = ManagerMesh::instance()->get("pernas");
 	supportNode->material = ManagerMaterial::instance()->get("board");
 	supportNode->texture = ManagerTexture::instance()->get("wood");
-	supportNode->shaderProgram = ManagerShader::instance()->get("baseshader");
-	supportNode->shaderProgram->enableStencil = false;
+	supportNode->shaderProgram = ManagerShader::instance()->get("simpleshader");
 	supportNode->shaderProgram->disableStencil = false;
 	supportNode->isReflex = true;
 	supportNode->transform.setPosition(0.0f, -0.1f, 0.0f);
@@ -357,8 +404,7 @@ void createSceneGraph() {
 	lampNode->mesh = ManagerMesh::instance()->get("lamp");
 	lampNode->material = ManagerMaterial::instance()->get("board");
 	lampNode->texture = ManagerTexture::instance()->get("ligthSource");
-	lampNode->shaderProgram = ManagerShader::instance()->get("baseshader");
-	lampNode->shaderProgram->enableStencil = false;
+	lampNode->shaderProgram = ManagerShader::instance()->get("simpleshader");
 	lampNode->shaderProgram->disableStencil = false;
 	lampNode->isReflex = true;
 	lampNode->transform.setPosition(8.0f, -0.1f, -7.8f);
@@ -372,6 +418,16 @@ void createSceneGraph() {
 	boarderNode->shaderProgram->disableStencil = false;
 	boarderNode->isReflex = true;
 	boarderNode->transform.setPosition(0.0f, 0.2f, 0.0f);
+
+	SceneNode* tableNode = new SceneNode();
+	sceneGraph->addSceneNode("table", tableNode);
+	tableNode->mesh = ManagerMesh::instance()->get("table");
+	tableNode->material = ManagerMaterial::instance()->get("board");
+	tableNode->texture = ManagerTexture::instance()->get("wood");
+	tableNode->shaderProgram = ManagerShader::instance()->get("simpleshader");
+	tableNode->shaderProgram->disableStencil = false;
+	tableNode->isReflex = true;
+	tableNode->transform.setPosition(0.0f, -0.1f, 0.0f);
 
 	SceneNode* boardNode = new SceneNode();
 	sceneGraph->addSceneNode("boardNode", boardNode);

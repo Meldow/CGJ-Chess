@@ -160,6 +160,7 @@ void SceneNode::draw() {
 			glDepthMask(GL_FALSE);
 		}
 		//if (shaderProgram->disableStencil) glCullFace(GL_FRONT);
+
 		if (name == "pawnB1NodeInv" || name == "pawnB2NodeInv" || name == "pawnB3NodeInv" || name == "pawnB4NodeInv" || 
 			name == "pawnB5NodeInv" || name == "pawnB6NodeInv" || name == "pawnB7NodeInv" || name == "pawnB8NodeInv" ||
 			name == "rockB1NodeInv" || name == "rockB2NodeInv" || name == "horseB1NodeInv" || name == "horseB2NodeInv" ||
@@ -167,6 +168,8 @@ void SceneNode::draw() {
 			glCullFace(GL_FRONT);
 		setUniforms();
 		if (shaderProgram->affectedByLights) setLightUniforms();
+
+
 		if (mesh) mesh->draw();
 
 
