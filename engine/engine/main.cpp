@@ -282,6 +282,12 @@ void createMesh() {
 	Mesh* mesh9 = new Mesh(std::string("Models/table.obj"));
 	ManagerMesh::instance()->add("table", mesh9);
 
+	Mesh* mesh10 = new Mesh(std::string("Models/pernas.obj"));
+	ManagerMesh::instance()->add("pernas", mesh10);
+
+	Mesh* mesh11 = new Mesh(std::string("Models/lamp.obj"));
+	ManagerMesh::instance()->add("lamp", mesh11);
+
 }
 
 void createMaterial() {
@@ -309,23 +315,20 @@ void createTexture() {
 	Texture* texture3 = new Texture();
 	texture3->make3DNoiseTexture(8);
 	ManagerTexture::instance()->add("3DNoise", texture3);
+
+	Texture* texture4 = new Texture();
+	texture4->createTexture("Models/darkwood.tga");
+	ManagerTexture::instance()->add("wood", texture4);
+
+	Texture* texture5 = new Texture();
+	texture5->createTexture("Models/ligthSource.tga");
+	ManagerTexture::instance()->add("ligthSource", texture5);
 }
 
 void createSceneGraph() {
 	SceneGraph* sceneGraph = new SceneGraph();
 	ManagerSceneGraph::instance()->addSceneGraph("main", sceneGraph);
 	ManagerSceneGraph::instance()->getSceneGraph("main")->camera = new Camera(UBO_BP);
-
-	SceneNode* tableNode = new SceneNode();
-	sceneGraph->addSceneNode("table", tableNode);
-	tableNode->mesh = ManagerMesh::instance()->get("table");
-	tableNode->material = ManagerMaterial::instance()->get("board");
-	tableNode->texture = ManagerTexture::instance()->get("3DNoise");
-	tableNode->shaderProgram = ManagerShader::instance()->get("baseshaderXPTO");
-	tableNode->shaderProgram->disableStencil = false;
-	tableNode->isReflex = true;
-	tableNode->transform.setPosition(0.0f, -0.6f, 0.0f);
-
 
 	SceneNode* boarderNode = new SceneNode();
 	sceneGraph->addSceneNode("boarderNode", boarderNode);
@@ -336,6 +339,36 @@ void createSceneGraph() {
 	boarderNode->shaderProgram->disableStencil = false;
 	boarderNode->isReflex = true;
 	boarderNode->transform.setPosition(0.0f, 0.2f, 0.0f);
+
+	SceneNode* tableNode = new SceneNode();
+	sceneGraph->addSceneNode("table", tableNode);
+	tableNode->mesh = ManagerMesh::instance()->get("table");
+	tableNode->material = ManagerMaterial::instance()->get("board");
+	tableNode->texture = ManagerTexture::instance()->get("wood");
+	tableNode->shaderProgram = ManagerShader::instance()->get("baseshader");
+	tableNode->shaderProgram->disableStencil = false;
+	tableNode->isReflex = true;
+	tableNode->transform.setPosition(0.0f, -0.1f, 0.0f);
+
+	SceneNode* supportNode = new SceneNode();
+	sceneGraph->addSceneNode("support", supportNode);
+	supportNode->mesh = ManagerMesh::instance()->get("pernas");
+	supportNode->material = ManagerMaterial::instance()->get("board");
+	supportNode->texture = ManagerTexture::instance()->get("wood");
+	supportNode->shaderProgram = ManagerShader::instance()->get("baseshader");
+	supportNode->shaderProgram->disableStencil = false;
+	supportNode->isReflex = true;
+	supportNode->transform.setPosition(0.0f, -0.1f, 0.0f);
+
+	SceneNode* lampNode = new SceneNode();
+	sceneGraph->addSceneNode("lamp", lampNode);
+	lampNode->mesh = ManagerMesh::instance()->get("lamp");
+	lampNode->material = ManagerMaterial::instance()->get("board");
+	lampNode->texture = ManagerTexture::instance()->get("ligthSource");
+	lampNode->shaderProgram = ManagerShader::instance()->get("baseshader");
+	lampNode->shaderProgram->disableStencil = false;
+	lampNode->isReflex = true;
+	lampNode->transform.setPosition(8.0f, -0.1f, -7.8f);
 
 	SceneNode* boardNode = new SceneNode();
 	sceneGraph->addSceneNode("boardNode", boardNode);
@@ -656,7 +689,7 @@ void createSceneGraph() {
 void createLights() {
 	PointLight* pointlight = new PointLight();
 	pointlight->Position = Vector3(0.0f, 0.0f, 0.0f);
-	pointlight->Color = Vector3(0.2, 0.2, 0.0);
+	pointlight->Color = Vector3(0.8, 0.8, 0.8);
 	pointlight->AmbientIntensity = 0.3f;
 	pointlight->DiffuseIntensity = 2.0f;
 	pointlight->Attenuation = Vector3(1.0f, 0.045f, 0.0075f);
