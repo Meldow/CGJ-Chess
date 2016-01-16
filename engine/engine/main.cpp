@@ -756,17 +756,19 @@ void processMouseMotion(int xx, int yy) {
 			deltaXRotation = Matrix4().rotateY(alphaAux);
 			Matrix4 deltaYRotation;
 			deltaYRotation = Matrix4().rotateX(betaAux);
-			ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix = deltaXRotation * deltaYRotation;
+			ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix =  deltaYRotation * deltaXRotation;
 		} else {
-			if (betaAux <= 0) betaAux = 0;
+			if (betaAux <= 0) {
+				beta = 0;
+				betaAux = 0;
+			}
 			if (betaAux >= 90) {
+				beta = 90;
 				betaAux = 90;
-				if (alphaAux >= 90) alphaAux = 90;
-				if (alphaAux <= -90) alphaAux = -90;
 			}
 			Quaternion qDeltaX = Quaternion(alphaAux, Vector3(0.0f, 1.0f, 0.0f));
 			Quaternion qDeltaY = Quaternion(betaAux, Vector3(1.0f, 0.0f, 0.0f));
-			Quaternion qResult = qDeltaX * qDeltaY * qBase;
+			Quaternion qResult = qDeltaY * qDeltaX * qBase;
 			ManagerSceneGraph::instance()->getSceneGraph("main")->camera->RotationMatrix = qResult.quaternionToMatrix();
 		}
 	}
