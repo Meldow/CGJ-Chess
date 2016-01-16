@@ -833,6 +833,7 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 
 	//stop tracking the mouse
 	else if (state == GLUT_UP) {
+		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
 		ManagerSceneGraph::instance()->getSceneGraph("main")->checkIntersection = false;
 		if (tracking == 1 && !pickObject) {
 			alpha = alpha + (xx - startX);
