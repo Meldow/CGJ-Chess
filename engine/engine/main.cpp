@@ -279,6 +279,9 @@ void createMesh() {
 	Mesh* mesh8 = new Mesh(std::string("Models/boardBoarder.obj"));
 	ManagerMesh::instance()->add("boarder", mesh8);
 
+	Mesh* mesh9 = new Mesh(std::string("Models/table.obj"));
+	ManagerMesh::instance()->add("table", mesh9);
+
 }
 
 void createMaterial() {
@@ -300,11 +303,11 @@ void createTexture() {
 	ManagerTexture::instance()->add("stone", texture1);
 
 	Texture* texture2 = new Texture();
-	texture2->make2DNoiseTexture(32);
+	texture2->make2DNoiseTexture(8);
 	ManagerTexture::instance()->add("2DNoise", texture2);
 
 	Texture* texture3 = new Texture();
-	texture3->make3DNoiseTexture(32);
+	texture3->make3DNoiseTexture(8);
 	ManagerTexture::instance()->add("3DNoise", texture3);
 }
 
@@ -312,6 +315,17 @@ void createSceneGraph() {
 	SceneGraph* sceneGraph = new SceneGraph();
 	ManagerSceneGraph::instance()->addSceneGraph("main", sceneGraph);
 	ManagerSceneGraph::instance()->getSceneGraph("main")->camera = new Camera(UBO_BP);
+
+	SceneNode* tableNode = new SceneNode();
+	sceneGraph->addSceneNode("table", tableNode);
+	tableNode->mesh = ManagerMesh::instance()->get("table");
+	tableNode->material = ManagerMaterial::instance()->get("board");
+	tableNode->texture = ManagerTexture::instance()->get("3DNoise");
+	tableNode->shaderProgram = ManagerShader::instance()->get("baseshaderXPTO");
+	tableNode->shaderProgram->disableStencil = false;
+	tableNode->isReflex = true;
+	tableNode->transform.setPosition(0.0f, -0.6f, 0.0f);
+
 
 	SceneNode* boarderNode = new SceneNode();
 	sceneGraph->addSceneNode("boarderNode", boarderNode);
@@ -321,7 +335,7 @@ void createSceneGraph() {
 	boarderNode->shaderProgram = ManagerShader::instance()->get("baseshaderXPTO");
 	boarderNode->shaderProgram->disableStencil = false;
 	boarderNode->isReflex = true;
-	boarderNode->transform.setPosition(0.0f, 0.4f, 0.0f);
+	boarderNode->transform.setPosition(0.0f, 0.2f, 0.0f);
 
 	SceneNode* boardNode = new SceneNode();
 	sceneGraph->addSceneNode("boardNode", boardNode);
