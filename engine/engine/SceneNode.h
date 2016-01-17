@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <vector>
+#include <string>
 #include "Matrices.h"
 #include "Transform.h"
 #include "BoundingBox.h"
