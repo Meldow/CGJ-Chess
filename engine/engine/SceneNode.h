@@ -24,6 +24,7 @@ public:
 	Texture* texture1;
 
 	char* name;
+	char* nameInv;
 	Transform transform;
 	BoundingBox* boundingBox;
 	bool objectPicked = false;

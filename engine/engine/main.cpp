@@ -770,6 +770,8 @@ void createSceneGraph() {
 	pawnB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB1Node->transform.setPosition(5.358f, 0.0f, 3.827f);
 	pawnB1Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB1Node->nameInv = "pawnB1NodeInv";
+	pawnB1Node->nameInv = "pawnB1NodeInv";
 
 	SceneNode* pawnB2Node = new SceneNode();
 	boardNode->addSceneNode("pawnB2Node", pawnB2Node);
@@ -779,6 +781,7 @@ void createSceneGraph() {
 	pawnB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB2Node->transform.setPosition(3.827f, 0.0f, 3.827f);
 	pawnB2Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB2Node->nameInv = "pawnB2NodeInv";
 
 	SceneNode* pawnB3Node = new SceneNode();
 	boardNode->addSceneNode("pawnB3Node", pawnB3Node);
@@ -788,6 +791,7 @@ void createSceneGraph() {
 	pawnB3Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB3Node->transform.setPosition(2.296f, 0.0f, 3.827f);
 	pawnB3Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB3Node->nameInv = "pawnB3NodeInv";
 
 	SceneNode* pawnB4Node = new SceneNode();
 	boardNode->addSceneNode("pawnB4Node", pawnB4Node);
@@ -797,6 +801,7 @@ void createSceneGraph() {
 	pawnB4Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB4Node->transform.setPosition(0.765f, 0.0f, 3.827f);
 	pawnB4Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB4Node->nameInv = "pawnB4NodeInv";
 
 	SceneNode* pawnB5Node = new SceneNode();
 	boardNode->addSceneNode("pawnB5Node", pawnB5Node);
@@ -806,6 +811,7 @@ void createSceneGraph() {
 	pawnB5Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB5Node->transform.setPosition(-0.765f, 0.0f, 3.827f);
 	pawnB5Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB5Node->nameInv = "pawnB5NodeInv";
 
 	SceneNode* pawnB6Node = new SceneNode();
 	boardNode->addSceneNode("pawnB6Node", pawnB6Node);
@@ -815,6 +821,7 @@ void createSceneGraph() {
 	pawnB6Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB6Node->transform.setPosition(-2.296f, 0.0f, 3.827f);
 	pawnB6Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB6Node->nameInv = "pawnB6NodeInv";
 
 	SceneNode* pawnB7Node = new SceneNode();
 	boardNode->addSceneNode("pawnB7Node", pawnB7Node);
@@ -824,6 +831,7 @@ void createSceneGraph() {
 	pawnB7Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB7Node->transform.setPosition(-3.827f, 0.0f, 3.827f);
 	pawnB7Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB7Node->nameInv = "pawnB7NodeInv";
 
 	SceneNode* pawnB8Node = new SceneNode();
 	boardNode->addSceneNode("pawnB8Node", pawnB8Node);
@@ -833,6 +841,7 @@ void createSceneGraph() {
 	pawnB8Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB8Node->transform.setPosition(-5.358f, 0.0f, 3.827f);
 	pawnB8Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB8Node->nameInv = "pawnB8NodeInv";
 
 	SceneNode* rockB1Node = new SceneNode();
 	boardNode->addSceneNode("rockB1Node", rockB1Node);
@@ -842,6 +851,7 @@ void createSceneGraph() {
 	rockB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	rockB1Node->transform.setPosition(5.358f, 0.0f, 5.358f);
 	rockB1Node->boundingBox->setBoundingBoxSize(0.419f, 1.193f, 0.419f);
+	rockB1Node->nameInv = "rockB1NodeInv";
 
 	SceneNode* rockB2Node = new SceneNode();
 	boardNode->addSceneNode("rockB2Node", rockB2Node);
@@ -851,6 +861,7 @@ void createSceneGraph() {
 	rockB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	rockB2Node->transform.setPosition(-5.358f, 0.0f, 5.358f);
 	rockB2Node->boundingBox->setBoundingBoxSize(0.419f, 1.193f, 0.419f);
+	rockB2Node->nameInv = "rockB2NodeInv";
 
 	SceneNode* horseB1Node = new SceneNode();
 	boardNode->addSceneNode("horseB1Node", horseB1Node);
@@ -860,6 +871,7 @@ void createSceneGraph() {
 	horseB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	horseB1Node->transform.setPosition(3.827f, 0.0f, 5.358f);
 	horseB1Node->boundingBox->setBoundingBoxSize(0.419f, 1.429f, 0.419f);
+	horseB1Node->nameInv = "horseB1NodeInv";
 
 	SceneNode* horseB2Node = new SceneNode();
 	boardNode->addSceneNode("horseB2Node", horseB2Node);
@@ -869,6 +881,7 @@ void createSceneGraph() {
 	horseB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	horseB2Node->transform.setPosition(-3.827f, 0.0f, 5.358f);
 	horseB2Node->boundingBox->setBoundingBoxSize(0.419f, 1.429f, 0.419f);
+	horseB2Node->nameInv = "horseB2NodeInv";
 
 	SceneNode* bishopB1Node = new SceneNode();
 	boardNode->addSceneNode("bishopB1Node", bishopB1Node);
@@ -878,6 +891,7 @@ void createSceneGraph() {
 	bishopB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	bishopB1Node->transform.setPosition(2.296f, 0.0f, 5.358f);
 	bishopB1Node->boundingBox->setBoundingBoxSize(0.419f, 1.7f, 0.419f);
+	bishopB1Node->nameInv = "bishopB1NodeInv";
 
 	SceneNode* bishopB2Node = new SceneNode();
 	boardNode->addSceneNode("bishopB2Node", bishopB2Node);
@@ -887,6 +901,7 @@ void createSceneGraph() {
 	bishopB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	bishopB2Node->transform.setPosition(-2.296f, 0.0f, 5.358f);
 	bishopB2Node->boundingBox->setBoundingBoxSize(0.419f, 1.7f, 0.419f);
+	bishopB2Node->nameInv = "bishopB2NodeInv";
 
 	SceneNode* queenB1Node = new SceneNode();
 	boardNode->addSceneNode("queenB1Node", queenB1Node);
@@ -896,6 +911,7 @@ void createSceneGraph() {
 	queenB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	queenB1Node->transform.setPosition(-0.765f, 0.0f, 5.358f);
 	queenB1Node->boundingBox->setBoundingBoxSize(0.5f, 2.146f, 0.5f);
+	queenB1Node->nameInv = "queenB1NodeInv";
 
 	SceneNode* kingB1Node = new SceneNode();
 	boardNode->addSceneNode("kingB1Node", kingB1Node);
@@ -905,6 +921,7 @@ void createSceneGraph() {
 	kingB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	kingB1Node->transform.setPosition(0.765f, 0.0f, 5.358f);
 	kingB1Node->boundingBox->setBoundingBoxSize(0.5f, 2.429f, 0.5f);
+	kingB1Node->nameInv = "kingB1NodeInv";
 
 	/////////////////////////////////////////////////////////////////////
 
@@ -916,6 +933,7 @@ void createSceneGraph() {
 	pawnW1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW1Node->transform.setPosition(5.358f, 0.0f, -3.827f);
 	pawnW1Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW1Node->nameInv = "pawnW1NodeInv";
 
 	SceneNode* pawnW2Node = new SceneNode();
 	boardNode->addSceneNode("pawnW2Node", pawnW2Node);
@@ -925,6 +943,7 @@ void createSceneGraph() {
 	pawnW2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW2Node->transform.setPosition(3.827f, 0.0f, -3.827f);
 	pawnW2Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW2Node->nameInv = "pawnW2NodeInv";
 
 	SceneNode* pawnW3Node = new SceneNode();
 	boardNode->addSceneNode("pawnW3Node", pawnW3Node);
@@ -934,6 +953,7 @@ void createSceneGraph() {
 	pawnW3Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW3Node->transform.setPosition(2.296f, 0.0f, -3.827f);
 	pawnW3Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW3Node->nameInv = "pawnW3NodeInv";
 
 	SceneNode* pawnW4Node = new SceneNode();
 	boardNode->addSceneNode("pawnW4Node", pawnW4Node);
@@ -943,6 +963,7 @@ void createSceneGraph() {
 	pawnW4Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW4Node->transform.setPosition(0.765f, 0.0f, -3.827f);
 	pawnW4Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW4Node->nameInv = "pawnW4NodeInv";
 
 	SceneNode* pawnW5Node = new SceneNode();
 	boardNode->addSceneNode("pawnW5Node", pawnW5Node);
@@ -952,6 +973,7 @@ void createSceneGraph() {
 	pawnW5Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW5Node->transform.setPosition(-0.765f, 0.0f, -3.827f);
 	pawnW5Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW5Node->nameInv = "pawnW5NodeInv";
 
 	SceneNode* pawnW6Node = new SceneNode();
 	boardNode->addSceneNode("pawnW6Node", pawnW6Node);
@@ -961,6 +983,7 @@ void createSceneGraph() {
 	pawnW6Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW6Node->transform.setPosition(-2.296f, 0.0f, -3.827f);
 	pawnW6Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW6Node->nameInv = "pawnW6NodeInv";
 
 	SceneNode* pawnW7Node = new SceneNode();
 	boardNode->addSceneNode("pawnW7Node", pawnW7Node);
@@ -970,6 +993,7 @@ void createSceneGraph() {
 	pawnW7Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW7Node->transform.setPosition(-3.827f, 0.0f, -3.827f);
 	pawnW7Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW7Node->nameInv = "pawnW7NodeInv";
 
 	SceneNode* pawnW8Node = new SceneNode();
 	boardNode->addSceneNode("pawnW8Node", pawnW8Node);
@@ -979,6 +1003,7 @@ void createSceneGraph() {
 	pawnW8Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW8Node->transform.setPosition(-5.358f, 0.0f, -3.827f);
 	pawnW8Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW8Node->nameInv = "pawnW8NodeInv";
 
 	SceneNode* rockW1Node = new SceneNode();
 	boardNode->addSceneNode("rockW1Node", rockW1Node);
@@ -988,6 +1013,7 @@ void createSceneGraph() {
 	rockW1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	rockW1Node->transform.setPosition(5.358f, 0.0f, -5.358f);
 	rockW1Node->boundingBox->setBoundingBoxSize(0.419f, 1.193f, 0.419f);
+	rockW1Node->nameInv = "rockW1NodeInv";
 
 	SceneNode* rockW2Node = new SceneNode();
 	boardNode->addSceneNode("rockW2Node", rockW2Node);
@@ -997,6 +1023,7 @@ void createSceneGraph() {
 	rockW2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	rockW2Node->transform.setPosition(-5.358f, 0.0f, -5.358f);
 	rockW2Node->boundingBox->setBoundingBoxSize(0.419f, 1.193f, 0.419f);
+	rockW2Node->nameInv = "rockW2NodeInv";
 
 	SceneNode* horseW1Node = new SceneNode();
 	boardNode->addSceneNode("horseW1Node", horseW1Node);
@@ -1006,6 +1033,7 @@ void createSceneGraph() {
 	horseW1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	horseW1Node->transform.setPosition(3.827f, 0.0f, -5.358f);
 	horseW1Node->boundingBox->setBoundingBoxSize(0.419f, 1.429f, 0.419f);
+	horseW1Node->nameInv = "horseW1NodeInv";
 
 	SceneNode* horseW2Node = new SceneNode();
 	boardNode->addSceneNode("horseW2Node", horseW2Node);
@@ -1015,6 +1043,7 @@ void createSceneGraph() {
 	horseW2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	horseW2Node->transform.setPosition(-3.827f, 0.0f, -5.358f);
 	horseW2Node->boundingBox->setBoundingBoxSize(0.419f, 1.429f, 0.419f);
+	horseW2Node->nameInv = "horseW2NodeInv";
 
 	SceneNode* bishopW1Node = new SceneNode();
 	boardNode->addSceneNode("bishopW1Node", bishopW1Node);
@@ -1024,6 +1053,7 @@ void createSceneGraph() {
 	bishopW1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	bishopW1Node->transform.setPosition(2.296f, 0.0f, -5.358f);
 	bishopW1Node->boundingBox->setBoundingBoxSize(0.419f, 1.7f, 0.419f);
+	bishopW1Node->nameInv = "bishopW1NodeInv";
 
 	SceneNode* bishopW2Node = new SceneNode();
 	boardNode->addSceneNode("bishopW2Node", bishopW2Node);
@@ -1033,6 +1063,7 @@ void createSceneGraph() {
 	bishopW2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	bishopW2Node->transform.setPosition(-2.296f, 0.0f, -5.358f);
 	bishopW2Node->boundingBox->setBoundingBoxSize(0.419f, 1.7f, 0.419f);
+	bishopW2Node->nameInv = "bishopW2NodeInv";
 
 	SceneNode* queenW1Node = new SceneNode();
 	boardNode->addSceneNode("queenW1Node", queenW1Node);
@@ -1042,6 +1073,7 @@ void createSceneGraph() {
 	queenW1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	queenW1Node->transform.setPosition(-0.765f, 0.0f, -5.358f);
 	queenW1Node->boundingBox->setBoundingBoxSize(0.5f, 2.146f, 0.5f);
+	queenW1Node->nameInv = "queenW1NodeInv";
 
 	SceneNode* kingW1Node = new SceneNode();
 	boardNode->addSceneNode("kingW1Node", kingW1Node);
@@ -1051,6 +1083,7 @@ void createSceneGraph() {
 	kingW1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	kingW1Node->transform.setPosition(0.765f, 0.0f, -5.358f);
 	kingW1Node->boundingBox->setBoundingBoxSize(0.5f, 2.429f, 0.5f);
+	kingW1Node->nameInv = "kingW1NodeInv";
 }
 
 void createLights() {

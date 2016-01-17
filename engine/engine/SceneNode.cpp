@@ -132,12 +132,9 @@ void SceneNode::checkIntersection() {
 							  transform.position.y,
 		   					  sceneGraph->rayPoint.z * camDist);
 		modelMatrix = Matrix4().translate(transform.position.x, transform.position.y, transform.position.z);
-
-		char str[20];
-		strcpy(str, name);
-		strcat(str, "Inv");
-		//does't work
-		parentNode->getSceneNode("pawnB2NodeInv")->transform.setPosition(transform.position.x, transform.position.y, transform.position.z);
+	
+		if(nameInv!=NULL)
+			parentNode->getSceneNode(nameInv)->transform.setPosition(transform.position.x, transform.position.y, transform.position.z);
 	}
 }
 
