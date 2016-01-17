@@ -165,7 +165,11 @@ void SceneNode::draw() {
 		if (name == "pawnB1NodeInv" || name == "pawnB2NodeInv" || name == "pawnB3NodeInv" || name == "pawnB4NodeInv" || 
 			name == "pawnB5NodeInv" || name == "pawnB6NodeInv" || name == "pawnB7NodeInv" || name == "pawnB8NodeInv" ||
 			name == "rockB1NodeInv" || name == "rockB2NodeInv" || name == "horseB1NodeInv" || name == "horseB2NodeInv" ||
-			name == "bishopB1NodeInv" || name == "bishopB2NodeInv" || name == "queenB1NodeInv" || name == "kingB1NodeInv")  
+			name == "bishopB1NodeInv" || name == "bishopB2NodeInv" || name == "queenB1NodeInv" || name == "kingB1NodeInv" ||
+			name == "pawnW1NodeInv" || name == "pawnW2NodeInv" || name == "pawnW3NodeInv" || name == "pawnW4NodeInv" ||
+			name == "pawnW5NodeInv" || name == "pawnW6NodeInv" || name == "pawnW7NodeInv" || name == "pawnW8NodeInv" ||
+			name == "rockW1NodeInv" || name == "rockW2NodeInv" || name == "horseW1NodeInv" || name == "horseW2NodeInv" ||
+			name == "bishopW1NodeInv" || name == "bishopW2NodeInv" || name == "queenW1NodeInv" || name == "kingW1NodeInv")
 			glCullFace(GL_FRONT);
 		setUniforms();
 		if (shaderProgram->affectedByLights) setLightUniforms();
