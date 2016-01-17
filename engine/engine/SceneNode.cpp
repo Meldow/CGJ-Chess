@@ -122,6 +122,7 @@ void SceneNode::checkIntersection() {
 	if (boundingBox->checkRayIntersection(sceneGraph->rayOrigin, sceneGraph->rayDirection)) {
 		objectPicked = true;
 		parentNode->childPicked = true;
+		sceneGraph->picking = true;
 	}
 
 	if (objectPicked) {

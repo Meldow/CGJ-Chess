@@ -1129,9 +1129,10 @@ void processKeys(unsigned char key, int xx, int yy) {
 
 void processMouseButtons(int button, int state, int xx, int yy) {
 	// start tracking the mouse
+	ManagerSceneGraph::instance()->getSceneGraph("main")->calculateRay(xx, yy, WinX, WinY);
 	if (state == GLUT_DOWN) {
 		if (button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON) {
-			if (!pickObject) {
+			if (!ManagerSceneGraph::instance()->getSceneGraph("main")->picking) {
 				startX = xx;
 				startY = yy;
 			}
@@ -1142,8 +1143,9 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 	//stop tracking the mouse
 	else if (state == GLUT_UP) {
 		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+		ManagerSceneGraph::instance()->getSceneGraph("main")->picking = false;
 		ManagerSceneGraph::instance()->getSceneGraph("main")->checkIntersection = false;
-		if (tracking == 1 && !pickObject) {
+		if (tracking == 1 && !ManagerSceneGraph::instance()->getSceneGraph("main")->picking) {
 			alpha = alpha + (xx - startX);
 			beta = beta + (yy - startY);
 		}
@@ -1153,7 +1155,9 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 
 // Track mouse motion while buttons are pressed
 void processMouseMotion(int xx, int yy) {
-	if (!pickObject) {
+	if (ManagerSceneGraph::instance()->getSceneGraph("main")->picking)
+		ManagerSceneGraph::instance()->getSceneGraph("main")->calculateRay(xx, yy, WinX, WinY);
+	else if (!ManagerSceneGraph::instance()->getSceneGraph("main")->picking) {
 		int deltaX = xx - startX;
 		int deltaY = yy - startY;
 
@@ -1161,11 +1165,7 @@ void processMouseMotion(int xx, int yy) {
 			alphaAux = (alpha + deltaX);
 			betaAux = (beta + deltaY);
 		}
-	}
 
-	if (pickObject)
-		ManagerSceneGraph::instance()->getSceneGraph("main")->calculateRay(xx, yy, WinX, WinY);
-	else {
 		if (gimbal_lock) {
 			Matrix4 deltaXRotation;
 			deltaXRotation = Matrix4().rotateY(alphaAux);

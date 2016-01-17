@@ -12,6 +12,7 @@ public:
 	Vector3 rayDirection;
 	Vector3 rayPoint;
 	bool checkIntersection = false;
+	bool picking = false;
 
 	bool isDebug = false;
 
