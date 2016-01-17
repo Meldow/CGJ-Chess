@@ -1,23 +1,30 @@
-#pragma once
+# pragma once
 
-#include <vector>
-
-// THIS CLASS IS A TRANSLATION TO C++11 FROM THE REFERENCE
-// JAVA IMPLEMENTATION OF THE IMPROVED PERLIN FUNCTION (see http://mrl.nyu.edu/~perlin/noise/)
-// THE ORIGINAL JAVA IMPLEMENTATION IS COPYRIGHT 2002 KEN PERLIN
-
-// I ADDED AN EXTRA METHOD THAT GENERATES A NEW PERMUTATION VECTOR (THIS IS NOT PRESENT IN THE ORIGINAL IMPLEMENTATION)
-
-class PerlinNoise {
-	// The permutation vector
-	std::vector<int> p;
+class PerlinNoise
+{
 public:
-	// Initialize with the reference values for the permutation vector
-	PerlinNoise();
-	// Get a noise value, for 2D images z can have any value
-	double noise(double x, double y, double z);
+
+	PerlinNoise(unsigned seed = 1);
+
+	double noise(double x) const;
+
+	double noise(double x, double y) const;
+
+	double noise(double x, double y, double z) const;
+
+	double octaveNoise(double x, int octaves) const;
+
+	double octaveNoise(double x, double y, int octaves) const;
+
+	double octaveNoise(double x, double y, double z, int octaves) const;
+
 private:
-	double fade(double t);
-	double lerp(double t, double a, double b);
-	double grad(int hash, double x, double y, double z);
+
+	double fade(double t) const;
+
+	double lerp(double t, double a, double b) const;
+
+	double grad(int hash, double x, double y, double z) const;
+
+	int p[512];
 };

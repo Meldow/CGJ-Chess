@@ -1,10 +1,10 @@
 #version 330 core
 
 struct Material {
-	vec4 diffuse;
-	vec4 ambient;
-	vec4 specular;
-	float shininess;
+    vec4 diffuse;
+    vec4 ambient;
+    vec4 specular;
+    float shininess;
 };
 
 uniform Material mat;
@@ -17,17 +17,14 @@ uniform Camera {
 };
 
 in Data {
-	vec4 EyeVertexPos;
-	vec4 VertexPos;
-	vec3 Normal;
-	vec2 Tex_Coord;
+    vec4 EyeVertexPos;
+    vec4 VertexPos;
+    vec3 Normal;
+    vec2 Tex_Coord;
 } DataIn;
 
 const vec3 MarbleColor = vec3(0.15,0.15,0.15);
-const vec3 VeinColor = vec3(0.25,0.25,0.25);
-const float NoiseFactor = 0.5;
-const float PositionFactor = 5;
-const float IntensityFactor = 50;
+const vec3 VeinColor = vec3(0.05,0.05,0.05);
 
 out vec4 out_Color;
 
@@ -37,8 +34,7 @@ void main(void) {
     vec3 p = wcPosition * 0.5 + 0.5;
     float noise = texture(tex_map, p).r * 0.5 + 0.5;
     
-    float intensity = clamp(noise * NoiseFactor, 0.0, 1.0);
-    intensity = cos(DataIn.VertexPos.x * PositionFactor + intensity * IntensityFactor) * 0.5 + 0.5;
+    float intensity = clamp(noise, 0.0, 1.0);
     vec3 color = mix(MarbleColor, VeinColor, intensity);
     
     out_Color = vec4(color, 1.0);

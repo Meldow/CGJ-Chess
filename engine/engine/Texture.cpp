@@ -7,19 +7,22 @@ void Texture::make3DNoiseTexture(int size) {
 
 	is3DTexture = true;
 
+	double frequency = 0.1;
+
+	double fx = 1/frequency;
+	double fy = 1/frequency;
+	double fz = 1/frequency;
+
 	float * data = new float[size * size * size];
 	PerlinNoise pn;
 
 	unsigned int kk = 0;
-	// Visit every pixel of the image and assign a color generated with Perlin noise
-	for (unsigned int i = 0; i < size; ++i) {     // y
-		for (unsigned int j = 0; j < size; ++j) {  // x
-			for (unsigned int k = 0; k < size; ++k) {
-				double x = (double)j / ((double)size);
-				double y = (double)i / ((double)size);
-				double z = (double)k / ((double)size);
-				double noise = pn.noise(10 * x, 15 * y, 10 * z);
-				noise *= pn.noise(10 * x, 10 * y, 0.5);
+	// Visit every pixel of the image
+	for (unsigned int z = 0; z < size; ++z) {     
+		for (unsigned int y = 0; y < size; ++y) {  
+			for (unsigned int x = 0; x < size; ++x) {
+
+				double noise = pn.octaveNoise(x/fx, y/fy, z/fz, 16);
 				
 				data[kk] = static_cast<float>(noise);
 				kk++;
@@ -227,4 +230,9 @@ void Texture::draw() {
 	glActiveTexture(GL_TEXTURE0);
 	if (!is3DTexture) glBindTexture(GL_TEXTURE_2D, texture_id);
 	else glBindTexture(GL_TEXTURE_3D, texture_id);
+}
+
+void Texture::draw1() {
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture_id);
 }

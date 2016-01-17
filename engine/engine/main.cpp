@@ -138,6 +138,7 @@ void createBaseShader() {
 
 	//Texture
 	shader->addUniform("tex_map", GL_INT, 1);
+	shader->addUniform("tex_map1", GL_INT, 1);
 
 	ManagerShader::instance()->add("baseshader", shader);
 };
@@ -165,6 +166,33 @@ void createBaseShaderXPTO() {
 	shader->addUniform("mat.specular", GL_FLOAT_VEC4, 1);
 	shader->addUniform("mat.shininess", GL_FLOAT, 1);
 
+	shader->addUniform("numPointLights", GL_INT, 1);
+
+	for (int i = 0; i < ManagerLight::instance()->pointLights.size(); i++) {
+		char Name[128];
+		memset(Name, 0, sizeof(Name));
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.Color", i);
+		shader->pointLightsLocation[i].Color = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Position", i);
+		shader->pointLightsLocation[i].Position = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.AmbientIntensity", i);
+		shader->pointLightsLocation[i].AmbientIntensity = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Base.DiffuseIntensity", i);
+		shader->pointLightsLocation[i].DiffuseIntensity = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Atten", i);
+		shader->pointLightsLocation[i].Atten = glGetUniformLocation(shader->getProgramIndex(), Name);
+
+		SNPRINTF(Name, sizeof(Name), "pointLights[%d].Range", i);
+		shader->pointLightsLocation[i].Range = glGetUniformLocation(shader->getProgramIndex(), Name);
+	}
+
+	shader->affectedByLights = true;
+
 	//Texture
 	shader->addUniform("tex_map", GL_INT, 1);
 
@@ -175,7 +203,7 @@ void createSimpleShader() {
 	VSShaderLib* shader = new VSShaderLib();
 	shader->init();
 	shader->loadShader(VSShaderLib::VERTEX_SHADER, "shaders/vertexShader.vert");
-	shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/fragShader.frag");
+	shader->loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/fragShader2.frag");
 
 	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::VERTICES, "in_Position");
 	shader->setVertexAttribName(shader->getProgramIndex(), Mesh::TEXCOORDS, "in_TexCoord");
@@ -372,7 +400,7 @@ void createTexture() {
 	ManagerTexture::instance()->add("2DNoise", texture2);
 
 	Texture* texture3 = new Texture();
-	texture3->make3DNoiseTexture(8);
+	texture3->make3DNoiseTexture(32);
 	ManagerTexture::instance()->add("3DNoise", texture3);
 
 	Texture* texture4 = new Texture();
@@ -382,6 +410,10 @@ void createTexture() {
 	Texture* texture5 = new Texture();
 	texture5->createTexture("Models/ligthSource.tga");
 	ManagerTexture::instance()->add("ligthSource", texture5);
+
+	Texture* texture6 = new Texture();
+	texture6->createTexture("Models/checker.tga");
+	ManagerTexture::instance()->add("checker", texture6);
 }
 
 void createSceneGraph() {
@@ -433,7 +465,8 @@ void createSceneGraph() {
 	sceneGraph->addSceneNode("boardNode", boardNode);
 	boardNode->mesh = ManagerMesh::instance()->get("board");
 	boardNode->material = ManagerMaterial::instance()->get("board");
-	boardNode->texture = ManagerTexture::instance()->get("marble");
+	boardNode->texture = ManagerTexture::instance()->get("3DNoise");
+	boardNode->texture1 = ManagerTexture::instance()->get("checker");
 	boardNode->shaderProgram = ManagerShader::instance()->get("baseshader");
 	boardNode->shaderProgram->disableStencil = false;
 	boardNode->isReflex = true;
@@ -1089,7 +1122,7 @@ void createSceneGraph() {
 void createLights() {
 	PointLight* pointlight = new PointLight();
 	pointlight->Position = Vector3(0.0f, 0.0f, 0.0f);
-	pointlight->Color = Vector3(0.8, 0.8, 0.8);
+	pointlight->Color = Vector3(1.0, 1.0, 1.0);
 	pointlight->AmbientIntensity = 0.3f;
 	pointlight->DiffuseIntensity = 2.0f;
 	pointlight->Attenuation = Vector3(1.0f, 0.045f, 0.0075f);
@@ -1105,6 +1138,7 @@ void createLights() {
 	//pointlight2->Range = 100.0f;
 	//ManagerLight::instance()->addPointLight("pl2", pointlight2);
 }
+
 /////////////////////////////////////////////////////////////////////// SCENE
 
 void drawScene() {

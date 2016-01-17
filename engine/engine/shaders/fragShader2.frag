@@ -36,8 +36,7 @@ struct SpotLight {
 };
 
 uniform Material mat;
-uniform sampler3D tex_map;
-uniform sampler2D tex_map1;
+uniform sampler2D tex_map;
 
 uniform mat4 ModelMatrix;
 uniform Camera {
@@ -52,11 +51,6 @@ in Data {
 	vec2 Tex_Coord;
 } DataIn;
 
-const vec3 MarbleColor = vec3(0.15,0.15,0.15);
-const vec3 VeinColor = vec3(0.25,0.25,0.25);
-const float NoiseFactor = 0.5;
-const float PositionFactor = 5;
-const float IntensityFactor = 50;
 
 //lights
 uniform int numPointLights;   
@@ -102,21 +96,11 @@ vec4 CalcPointLights(PointLight pointlight) {
 }
 
 void main(void) {
-    
-    vec3 wcPosition = vec3(ModelMatrix * DataIn.VertexPos);
-    vec3 p = wcPosition * 0.5 + 0.5;
-    float noise = texture(tex_map, p).r * 0.5 + 0.5;
-    
-    float intensity = clamp(noise * NoiseFactor, 0.0, 1.0);
-    intensity = cos(DataIn.VertexPos.x * PositionFactor + intensity * IntensityFactor) * 0.5 + 0.5;
-    vec3 color = mix(MarbleColor, VeinColor, intensity);
-    
     vec4 TotalLight = vec4(0,0,0,0);
 	for (int i = 0 ; i < numPointLights ; i++) {                                           
 		TotalLight += CalcPointLights(pointLights[i]);
 	}
-    
-    vec4 texel = texture(tex_map1, DataIn.Tex_Coord);
-    
-    out_Color = vec4(color, 1.0) * texel * TotalLight;
+	
+    vec4 texel = texture(tex_map, DataIn.Tex_Coord);
+    out_Color = texel * TotalLight;
 }

@@ -44,4 +44,5 @@ public:
 	void createTexture(char *fileName);
 	Image *load(char *fileName);
 	void draw();
+	void draw1();
 };

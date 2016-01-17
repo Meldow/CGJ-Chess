@@ -41,6 +41,10 @@ void SceneNode::loadMaterialUniforms() {
 void SceneNode::loadTextureUniforms() {
 	texture->draw();
 	shaderProgram->setUniform("tex_map", 0);
+	if (texture1) {
+		shaderProgram->setUniform("tex_map1", 1);
+		texture1->draw1();
+	}
 }
 
 
