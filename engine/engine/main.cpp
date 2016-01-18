@@ -392,8 +392,8 @@ void createTexture() {
 	ManagerTexture::instance()->add("marble", texture);
 
 	Texture* texture1 = new Texture();
-	texture1->createTexture("Models/stone.tga");
-	ManagerTexture::instance()->add("stone", texture1);
+	texture1->createTexture("Models/blackMarble.tga");
+	ManagerTexture::instance()->add("blackMarble", texture1);
 
 	Texture* texture2 = new Texture();
 	texture2->make2DNoiseTexture(8);
@@ -477,7 +477,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB2NodeInv", pawnB2NodeInv);
 	pawnB2NodeInv->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB2NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	pawnB2NodeInv->texture = ManagerTexture::instance()->get("marble");
+	pawnB2NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB2NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB2NodeInv->isReflex = true;
 	pawnB2NodeInv->transform.setPosition(3.827f, 0.0f, 3.827f);
@@ -487,7 +487,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB1NodeInv", pawnB1NodeInv);
 	pawnB1NodeInv->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB1NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	pawnB1NodeInv->texture = ManagerTexture::instance()->get("marble");
+	pawnB1NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB1NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB1NodeInv->isReflex = true;
 	pawnB1NodeInv->transform.setPosition(5.358f, 0.0f, 3.827f);
@@ -497,7 +497,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB3NodeInv", pawnB3NodeInv);
 	pawnB3NodeInv->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB3NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	pawnB3NodeInv->texture = ManagerTexture::instance()->get("marble");
+	pawnB3NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB3NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB3NodeInv->isReflex = true;
 	pawnB3NodeInv->transform.setPosition(2.296f, 0.0f, 3.827f);
@@ -507,7 +507,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB4NodeInv", pawnB4NodeInv);
 	pawnB4NodeInv->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB4NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	pawnB4NodeInv->texture = ManagerTexture::instance()->get("marble");
+	pawnB4NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB4NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB4NodeInv->isReflex = true;
 	pawnB4NodeInv->transform.setPosition(0.765f, 0.0f, 3.827f);
@@ -517,7 +517,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB5NodeInv", pawnB5NodeInv);
 	pawnB5NodeInv->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB5NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	pawnB5NodeInv->texture = ManagerTexture::instance()->get("marble");
+	pawnB5NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB5NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB5NodeInv->isReflex = true;
 	pawnB5NodeInv->transform.setPosition(-0.765f, 0.0f, 3.827f);
@@ -527,7 +527,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB6NodeInv", pawnB6NodeInv);
 	pawnB6NodeInv->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB6NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	pawnB6NodeInv->texture = ManagerTexture::instance()->get("marble");
+	pawnB6NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB6NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB6NodeInv->isReflex = true;
 	pawnB6NodeInv->transform.setPosition(-2.296f, 0.0f, 3.827f);
@@ -537,7 +537,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB7NodeInv", pawnB7NodeInv);
 	pawnB7NodeInv->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB7NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	pawnB7NodeInv->texture = ManagerTexture::instance()->get("marble");
+	pawnB7NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB7NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB7NodeInv->isReflex = true;
 	pawnB7NodeInv->transform.setPosition(-3.827f, 0.0f, 3.827f);
@@ -547,7 +547,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB8NodeInv", pawnB8NodeInv);
 	pawnB8NodeInv->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB8NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	pawnB8NodeInv->texture = ManagerTexture::instance()->get("marble");
+	pawnB8NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB8NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB8NodeInv->isReflex = true;
 	pawnB8NodeInv->transform.setPosition(-5.358f, 0.0f, 3.827f);
@@ -557,7 +557,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("rockB1NodeInv", rockB1NodeInv);
 	rockB1NodeInv->mesh = ManagerMesh::instance()->get("rock");
 	rockB1NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	rockB1NodeInv->texture = ManagerTexture::instance()->get("marble");
+	rockB1NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	rockB1NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	rockB1NodeInv->isReflex = true;
 	rockB1NodeInv->transform.setPosition(5.358f, 0.0f, 5.358f);
@@ -567,7 +567,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("rockB2NodeInv", rockB2NodeInv);
 	rockB2NodeInv->mesh = ManagerMesh::instance()->get("rock");
 	rockB2NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	rockB2NodeInv->texture = ManagerTexture::instance()->get("marble");
+	rockB2NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	rockB2NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	rockB2NodeInv->isReflex = true;
 	rockB2NodeInv->transform.setPosition(-5.358f, 0.0f, 5.358f);
@@ -577,7 +577,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("horseB1NodeInv", horseB1NodeInv);
 	horseB1NodeInv->mesh = ManagerMesh::instance()->get("horse");
 	horseB1NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	horseB1NodeInv->texture = ManagerTexture::instance()->get("marble");
+	horseB1NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	horseB1NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	horseB1NodeInv->isReflex = true;
 	horseB1NodeInv->transform.setPosition(3.827f, 0.0f, 5.358f);
@@ -587,7 +587,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("horseB2NodeInv", horseB2NodeInv);
 	horseB2NodeInv->mesh = ManagerMesh::instance()->get("horse");
 	horseB2NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	horseB2NodeInv->texture = ManagerTexture::instance()->get("marble");
+	horseB2NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	horseB2NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	horseB2NodeInv->isReflex = true;
 	horseB2NodeInv->transform.setPosition(-3.827f, 0.0f, 5.358f);
@@ -597,7 +597,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("bishopB1NodeInv", bishopB1NodeInv);
 	bishopB1NodeInv->mesh = ManagerMesh::instance()->get("bishop");
 	bishopB1NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	bishopB1NodeInv->texture = ManagerTexture::instance()->get("marble");
+	bishopB1NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	bishopB1NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	bishopB1NodeInv->isReflex = true;
 	bishopB1NodeInv->transform.setPosition(2.296f, 0.0f, 5.358f);
@@ -607,7 +607,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("bishopB2NodeInv", bishopB2NodeInv);
 	bishopB2NodeInv->mesh = ManagerMesh::instance()->get("bishop");
 	bishopB2NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	bishopB2NodeInv->texture = ManagerTexture::instance()->get("marble");
+	bishopB2NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	bishopB2NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	bishopB2NodeInv->isReflex = true;
 	bishopB2NodeInv->transform.setPosition(-2.296f, 0.0f, 5.358f);
@@ -617,7 +617,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("queenB1NodeInv", queenB1NodeInv);
 	queenB1NodeInv->mesh = ManagerMesh::instance()->get("queen");
 	queenB1NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	queenB1NodeInv->texture = ManagerTexture::instance()->get("marble");
+	queenB1NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	queenB1NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	queenB1NodeInv->isReflex = true;
 	queenB1NodeInv->transform.setPosition(-0.765f, 0.0f, 5.358f);
@@ -627,7 +627,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("kingB1NodeInv", kingB1NodeInv);
 	kingB1NodeInv->mesh = ManagerMesh::instance()->get("king");
 	kingB1NodeInv->material = ManagerMaterial::instance()->get("pawn");
-	kingB1NodeInv->texture = ManagerTexture::instance()->get("marble");
+	kingB1NodeInv->texture = ManagerTexture::instance()->get("blackMarble");
 	kingB1NodeInv->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	kingB1NodeInv->isReflex = true;
 	kingB1NodeInv->transform.setPosition(0.765f, 0.0f, 5.358f);
@@ -801,7 +801,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB1Node", pawnB1Node);
 	pawnB1Node->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB1Node->material = ManagerMaterial::instance()->get("pawn");
-	pawnB1Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB1Node->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB1Node->transform.setPosition(5.358f, 0.0f, 3.827f);
 	pawnB1Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
@@ -812,7 +812,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB2Node", pawnB2Node);
 	pawnB2Node->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB2Node->material = ManagerMaterial::instance()->get("pawn");
-	pawnB2Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB2Node->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB2Node->transform.setPosition(3.827f, 0.0f, 3.827f);
 	pawnB2Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
@@ -822,7 +822,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB3Node", pawnB3Node);
 	pawnB3Node->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB3Node->material = ManagerMaterial::instance()->get("pawn");
-	pawnB3Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB3Node->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB3Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB3Node->transform.setPosition(2.296f, 0.0f, 3.827f);
 	pawnB3Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
@@ -832,7 +832,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB4Node", pawnB4Node);
 	pawnB4Node->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB4Node->material = ManagerMaterial::instance()->get("pawn");
-	pawnB4Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB4Node->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB4Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB4Node->transform.setPosition(0.765f, 0.0f, 3.827f);
 	pawnB4Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
@@ -842,7 +842,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB5Node", pawnB5Node);
 	pawnB5Node->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB5Node->material = ManagerMaterial::instance()->get("pawn");
-	pawnB5Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB5Node->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB5Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB5Node->transform.setPosition(-0.765f, 0.0f, 3.827f);
 	pawnB5Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
@@ -852,7 +852,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB6Node", pawnB6Node);
 	pawnB6Node->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB6Node->material = ManagerMaterial::instance()->get("pawn");
-	pawnB6Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB6Node->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB6Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB6Node->transform.setPosition(-2.296f, 0.0f, 3.827f);
 	pawnB6Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
@@ -862,7 +862,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB7Node", pawnB7Node);
 	pawnB7Node->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB7Node->material = ManagerMaterial::instance()->get("pawn");
-	pawnB7Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB7Node->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB7Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB7Node->transform.setPosition(-3.827f, 0.0f, 3.827f);
 	pawnB7Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
@@ -872,7 +872,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("pawnB8Node", pawnB8Node);
 	pawnB8Node->mesh = ManagerMesh::instance()->get("pawn");
 	pawnB8Node->material = ManagerMaterial::instance()->get("pawn");
-	pawnB8Node->texture = ManagerTexture::instance()->get("marble");
+	pawnB8Node->texture = ManagerTexture::instance()->get("blackMarble");
 	pawnB8Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB8Node->transform.setPosition(-5.358f, 0.0f, 3.827f);
 	pawnB8Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
@@ -882,7 +882,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("rockB1Node", rockB1Node);
 	rockB1Node->mesh = ManagerMesh::instance()->get("rock");
 	rockB1Node->material = ManagerMaterial::instance()->get("pawn");
-	rockB1Node->texture = ManagerTexture::instance()->get("marble");
+	rockB1Node->texture = ManagerTexture::instance()->get("blackMarble");
 	rockB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	rockB1Node->transform.setPosition(5.358f, 0.0f, 5.358f);
 	rockB1Node->boundingBox->setBoundingBoxSize(0.419f, 1.193f, 0.419f);
@@ -892,7 +892,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("rockB2Node", rockB2Node);
 	rockB2Node->mesh = ManagerMesh::instance()->get("rock");
 	rockB2Node->material = ManagerMaterial::instance()->get("pawn");
-	rockB2Node->texture = ManagerTexture::instance()->get("marble");
+	rockB2Node->texture = ManagerTexture::instance()->get("blackMarble");
 	rockB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	rockB2Node->transform.setPosition(-5.358f, 0.0f, 5.358f);
 	rockB2Node->boundingBox->setBoundingBoxSize(0.419f, 1.193f, 0.419f);
@@ -902,7 +902,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("horseB1Node", horseB1Node);
 	horseB1Node->mesh = ManagerMesh::instance()->get("horse");
 	horseB1Node->material = ManagerMaterial::instance()->get("pawn");
-	horseB1Node->texture = ManagerTexture::instance()->get("marble");
+	horseB1Node->texture = ManagerTexture::instance()->get("blackMarble");
 	horseB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	horseB1Node->transform.setPosition(3.827f, 0.0f, 5.358f);
 	horseB1Node->boundingBox->setBoundingBoxSize(0.419f, 1.429f, 0.419f);
@@ -912,7 +912,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("horseB2Node", horseB2Node);
 	horseB2Node->mesh = ManagerMesh::instance()->get("horse");
 	horseB2Node->material = ManagerMaterial::instance()->get("pawn");
-	horseB2Node->texture = ManagerTexture::instance()->get("marble");
+	horseB2Node->texture = ManagerTexture::instance()->get("blackMarble");
 	horseB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	horseB2Node->transform.setPosition(-3.827f, 0.0f, 5.358f);
 	horseB2Node->boundingBox->setBoundingBoxSize(0.419f, 1.429f, 0.419f);
@@ -922,7 +922,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("bishopB1Node", bishopB1Node);
 	bishopB1Node->mesh = ManagerMesh::instance()->get("bishop");
 	bishopB1Node->material = ManagerMaterial::instance()->get("pawn");
-	bishopB1Node->texture = ManagerTexture::instance()->get("marble");
+	bishopB1Node->texture = ManagerTexture::instance()->get("blackMarble");
 	bishopB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	bishopB1Node->transform.setPosition(2.296f, 0.0f, 5.358f);
 	bishopB1Node->boundingBox->setBoundingBoxSize(0.419f, 1.7f, 0.419f);
@@ -932,7 +932,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("bishopB2Node", bishopB2Node);
 	bishopB2Node->mesh = ManagerMesh::instance()->get("bishop");
 	bishopB2Node->material = ManagerMaterial::instance()->get("pawn");
-	bishopB2Node->texture = ManagerTexture::instance()->get("marble");
+	bishopB2Node->texture = ManagerTexture::instance()->get("blackMarble");
 	bishopB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	bishopB2Node->transform.setPosition(-2.296f, 0.0f, 5.358f);
 	bishopB2Node->boundingBox->setBoundingBoxSize(0.419f, 1.7f, 0.419f);
@@ -942,7 +942,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("queenB1Node", queenB1Node);
 	queenB1Node->mesh = ManagerMesh::instance()->get("queen");
 	queenB1Node->material = ManagerMaterial::instance()->get("pawn");
-	queenB1Node->texture = ManagerTexture::instance()->get("marble");
+	queenB1Node->texture = ManagerTexture::instance()->get("blackMarble");
 	queenB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	queenB1Node->transform.setPosition(-0.765f, 0.0f, 5.358f);
 	queenB1Node->boundingBox->setBoundingBoxSize(0.5f, 2.146f, 0.5f);
@@ -952,7 +952,7 @@ void createSceneGraph() {
 	boardNode->addSceneNode("kingB1Node", kingB1Node);
 	kingB1Node->mesh = ManagerMesh::instance()->get("king");
 	kingB1Node->material = ManagerMaterial::instance()->get("pawn");
-	kingB1Node->texture = ManagerTexture::instance()->get("marble");
+	kingB1Node->texture = ManagerTexture::instance()->get("blackMarble");
 	kingB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	kingB1Node->transform.setPosition(0.765f, 0.0f, 5.358f);
 	kingB1Node->boundingBox->setBoundingBoxSize(0.5f, 2.429f, 0.5f);
