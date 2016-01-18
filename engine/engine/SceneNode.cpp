@@ -176,7 +176,7 @@ void SceneNode::draw() {
 			glEnable(GL_BLEND);
 			glEnable(GL_CULL_FACE);
 			glCullFace(GL_BACK);
-			glDepthMask(GL_FALSE);
+			//glDepthMask(GL_FALSE);
 		}
 		//if (shaderProgram->disableStencil) glCullFace(GL_FRONT);
 
