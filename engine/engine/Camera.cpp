@@ -5,7 +5,9 @@ GLuint VboCamera;
 Camera::Camera(GLuint UBO_BP) {
 	ViewMatrix = Matrix4().identity();
 	ProjectionMatrix = Matrix4().identity();
-	RotationMatrix = Matrix4().identity();
+
+	Quaternion qD = Quaternion(90, Vector3(1.0f, 0.0f, 0.0f));
+	RotationMatrix = Matrix4().identity() * qD.quaternionToMatrix();
 
 
 	createUniformBuffer(UBO_BP);

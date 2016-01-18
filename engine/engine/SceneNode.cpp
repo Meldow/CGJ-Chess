@@ -120,13 +120,23 @@ void SceneNode::update() {
 			_sceneNodesIterator->second->objectPicked = false;
 		}
 	}
+	if (sceneGraph->checkIntersection && name == "boardNode")
+		checkIntersection();
+	if (sceneGraph->checkIntersection && name == "table")
+		checkIntersection();
 }
 
 void SceneNode::checkIntersection() {
 	if (boundingBox->checkRayIntersection(sceneGraph->rayOrigin, sceneGraph->rayDirection)) {
-		objectPicked = true;
-		parentNode->childPicked = true;
-		sceneGraph->picking = true;
+		if (name == "boardNode")
+			sceneGraph->pickingBoard = true;
+		else if (name == "table")
+			sceneGraph->pickingTable = true;
+		else {
+			objectPicked = true;
+			parentNode->childPicked = true;
+			sceneGraph->pickingPiece = true;
+		}
 	}
 
 	if (objectPicked) {

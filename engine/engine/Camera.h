@@ -2,6 +2,7 @@
 
 #include "Dependencies/glew/glew.h"
 #include "Matrices.h"
+#include "Quaternion.h"
 
 class Camera {
 public:
@@ -10,7 +11,7 @@ public:
 	Matrix4 ProjectionMatrix;
 	Matrix4 RotationMatrix;
 
-	float Distance = 15.0f;
+	float Distance = 40.0f;
 
 	Camera(GLuint UBO_BP);
 	~Camera();

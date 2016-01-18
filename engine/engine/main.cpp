@@ -16,7 +16,7 @@ const GLuint UBO_BP = 0;
 // Mouse Tracking Variables
 int startX, startY, startZ = 0, tracking = 0;
 // Camera Spherical Coordinates
-float alpha = 0.0f, beta = 0.0f, phi = 0.0f;
+float alpha = 0.0f, beta = 90.0f, phi = 0.0f;
 float xxx = -0.5f, yyy = -0.5f, zzz = -0.5f;
 float r = 10.0f;
 float alphaAux = 90.0f, betaAux = 90.0f, phiAux = 0.0f;
@@ -460,6 +460,7 @@ void createSceneGraph() {
 	tableNode->shaderProgram->disableStencil = false;
 	tableNode->isReflex = true;
 	tableNode->transform.setPosition(0.0f, -0.1f, 0.0f);
+	tableNode->boundingBox->setBoundingBoxSize(500.0f, 500.0f, 500.0f);
 
 	SceneNode* boardNode = new SceneNode();
 	sceneGraph->addSceneNode("boardNode", boardNode);
@@ -470,6 +471,7 @@ void createSceneGraph() {
 	boardNode->shaderProgram = ManagerShader::instance()->get("baseshader");
 	boardNode->shaderProgram->disableStencil = false;
 	boardNode->isReflex = true;
+	boardNode->boundingBox->setBoundingBoxSize(7.0f, -0.1f, 7.0f);
 
 	SceneNode* pawnB2NodeInv = new SceneNode();
 	boardNode->addSceneNode("pawnB2NodeInv", pawnB2NodeInv);
@@ -802,7 +804,7 @@ void createSceneGraph() {
 	pawnB1Node->texture = ManagerTexture::instance()->get("marble");
 	pawnB1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB1Node->transform.setPosition(5.358f, 0.0f, 3.827f);
-	pawnB1Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB1Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnB1Node->nameInv = "pawnB1NodeInv";
 	pawnB1Node->nameInv = "pawnB1NodeInv";
 
@@ -813,7 +815,7 @@ void createSceneGraph() {
 	pawnB2Node->texture = ManagerTexture::instance()->get("marble");
 	pawnB2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB2Node->transform.setPosition(3.827f, 0.0f, 3.827f);
-	pawnB2Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB2Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnB2Node->nameInv = "pawnB2NodeInv";
 
 	SceneNode* pawnB3Node = new SceneNode();
@@ -823,7 +825,7 @@ void createSceneGraph() {
 	pawnB3Node->texture = ManagerTexture::instance()->get("marble");
 	pawnB3Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB3Node->transform.setPosition(2.296f, 0.0f, 3.827f);
-	pawnB3Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB3Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnB3Node->nameInv = "pawnB3NodeInv";
 
 	SceneNode* pawnB4Node = new SceneNode();
@@ -833,7 +835,7 @@ void createSceneGraph() {
 	pawnB4Node->texture = ManagerTexture::instance()->get("marble");
 	pawnB4Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB4Node->transform.setPosition(0.765f, 0.0f, 3.827f);
-	pawnB4Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB4Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnB4Node->nameInv = "pawnB4NodeInv";
 
 	SceneNode* pawnB5Node = new SceneNode();
@@ -843,7 +845,7 @@ void createSceneGraph() {
 	pawnB5Node->texture = ManagerTexture::instance()->get("marble");
 	pawnB5Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB5Node->transform.setPosition(-0.765f, 0.0f, 3.827f);
-	pawnB5Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB5Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnB5Node->nameInv = "pawnB5NodeInv";
 
 	SceneNode* pawnB6Node = new SceneNode();
@@ -853,7 +855,7 @@ void createSceneGraph() {
 	pawnB6Node->texture = ManagerTexture::instance()->get("marble");
 	pawnB6Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB6Node->transform.setPosition(-2.296f, 0.0f, 3.827f);
-	pawnB6Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB6Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnB6Node->nameInv = "pawnB6NodeInv";
 
 	SceneNode* pawnB7Node = new SceneNode();
@@ -863,7 +865,7 @@ void createSceneGraph() {
 	pawnB7Node->texture = ManagerTexture::instance()->get("marble");
 	pawnB7Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB7Node->transform.setPosition(-3.827f, 0.0f, 3.827f);
-	pawnB7Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB7Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnB7Node->nameInv = "pawnB7NodeInv";
 
 	SceneNode* pawnB8Node = new SceneNode();
@@ -873,7 +875,7 @@ void createSceneGraph() {
 	pawnB8Node->texture = ManagerTexture::instance()->get("marble");
 	pawnB8Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnB8Node->transform.setPosition(-5.358f, 0.0f, 3.827f);
-	pawnB8Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnB8Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnB8Node->nameInv = "pawnB8NodeInv";
 
 	SceneNode* rockB1Node = new SceneNode();
@@ -965,7 +967,7 @@ void createSceneGraph() {
 	pawnW1Node->texture = ManagerTexture::instance()->get("marble");
 	pawnW1Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW1Node->transform.setPosition(5.358f, 0.0f, -3.827f);
-	pawnW1Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW1Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnW1Node->nameInv = "pawnW1NodeInv";
 
 	SceneNode* pawnW2Node = new SceneNode();
@@ -975,7 +977,7 @@ void createSceneGraph() {
 	pawnW2Node->texture = ManagerTexture::instance()->get("marble");
 	pawnW2Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW2Node->transform.setPosition(3.827f, 0.0f, -3.827f);
-	pawnW2Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW2Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnW2Node->nameInv = "pawnW2NodeInv";
 
 	SceneNode* pawnW3Node = new SceneNode();
@@ -985,7 +987,7 @@ void createSceneGraph() {
 	pawnW3Node->texture = ManagerTexture::instance()->get("marble");
 	pawnW3Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW3Node->transform.setPosition(2.296f, 0.0f, -3.827f);
-	pawnW3Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW3Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnW3Node->nameInv = "pawnW3NodeInv";
 
 	SceneNode* pawnW4Node = new SceneNode();
@@ -995,7 +997,7 @@ void createSceneGraph() {
 	pawnW4Node->texture = ManagerTexture::instance()->get("marble");
 	pawnW4Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW4Node->transform.setPosition(0.765f, 0.0f, -3.827f);
-	pawnW4Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW4Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnW4Node->nameInv = "pawnW4NodeInv";
 
 	SceneNode* pawnW5Node = new SceneNode();
@@ -1005,7 +1007,7 @@ void createSceneGraph() {
 	pawnW5Node->texture = ManagerTexture::instance()->get("marble");
 	pawnW5Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW5Node->transform.setPosition(-0.765f, 0.0f, -3.827f);
-	pawnW5Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW5Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnW5Node->nameInv = "pawnW5NodeInv";
 
 	SceneNode* pawnW6Node = new SceneNode();
@@ -1015,7 +1017,7 @@ void createSceneGraph() {
 	pawnW6Node->texture = ManagerTexture::instance()->get("marble");
 	pawnW6Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW6Node->transform.setPosition(-2.296f, 0.0f, -3.827f);
-	pawnW6Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW6Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnW6Node->nameInv = "pawnW6NodeInv";
 
 	SceneNode* pawnW7Node = new SceneNode();
@@ -1025,7 +1027,7 @@ void createSceneGraph() {
 	pawnW7Node->texture = ManagerTexture::instance()->get("marble");
 	pawnW7Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW7Node->transform.setPosition(-3.827f, 0.0f, -3.827f);
-	pawnW7Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW7Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnW7Node->nameInv = "pawnW7NodeInv";
 
 	SceneNode* pawnW8Node = new SceneNode();
@@ -1035,7 +1037,7 @@ void createSceneGraph() {
 	pawnW8Node->texture = ManagerTexture::instance()->get("marble");
 	pawnW8Node->shaderProgram = ManagerShader::instance()->get("fresnelshader");
 	pawnW8Node->transform.setPosition(-5.358f, 0.0f, -3.827f);
-	pawnW8Node->boundingBox->setBoundingBoxSize(0.307f, 1.091f, 0.307f);
+	pawnW8Node->boundingBox->setBoundingBoxSize(0.310f, 1.100f, 0.310f);
 	pawnW8Node->nameInv = "pawnW8NodeInv";
 
 	SceneNode* rockW1Node = new SceneNode();
@@ -1199,7 +1201,7 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 	ManagerSceneGraph::instance()->getSceneGraph("main")->calculateRay(xx, yy, WinX, WinY);
 	if (state == GLUT_DOWN) {
 		if (button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON) {
-			if (!ManagerSceneGraph::instance()->getSceneGraph("main")->picking) {
+			if (!ManagerSceneGraph::instance()->getSceneGraph("main")->pickingPiece) {
 				startX = xx;
 				startY = yy;
 			}
@@ -1210,21 +1212,26 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 	//stop tracking the mouse
 	else if (state == GLUT_UP) {
 		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
-		ManagerSceneGraph::instance()->getSceneGraph("main")->picking = false;
 		ManagerSceneGraph::instance()->getSceneGraph("main")->checkIntersection = false;
-		if (tracking == 1 && !ManagerSceneGraph::instance()->getSceneGraph("main")->picking) {
+		if (tracking == 1 && !ManagerSceneGraph::instance()->getSceneGraph("main")->pickingPiece && 
+							!ManagerSceneGraph::instance()->getSceneGraph("main")->pickingBoard) {
 			alpha = alpha + (xx - startX);
 			beta = beta + (yy - startY);
 		}
+		ManagerSceneGraph::instance()->getSceneGraph("main")->pickingTable = false;
+		ManagerSceneGraph::instance()->getSceneGraph("main")->pickingBoard = false;
+		ManagerSceneGraph::instance()->getSceneGraph("main")->pickingPiece = false;
 		tracking = 0;
 	}
 }
 
 // Track mouse motion while buttons are pressed
 void processMouseMotion(int xx, int yy) {
-	if (ManagerSceneGraph::instance()->getSceneGraph("main")->picking)
+	if (ManagerSceneGraph::instance()->getSceneGraph("main")->pickingPiece)
 		ManagerSceneGraph::instance()->getSceneGraph("main")->calculateRay(xx, yy, WinX, WinY);
-	else if (!ManagerSceneGraph::instance()->getSceneGraph("main")->picking) {
+	else if (ManagerSceneGraph::instance()->getSceneGraph("main")->pickingTable && 
+			!ManagerSceneGraph::instance()->getSceneGraph("main")->pickingBoard && 
+			!ManagerSceneGraph::instance()->getSceneGraph("main")->pickingPiece) {
 		int deltaX = xx - startX;
 		int deltaY = yy - startY;
 
